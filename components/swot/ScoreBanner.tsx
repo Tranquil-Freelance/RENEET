@@ -12,28 +12,46 @@ const SUBJECT_TOTAL: Record<Subject, number> = {
   biology: 90,
 };
 
+function formatRank(rank: number): string {
+  if (rank >= 1_00_000) {
+    return `~${(rank / 1_00_000).toFixed(1).replace(/\.0$/, "")} L`;
+  }
+  if (rank >= 1000) {
+    return `~${(rank / 1000).toFixed(1).replace(/\.0$/, "")}k`;
+  }
+  return `~${rank}`;
+}
+
+function formatPercentile(p: number): string {
+  if (p >= 99.99) return "99.99+";
+  if (p >= 99) return p.toFixed(2);
+  return p.toFixed(1);
+}
+
 export function ScoreBanner({ swot }: { swot: SWOT }) {
-  const total =
-    Object.values(swot.subject_scores).reduce((s, v) => s + v.net_marks, 0);
+  const score = swot.estimated_score;
 
   return (
     <div className="rounded-2xl bg-gradient-to-br from-[var(--color-brand)] via-[var(--color-brand-600)] to-[var(--color-brand-700)] p-6 text-white shadow-xl shadow-blue-500/20">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <div className="text-xs uppercase tracking-wider opacity-80">
-            Estimated NEET 2026 score
+            Your NEET 2026 score
           </div>
           <div className="mt-1 text-4xl md:text-5xl font-bold leading-none">
-            {swot.estimated_score.min}–{swot.estimated_score.max}
+            {score}
             <span className="ml-2 text-sm font-normal opacity-80">/ 720</span>
           </div>
           <div className="mt-2 text-sm opacity-90">
-            Predicted percentile: <span className="font-semibold">{swot.estimated_percentile}</span>
+            Percentile: <span className="font-semibold">{formatPercentile(swot.estimated_percentile)}</span>
+            <span className="opacity-60"> · </span>
+            Est. AIR: <span className="font-semibold">{formatRank(swot.estimated_rank)}</span>
           </div>
         </div>
         <div className="text-right">
           <div className="text-xs uppercase tracking-wider opacity-80">Net marks</div>
-          <div className="text-3xl font-bold">{total}</div>
+          <div className="text-3xl font-bold">{score}</div>
+          <div className="text-[10px] opacity-70 mt-1">+4 / -1 / 0</div>
         </div>
       </div>
 

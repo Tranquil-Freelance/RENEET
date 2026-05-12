@@ -78,14 +78,22 @@ export function ShareCard({ swot, userName, onClose }: Props) {
 
           <div className="mt-5">
             <div className="text-xs uppercase tracking-wider opacity-70">
-              {userName.split(" ")[0]}&apos;s estimated score
+              {userName.split(" ")[0]}&apos;s score
             </div>
             <div className="mt-1 text-5xl font-bold tracking-tight">
-              {swot.estimated_score.min}–{swot.estimated_score.max}
+              {swot.estimated_score}
               <span className="ml-2 text-sm font-normal opacity-70">/ 720</span>
             </div>
             <div className="mt-2 text-xs opacity-80">
-              {swot.estimated_percentile}
+              {swot.estimated_percentile >= 99.99
+                ? "99.99+"
+                : swot.estimated_percentile.toFixed(swot.estimated_percentile >= 99 ? 2 : 1)}
+              {"th"} percentile · Est. AIR{" "}
+              {swot.estimated_rank >= 1_00_000
+                ? `~${(swot.estimated_rank / 1_00_000).toFixed(1).replace(/\.0$/, "")}L`
+                : swot.estimated_rank >= 1000
+                ? `~${(swot.estimated_rank / 1000).toFixed(1).replace(/\.0$/, "")}k`
+                : `~${swot.estimated_rank}`}
             </div>
           </div>
 

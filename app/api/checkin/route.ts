@@ -5,7 +5,7 @@ import {
   getServiceClient,
   isSupabaseConfigured,
 } from "@/lib/supabase-server";
-import { callClaudeJson, isClaudeConfigured } from "@/lib/claude";
+import { callAiJson, isAiConfigured } from "@/lib/openrouter";
 import { generateDailyQuizPrompt } from "@/lib/prompts";
 import type { CheckInQuiz, StudyPlan, SWOT } from "@/types";
 
@@ -127,21 +127,22 @@ export async function POST(req: Request) {
     }
   }
 
-  if (!isClaudeConfigured()) {
+  if (!isAiConfigured()) {
     return NextResponse.json({
       quiz: stubQuiz(),
-      warning: "Claude not configured",
+      warning: "OpenRouter not configured",
     });
   }
 
   let quiz: CheckInQuiz;
   try {
-    quiz = await callClaudeJson<CheckInQuiz>({
+    quiz = await callAiJson<CheckInQuiz>({
       prompt: generateDailyQuizPrompt({ topic, subtopic, subject, weakness_insight: weaknessInsight }),
       maxTokens: 3000,
+      temperature: 0.4,
     });
   } catch (err) {
-    console.error("[checkin] Claude error", err);
+    console.error("[checkin] OpenRouter error", err);
     return NextResponse.json({ quiz: stubQuiz(), warning: "AI fallback" });
   }
 
@@ -166,10 +167,10 @@ function stubQuiz(): CheckInQuiz {
   return {
     questions: Array.from({ length: 5 }, (_, i) => ({
       q_no: i + 1,
-      question: `Sample NEET-style question ${i + 1}: (configure Claude for real questions)`,
+      question: `Sample NEET-style question ${i + 1}: (configure OpenRouter for real questions)`,
       options: { A: "Option A", B: "Option B", C: "Option C", D: "Option D" },
       correct: "A",
-      explanation: "Sample explanation — set ANTHROPIC_API_KEY for AI-generated quizzes.",
+      explanation: "Sample explanation — set OPENROUTER_API_KEY for AI-generated quizzes.",
     })),
   };
 }

@@ -5,7 +5,7 @@ import {
   getServiceClient,
   isSupabaseConfigured,
 } from "@/lib/supabase-server";
-import { callClaudeJson, isClaudeConfigured } from "@/lib/claude";
+import { callAiJson, isAiConfigured } from "@/lib/openrouter";
 import { generatePlanPrompt } from "@/lib/prompts";
 import type { StudyPlan, SWOT } from "@/types";
 
@@ -100,14 +100,15 @@ async function buildPlan(args: {
   swot: SWOT;
   daysRemaining: number;
 }): Promise<StudyPlan> {
-  if (!isClaudeConfigured()) return stubPlan();
+  if (!isAiConfigured()) return stubPlan();
   try {
-    return await callClaudeJson<StudyPlan>({
+    return await callAiJson<StudyPlan>({
       prompt: generatePlanPrompt(args),
       maxTokens: 12000,
+      temperature: 0.35,
     });
   } catch (err) {
-    console.error("[plan] Claude error", err);
+    console.error("[plan] OpenRouter error", err);
     return stubPlan();
   }
 }
@@ -133,7 +134,7 @@ async function savePlan(userId: string, plan: StudyPlan) {
 function stubPlan(): StudyPlan {
   return {
     plan_summary:
-      "Stub plan (Claude not configured). Add your ANTHROPIC_API_KEY for a personalized 30-day plan.",
+      "Stub plan (OpenRouter not configured). Add your OPENROUTER_API_KEY for a personalized 30-day plan.",
     weeks: [
       {
         week_number: 1,

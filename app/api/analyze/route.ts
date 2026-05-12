@@ -6,11 +6,18 @@ import {
   getServiceClient,
   isSupabaseConfigured,
 } from "@/lib/supabase-server";
-import { callClaudeJson, isClaudeConfigured } from "@/lib/claude";
-import { generateSWOTPrompt } from "@/lib/prompts";
-import { computeOverallStats, computeSubjectScores, deriveWithBlanks } from "@/lib/scoring";
+import { callAiJson, isAiConfigured } from "@/lib/openrouter";
+import { generateSWOTPrompt, type QuantitativeSummary } from "@/lib/prompts";
+import {
+  aggregateBySubtopic,
+  computeOverallStats,
+  computeSubjectScores,
+  deriveWithBlanks,
+  percentileFor,
+  rankEstimateFor,
+} from "@/lib/scoring";
 import { QUESTIONS } from "@/lib/questions";
-import type { SWOT } from "@/types";
+import type { SubjectScore, SWOT } from "@/types";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -42,6 +49,18 @@ export async function POST(req: Request) {
   const derived = deriveWithBlanks(answerMap, QUESTIONS);
   const subjectScores = computeSubjectScores(derived);
   const overallStats = computeOverallStats(subjectScores);
+  const aggregates = aggregateBySubtopic(derived);
+
+  const netMarks = overallStats.total_marks;
+  const percentile = percentileFor(netMarks);
+  const rank = rankEstimateFor(percentile);
+
+  const quant: QuantitativeSummary = {
+    net_marks: netMarks,
+    percentile,
+    rank,
+    subject_scores: subjectScores,
+  };
 
   let userProfile = {
     name: "Student",
@@ -75,34 +94,41 @@ export async function POST(req: Request) {
     }
   }
 
-  if (!isClaudeConfigured()) {
-    const stub = stubSWOT(subjectScores);
+  if (!isAiConfigured()) {
+    const stub = stubSWOT(subjectScores, quant);
     return NextResponse.json({
       swot: stub,
       overall: overallStats,
       analysisId: "dev-stub",
-      warning: "Claude not configured",
+      warning: "OpenRouter not configured",
     });
   }
 
   let swot: SWOT;
   try {
-    swot = await callClaudeJson<SWOT>({
+    swot = await callAiJson<SWOT>({
       prompt: generateSWOTPrompt({
         user: userProfile,
         derived,
-        subject_scores: subjectScores,
+        aggregates,
+        quant,
       }),
       maxTokens: 6000,
+      temperature: 0.25,
     });
   } catch (err) {
-    console.error("[analyze] Claude error", err);
+    console.error("[analyze] OpenRouter error", err);
     return NextResponse.json(
       { error: "AI analysis failed. Please try again." },
       { status: 502 },
     );
   }
 
+  // Always overwrite quantitative fields with server-computed values — never
+  // trust the AI to do arithmetic.
+  swot.estimated_score = netMarks;
+  swot.estimated_percentile = percentile;
+  swot.estimated_rank = rank;
   swot.subject_scores = subjectScores;
 
   let analysisId = "dev-stub";
@@ -113,7 +139,7 @@ export async function POST(req: Request) {
       .insert({
         user_id: userId,
         swot,
-        score_band: `${swot.estimated_score.min}-${swot.estimated_score.max}`,
+        score_band: `${netMarks}`,
       })
       .select("id")
       .single();
@@ -123,11 +149,14 @@ export async function POST(req: Request) {
   return NextResponse.json({ swot, overall: overallStats, analysisId });
 }
 
-function stubSWOT(subjectScores: SWOT["subject_scores"]): SWOT {
-  const total = Object.values(subjectScores).reduce((s, v) => s + v.net_marks, 0);
+function stubSWOT(
+  subjectScores: Record<"physics" | "chemistry" | "biology", SubjectScore>,
+  quant: QuantitativeSummary,
+): SWOT {
   return {
-    estimated_score: { min: Math.max(0, total - 15), max: total + 15 },
-    estimated_percentile: "top 30%",
+    estimated_score: quant.net_marks,
+    estimated_percentile: quant.percentile,
+    estimated_rank: quant.rank,
     subject_scores: subjectScores,
     strengths: [
       {
@@ -173,6 +202,6 @@ function stubSWOT(subjectScores: SWOT["subject_scores"]): SWOT {
       },
     ],
     headline_insight:
-      "Stub analysis (Claude not configured). Add your ANTHROPIC_API_KEY to get a real personalized SWOT.",
+      "Stub analysis (OpenRouter not configured). Add your OPENROUTER_API_KEY to get a real personalized SWOT.",
   };
 }

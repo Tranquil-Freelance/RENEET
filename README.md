@@ -31,8 +31,8 @@ npm install
 ### 2. Environment
 Copy `.env.example` to `.env.local` and fill in:
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_KEY` — from Supabase Dashboard → Project Settings → API
-- `ANTHROPIC_API_KEY` — from console.anthropic.com
-- `ANTHROPIC_MODEL` — defaults to `claude-sonnet-4-5`
+- `OPENROUTER_API_KEY` — from [openrouter.ai/keys](https://openrouter.ai/keys)
+- `OPENROUTER_MODEL` — defaults to `openai/gpt-4o-mini` (JSON-mode capable; swap for any OpenRouter model)
 - `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `NEXT_PUBLIC_RAZORPAY_KEY_ID` — from Razorpay Dashboard → Settings → API Keys (use test keys first)
 - `NEXT_PUBLIC_APP_URL` — `http://localhost:3000` locally, your production URL on Vercel
 

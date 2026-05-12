@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { callClaudeText, isClaudeConfigured } from "@/lib/claude";
+import { callAiText, isAiConfigured } from "@/lib/openrouter";
 import { generateMotivationalQuotePrompt } from "@/lib/prompts";
 import {
   getOrCreateAppUserId,
@@ -39,12 +39,12 @@ export async function GET(req: Request) {
     }
   }
 
-  if (!isClaudeConfigured()) {
+  if (!isAiConfigured()) {
     return NextResponse.json({ quote: FALLBACKS[day % FALLBACKS.length] });
   }
 
   try {
-    const quote = await callClaudeText({
+    const quote = await callAiText({
       prompt: generateMotivationalQuotePrompt({ name, dayNumber: day }),
       maxTokens: 80,
     });

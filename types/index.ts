@@ -118,9 +118,21 @@ export interface SwotThreat {
   warning: string;
 }
 
+/**
+ * SWOT payload returned to the client. Quantitative fields
+ * (estimated_score / percentile / rank / subject_scores) are computed
+ * server-side from the actual NEET +4/-1/0 scoring and a NEET-2024 marks
+ * → percentile table — the AI never invents these numbers. The AI is only
+ * responsible for the qualitative narrative (strengths / weaknesses /
+ * opportunities / threats / headline_insight).
+ */
 export interface SWOT {
-  estimated_score: { min: number; max: number };
-  estimated_percentile: string;
+  /** Actual NEET-marked score: +4 correct, -1 wrong, 0 blank. Out of 720. */
+  estimated_score: number;
+  /** Percentile of test-takers we beat (0-100, two decimals). */
+  estimated_percentile: number;
+  /** Approximate All-India Rank, derived from percentile × ~23.85L candidates. */
+  estimated_rank: number;
   subject_scores: Record<Subject, SubjectScore>;
   strengths: SwotStrength[];
   weaknesses: SwotWeakness[];

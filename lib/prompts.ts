@@ -1,5 +1,6 @@
 import type { DerivedAnswer, Subject, SubjectScore, SWOT } from "@/types";
 import { QUESTIONS, UNIT_TOTALS } from "./questions";
+import type { SubtopicAggregate } from "./scoring";
 
 interface UserProfile {
   name: string;
@@ -9,7 +10,7 @@ interface UserProfile {
 }
 
 /**
- * Build the per-subject unit-distribution block for the SWOT prompt so Claude
+ * Build the per-subject unit-distribution block for the SWOT prompt so the AI
  * always has reliable denominators when phrasing "you missed X of Y" insights.
  */
 function buildUnitTotalsBlock(): string {
@@ -25,10 +26,54 @@ function buildUnitTotalsBlock(): string {
   return lines.join("\n");
 }
 
+/**
+ * Render the server-aggregated per-(subject, chapter, subtopic) stats as a
+ * compact, human-readable block the AI can quote directly. Every row contains
+ * the exact correct/wrong/blank/guessed split plus the verbatim concept
+ * phrasings from the official docx — so the model never has to count or guess.
+ */
+function buildAggregateBlock(rows: SubtopicAggregate[]): string {
+  const lines: string[] = [];
+  let lastSubject: Subject | null = null;
+  for (const row of rows) {
+    if (row.subject !== lastSubject) {
+      lines.push(`\n# ${row.subject.toUpperCase()}`);
+      lastSubject = row.subject;
+    }
+    const tag: string[] = [];
+    if (row.correct + row.guessed_right === row.total) tag.push("ALL_RIGHT");
+    if (row.wrong === row.total) tag.push("ALL_WRONG");
+    if (row.blank === row.total) tag.push("ALL_BLANK");
+    if (row.guessed_right > 0) tag.push("GUESSED");
+    if (row.wrong > 0 && row.blank > 0) tag.push("MIXED_MISS");
+    lines.push(
+      `- ${row.topic} → ${row.subtopic}` +
+        ` [Qs ${row.q_nos.join(",")}]` +
+        ` correct=${row.correct} guessed_right=${row.guessed_right}` +
+        ` wrong=${row.wrong} blank=${row.blank} total=${row.total}` +
+        ` net=${row.marks_net} lost=${row.marks_lost}` +
+        ` blank_marks=${row.marks_blank} at_risk=${row.marks_at_risk}` +
+        (tag.length ? ` ${tag.join(",")}` : ""),
+    );
+    for (const c of row.concepts) {
+      lines.push(`    · "${c}"`);
+    }
+  }
+  return lines.join("\n");
+}
+
+export interface QuantitativeSummary {
+  net_marks: number;
+  percentile: number;
+  rank: number;
+  subject_scores: Record<Subject, SubjectScore>;
+}
+
 export function generateSWOTPrompt(args: {
   user: UserProfile;
   derived: DerivedAnswer[];
-  subject_scores: Record<Subject, SubjectScore>;
+  aggregates: SubtopicAggregate[];
+  quant: QuantitativeSummary;
 }): string {
   // One row per question, with verbatim docx concept text. Status is server-derived.
   const compactDerived = args.derived.map((d) => ({
@@ -48,8 +93,9 @@ export function generateSWOTPrompt(args: {
 
 A student has just given the NEET-UG 2026 exam and provided their response for each
 of the 180 questions. The exam has been cancelled and will be re-conducted in
-approximately 4-6 weeks. Your job is to analyze their performance and generate a
-precise SWOT analysis at the SUBTOPIC level — not just subject level.
+approximately 4-6 weeks. Your job is to generate a precise SWOT analysis at the
+SUBTOPIC level — quoting the official concept text — that another tutor could
+follow line-by-line to fix this student's gaps.
 
 STUDENT PROFILE:
 - Name: ${args.user.name}
@@ -57,58 +103,71 @@ STUDENT PROFILE:
 - Attempt Number: ${args.user.attempt_no ?? 1}
 - Target: ${args.user.target ?? "Any Medical College"}
 
-EXAM RESPONSES (one row per question, status already derived from the official
-answer key). Field "concept" is the canonical phrasing of what each question tests,
-extracted verbatim from the official NEET 2026 categorization. Treat it as the
-ground truth for what the student missed or got right:
+SERVER-COMPUTED QUANTITATIVES (already final — DO NOT recompute or contradict):
+- Net marks: ${args.quant.net_marks} / 720
+- Percentile (vs 23.85L NEET 2024 candidates): ${args.quant.percentile}
+- Estimated All-India Rank: ${args.quant.rank}
+- Per-subject: ${JSON.stringify(args.quant.subject_scores)}
+
+PER-SUBTOPIC ROLLUPS (server-aggregated from the answer key; these are the
+ground truth — every weakness/opportunity/threat MUST reference rows from
+here):${buildAggregateBlock(args.aggregates)}
+
+PER-QUESTION ROWS (one per Q, status pre-derived). Field "concept" is the
+canonical phrasing of what each question tests, extracted verbatim from the
+official NEET 2026 categorization. Treat it as the ground truth for what the
+student missed or got right:
 ${JSON.stringify(compactDerived)}
 
 OFFICIAL UNIT DISTRIBUTION (use these as denominators for "X of Y" math; do not
 invent your own counts):
 ${buildUnitTotalsBlock()}
 
-SERVER-COMPUTED SUBJECT SCORES (use these as ground truth, do not recompute):
-${JSON.stringify(args.subject_scores)}
-
 SCORING RULES (NEET-UG):
 - Correct: +4 marks
 - Wrong: -1 mark
 - Blank: 0 marks
-- Guessed Correct: +4 marks (but FLAG as a threat — they don't actually know this)
+- Guessed-correct: +4 marks NOW, but FLAG as a threat — they don't actually know
+  this concept and may lose 4 marks on the re-exam.
 
 GROUNDING RULES (strict — failures here make the analysis worthless):
 1. The "concept" field is the canonical phrasing of each question. Every
-   "likely_gap", "insight", and "warning" you write MUST quote or lightly compress
-   the relevant concept text from the input rows. Do not paraphrase loosely; do
-   not introduce ideas that are not in the concept text.
+   "likely_gap", "insight", and "warning" you write MUST quote or lightly
+   compress the relevant concept text from the input rows. Do not paraphrase
+   loosely; do not introduce ideas absent from the concept text.
 2. Each weakness / opportunity / threat MUST reference at least one specific
    concept from the "concept" field of the questions it covers. If 2+ questions
    share a subtopic, fuse them into one item and name both concepts in
-   "likely_gap" (e.g. "P = mgh / t crane problem AND work–energy theorem on
+   "likely_gap" (e.g. "P = mgh / t crane problem AND work-energy theorem on
    incline").
 3. Group by "st" (the docx subtopic) first, then by "ch" (the syllabus unit).
-   Topic + subtopic strings in your output MUST come verbatim from the input
-   rows — do not invent new chapter names or subtopics that are not present in
-   the input. The "topic" field in your output is always the docx "ch"
-   (bare unit name, e.g. "Kinematics"), and "subtopic" is always the docx "st".
-4. Rank weaknesses by marks_lost desc, opportunities by marks_recoverable desc.
-5. A "strength" requires (correct - guessed_right) >= 2 questions in that
-   subtopic with 100% accuracy on the non-guessed ones.
-6. A "threat" is a topic with one or more "guessed_right" status questions.
-   Always include these — luck on the real re-exam is unreliable.
+   Topic + subtopic strings in your output MUST come VERBATIM from the input
+   rows — do not invent new chapter names or subtopics. The "topic" field is
+   always the docx "ch" (bare unit name, e.g. "Kinematics"); "subtopic" is
+   always the docx "st".
+4. Rank weaknesses by marks_lost desc, opportunities by marks_recoverable desc,
+   threats by marks_at_risk desc. List the top 6-10 items per category.
+5. A "strength" requires correct + guessed_right == total in that subtopic AND
+   correct >= 2 (so single-question luck doesn't qualify). guessed_right cases
+   in a strength must also be acknowledged in "threats".
+6. ALL "guessed_right" subtopics become "threats" — every single one.
+7. ALL "blank" subtopics with marks_blank >= 4 become "opportunities" if the
+   concept is something the student could plausibly learn in 1-3 hours; flag
+   the rest as low-priority.
+8. EVERY item must be backed by row(s) from PER-SUBTOPIC ROLLUPS — do not
+   invent topics that aren't in the rollups.
 
-OUTPUT JSON SCHEMA:
+OUTPUT JSON SCHEMA (note: estimated_score / percentile / rank / subject_scores
+are server-set and will be OVERWRITTEN even if you fill them — but still
+include them for shape stability):
 {
-  "estimated_score": { "min": number, "max": number },
-  "estimated_percentile": "top X%",
-  "subject_scores": {
-    "physics":   { "correct": n, "wrong": n, "blank": n, "guessed_right": n, "net_marks": n },
-    "chemistry": { "correct": n, "wrong": n, "blank": n, "guessed_right": n, "net_marks": n },
-    "biology":   { "correct": n, "wrong": n, "blank": n, "guessed_right": n, "net_marks": n }
-  },
+  "estimated_score": ${args.quant.net_marks},
+  "estimated_percentile": ${args.quant.percentile},
+  "estimated_rank": ${args.quant.rank},
+  "subject_scores": ${JSON.stringify(args.quant.subject_scores)},
   "strengths": [
     { "topic": "<docx ch>", "subtopic": "<docx st>", "subject": "biology|chemistry|physics",
-      "score_pct": 85, "marks": 20,
+      "score_pct": 100, "marks": 8,
       "insight": "One sentence quoting the concept(s) they nailed" }
   ],
   "weaknesses": [
@@ -127,7 +186,7 @@ OUTPUT JSON SCHEMA:
       "questions_guessed_right": 2, "marks_at_risk": 8,
       "warning": "What could go wrong if they rely on luck — quote the concept text" }
   ],
-  "headline_insight": "2-3 sentence summary directed at the student personally"
+  "headline_insight": "2-3 sentences directed at ${args.user.name} personally — name their biggest leakage subtopic and their highest-leverage blank, and tell them what to do in week 1."
 }
 
 Respond with ONLY the JSON object — no preamble, no markdown fence.`;
@@ -203,6 +262,7 @@ STUDENT PROFILE:
 - Name: ${args.user.name}
 - Target: ${args.user.target ?? "Any Medical College"}
 - Attempt: ${args.user.attempt_no ?? 1}
+- Current score: ${args.swot.estimated_score} / 720 (percentile ${args.swot.estimated_percentile}, est. rank ${args.swot.estimated_rank})
 
 DAYS UNTIL RE-EXAM: ${args.daysRemaining}
 
