@@ -5,12 +5,16 @@ import {
   getServiceClient,
   isSupabaseConfigured,
 } from "@/lib/supabase-server";
-import { isValidTxnRef, UPI_AMOUNT_PAISE } from "@/lib/upi";
+import {
+  PAYMENT_AMOUNT_PAISE,
+  PAYMENT_PROVIDER,
+  isValidPaymentRef,
+} from "@/lib/payment";
 
 export const runtime = "nodejs";
 
 const Body = z.object({
-  txn_ref: z.string().min(6).max(40),
+  payment_ref: z.string().min(6).max(64),
 });
 
 export async function POST(req: Request) {
@@ -24,10 +28,13 @@ export async function POST(req: Request) {
     );
   }
 
-  const cleanRef = parsed.txn_ref.trim().replace(/\s+/g, "");
-  if (!isValidTxnRef(cleanRef)) {
+  const cleanRef = parsed.payment_ref.trim().replace(/\s+/g, "");
+  if (!isValidPaymentRef(cleanRef)) {
     return NextResponse.json(
-      { error: "Transaction reference looks invalid. Paste the 12-digit UPI ref." },
+      {
+        error:
+          "That reference doesn't look right. Paste the Razorpay payment ID (starts with pay_) from your receipt.",
+      },
       { status: 400 },
     );
   }
@@ -62,8 +69,8 @@ export async function POST(req: Request) {
       .update({
         paid: true,
         txn_ref: cleanRef,
-        amount_paise: UPI_AMOUNT_PAISE,
-        payment_method: "upi",
+        amount_paise: PAYMENT_AMOUNT_PAISE,
+        payment_method: PAYMENT_PROVIDER,
       })
       .eq("id", existing.id);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -74,8 +81,8 @@ export async function POST(req: Request) {
     user_id: userId,
     paid: true,
     txn_ref: cleanRef,
-    amount_paise: UPI_AMOUNT_PAISE,
-    payment_method: "upi",
+    amount_paise: PAYMENT_AMOUNT_PAISE,
+    payment_method: PAYMENT_PROVIDER,
   });
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 

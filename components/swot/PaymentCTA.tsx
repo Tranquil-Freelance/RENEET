@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
-import { UPI_AMOUNT_RS } from "@/lib/upi";
-import { UpiPayment } from "./UpiPayment";
+import { PAYMENT_AMOUNT_RS } from "@/lib/payment";
+import { PaymentModal } from "./PaymentModal";
 
 export function PaymentCTA({ totalMarksLost }: { totalMarksLost: number }) {
   const [showModal, setShowModal] = useState(false);
@@ -28,12 +28,12 @@ export function PaymentCTA({ totalMarksLost }: { totalMarksLost: number }) {
             <Sparkles className="h-4 w-4" />
             Unlock 30-day plan ·{" "}
             <span className="line-through opacity-60">₹499</span>{" "}
-            <span>₹{UPI_AMOUNT_RS}</span>
+            <span>₹{PAYMENT_AMOUNT_RS}</span>
           </button>
         </div>
       </div>
 
-      {showModal && <UpiPayment onClose={() => setShowModal(false)} />}
+      {showModal && <PaymentModal onClose={() => setShowModal(false)} />}
     </>
   );
 }
