@@ -26,6 +26,18 @@ export function SwotView({ initialSwot }: Props) {
     setUserName(localStorage.getItem("neetsurge:userName") ?? "there");
     if (swot) return;
 
+    // Prefer the cached SWOT written by OMRSheet on submit success.
+    try {
+      const cachedRaw = localStorage.getItem("neetsurge:swot");
+      if (cachedRaw) {
+        setSwot(JSON.parse(cachedRaw) as SWOT);
+        setLoading(false);
+        return;
+      }
+    } catch {
+      /* ignore */
+    }
+
     const answersRaw = localStorage.getItem("neetsurge:answers");
     if (!answersRaw) {
       toast.error("No exam data found. Please mark your answers first.");
@@ -50,6 +62,13 @@ export function SwotView({ initialSwot }: Props) {
         const data = await res.json();
         if (!cancelled) {
           setSwot(data.swot);
+          try {
+            if (data.swot) localStorage.setItem("neetsurge:swot", JSON.stringify(data.swot));
+            if (data.overall)
+              localStorage.setItem("neetsurge:overall", JSON.stringify(data.overall));
+          } catch {
+            /* ignore */
+          }
           if (data.analysisId) localStorage.setItem("neetsurge:analysisId", data.analysisId);
         }
       } catch (err) {

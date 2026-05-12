@@ -105,14 +105,17 @@ export function OMRSheet({ questions }: Props) {
         const body = await res.json().catch(() => ({}));
         throw new Error(body.error ?? "Analysis failed");
       }
-      const { analysisId } = await res.json();
+      const data = await res.json();
+      const { analysisId, swot, overall } = data;
       if (analysisId) localStorage.setItem("neetsurge:analysisId", analysisId);
       try {
+        if (swot) localStorage.setItem("neetsurge:swot", JSON.stringify(swot));
+        if (overall) localStorage.setItem("neetsurge:overall", JSON.stringify(overall));
         localStorage.removeItem(LS_ANSWERS);
       } catch {
         /* ignore */
       }
-      router.push("/swot");
+      router.push(analysisId ? `/swot?analysisId=${encodeURIComponent(analysisId)}` : "/swot");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not analyze");
       setSubmitting(false);

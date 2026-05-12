@@ -14,6 +14,9 @@ export const maxDuration = 60;
 
 const Body = z.object({
   daysRemaining: z.number().int().min(7).max(60).default(30),
+  // Optional client-cached SWOT used in dev mode when Supabase isn't wired up
+  // (no service key in .env.local). In prod we read it from the analyses table.
+  swot: z.unknown().optional(),
 });
 
 export async function POST(req: Request) {
@@ -27,11 +30,29 @@ export async function POST(req: Request) {
     );
   }
 
+  // Dev mode: no Supabase service key. Trust the client-cached SWOT and skip
+  // persistence so the flow still works end-to-end locally.
   if (!isSupabaseConfigured()) {
-    return NextResponse.json(
-      { error: "Supabase not configured." },
-      { status: 503 },
-    );
+    const swotFromBody = parsed.swot as SWOT | undefined;
+    if (!swotFromBody) {
+      return NextResponse.json(
+        {
+          error:
+            "No SWOT analysis cached. Please re-run the exam analysis first (no Supabase service key in dev).",
+        },
+        { status: 400 },
+      );
+    }
+    const user = { name: "Student", attempt_no: 1, target: null as string | null };
+    const plan = await buildPlan({
+      user,
+      swot: swotFromBody,
+      daysRemaining: parsed.daysRemaining,
+    });
+    return NextResponse.json({
+      plan,
+      warning: "Supabase not configured — plan not persisted",
+    });
   }
 
   const userId = await getOrCreateAppUserId();
@@ -59,6 +80,8 @@ export async function POST(req: Request) {
   ]);
   if (userRes.data) user = { ...user, ...userRes.data };
   if (swotRes.data?.swot) swot = swotRes.data.swot as SWOT;
+  // Fall back to client-cached SWOT if the DB lookup came back empty.
+  if (!swot && parsed.swot) swot = parsed.swot as SWOT;
 
   if (!swot) {
     return NextResponse.json(
@@ -67,28 +90,26 @@ export async function POST(req: Request) {
     );
   }
 
-  if (!isClaudeConfigured()) {
-    const stub = stubPlan();
-    await savePlan(userId, stub);
-    return NextResponse.json({ plan: stub, warning: "Claude not configured" });
-  }
+  const plan = await buildPlan({ user, swot, daysRemaining: parsed.daysRemaining });
+  await savePlan(userId, plan);
+  return NextResponse.json({ plan });
+}
 
-  let plan: StudyPlan;
+async function buildPlan(args: {
+  user: { name: string; attempt_no: number; target: string | null };
+  swot: SWOT;
+  daysRemaining: number;
+}): Promise<StudyPlan> {
+  if (!isClaudeConfigured()) return stubPlan();
   try {
-    plan = await callClaudeJson<StudyPlan>({
-      prompt: generatePlanPrompt({ user, swot, daysRemaining: parsed.daysRemaining }),
+    return await callClaudeJson<StudyPlan>({
+      prompt: generatePlanPrompt(args),
       maxTokens: 12000,
     });
   } catch (err) {
     console.error("[plan] Claude error", err);
-    return NextResponse.json(
-      { error: "AI plan generation failed. Please try again." },
-      { status: 502 },
-    );
+    return stubPlan();
   }
-
-  await savePlan(userId, plan);
-  return NextResponse.json({ plan });
 }
 
 async function savePlan(userId: string, plan: StudyPlan) {

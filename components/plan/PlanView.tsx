@@ -65,13 +65,45 @@ export function PlanView() {
       } catch {}
     }
 
+    function readCachedPlan(): StudyPlan | null {
+      try {
+        const raw = localStorage.getItem("neetsurge:plan");
+        if (!raw) return null;
+        return JSON.parse(raw) as StudyPlan;
+      } catch {
+        return null;
+      }
+    }
+
     fetch(`/api/plan/get`)
       .then(async (r) => {
         if (!r.ok) throw new Error("Could not load plan");
         return r.json();
       })
-      .then((data) => setPlan(data.plan))
-      .catch((err) => toast.error(err.message ?? "Could not load plan"))
+      .then((data) => {
+        if (data.plan) {
+          setPlan(data.plan as StudyPlan);
+          try {
+            localStorage.setItem("neetsurge:plan", JSON.stringify(data.plan));
+          } catch {
+            /* ignore */
+          }
+          return;
+        }
+        // Dev-mode fallback: when Supabase isn't configured the server returns
+        // {plan: null, dev: true}. Use the client cache written on payment success.
+        const cached = readCachedPlan();
+        if (cached) {
+          setPlan(cached);
+        } else {
+          toast.error("No plan found yet. Complete payment to unlock it.");
+        }
+      })
+      .catch(() => {
+        const cached = readCachedPlan();
+        if (cached) setPlan(cached);
+        else toast.error("Could not load plan");
+      })
       .finally(() => setLoading(false));
   }, []);
 

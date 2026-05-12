@@ -70,14 +70,30 @@ export function UpiPayment({ onClose }: Props) {
 
       toast.success("Payment recorded — building your plan…");
 
+      // Forward the cached SWOT so /api/plan works in dev mode (no Supabase
+      // service key) AND as a fallback if the DB lookup is empty.
+      let cachedSwot: unknown = null;
+      try {
+        const raw = localStorage.getItem("neetsurge:swot");
+        if (raw) cachedSwot = JSON.parse(raw);
+      } catch {
+        /* ignore */
+      }
+
       const planRes = await fetch("/api/plan", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ swot: cachedSwot ?? undefined }),
       });
+      const planBody = await planRes.json().catch(() => ({}));
       if (!planRes.ok) {
-        const body = await planRes.json().catch(() => ({}));
-        throw new Error(body.error ?? "Plan generation failed");
+        throw new Error(planBody.error ?? "Plan generation failed");
+      }
+      try {
+        if (planBody.plan)
+          localStorage.setItem("neetsurge:plan", JSON.stringify(planBody.plan));
+      } catch {
+        /* ignore */
       }
       router.push("/plan");
     } catch (err) {
