@@ -34,7 +34,7 @@ Copy `.env.example` to `.env.local` and fill in:
 - `OPENROUTER_API_KEY` — from [openrouter.ai/keys](https://openrouter.ai/keys)
 - `OPENROUTER_MODEL` — defaults to `openai/gpt-4o-mini` (JSON-mode capable; swap for any OpenRouter model)
 - `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `NEXT_PUBLIC_RAZORPAY_KEY_ID` — from Razorpay Dashboard → Settings → API Keys (use test keys first)
-- `NEXT_PUBLIC_APP_URL` — `http://localhost:3000` locally, your production URL on Vercel
+- `NEXT_PUBLIC_APP_URL` — `http://localhost:3000` locally; production: **`https://www.prepinsight.in`** (match Vercel env + Supabase Site URL / redirects)
 
 The app boots and routes work even with empty env vars — API calls degrade gracefully with stub data and warnings. Useful for UI iteration without keys.
 
@@ -79,7 +79,7 @@ This app is standard **Next.js** and is meant to run on **Vercel**. There is no 
 
 1. **Import the repo** (Vercel dashboard → Add New → Project) or from the CLI: `npx vercel link` then `npx vercel --prod`.
 2. **Environment variables** — Project → Settings → Environment Variables: mirror everything in [`.env.example`](./.env.example) for Production (and Preview if you use previews). Use the same values you had on Render where they overlap.
-3. **`NEXT_PUBLIC_APP_URL`** — set to your live URL (`https://<project>.vercel.app` or your custom domain). This drives OpenRouter referrers, metadata, and redirects.
+3. **`NEXT_PUBLIC_APP_URL`** — set to **`https://www.prepinsight.in`** (or your apex domain if you redirect). This drives OpenRouter referrers, metadata, and redirects.
 4. **Supabase** — Dashboard → Authentication → URL configuration: set **Site URL** and allowed **Redirect URLs** to that same live URL. Remove any old `onrender.com` (or other) origins so magic links and OAuth return to Vercel.
 
 ```bash
@@ -88,7 +88,16 @@ npx vercel --prod
 
 `vercel.json` already sets longer function durations for the AI-heavy API routes (`/api/analyze`, `/api/plan`, `/api/checkin`).
 
-**GitHub Pages:** not a fit for this project. Pages only hosts static HTML/CSS/JS; it cannot run Next.js **API routes** or keep **server secrets** (Supabase service role, Razorpay, OpenRouter). To stay on GitHub for git while hosting the app, connect the repo to **Vercel** (or Netlify / Cloudflare Workers) so pushes still deploy from GitHub—without using `github.io` static hosting.
+### GitHub Pages (static notice only)
+
+GitHub Pages serves **static files** only. It cannot run this Next.js app (no API routes, no `/auth/callback` exchange, no `proxy.ts` middleware).
+
+For **Settings → Pages → Deploy from a branch** use branch **`main`** and folder **`/ (root)`**. This repo ships:
+
+- **`.nojekyll`** — disables Jekyll so GitHub serves the tree as plain static files.
+- **`index.html`** — a short landing page; **Open live app** points to **`https://www.prepinsight.in`**.
+
+The interactive product still needs **Vercel** (or another Node-compatible host) per [§7](#7-deploy-vercel-only).
 
 ## Routes
 

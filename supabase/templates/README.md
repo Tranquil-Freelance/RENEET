@@ -25,7 +25,7 @@ Both templates use `{{ .SiteURL }}` in the footer. Set this in
 **Authentication → URL Configuration → Site URL**:
 
 - **Local dev:** `http://localhost:3000`
-- **Production:** your Vercel deployment URL or custom domain (e.g. `https://your-app.vercel.app`). Remove any old host (e.g. Render) from Supabase redirect allowlists when you switch.
+- **Production:** **`https://www.prepinsight.in`** (set **Site URL** and add the same under **Redirect URLs**). Remove any old hosts from the allowlist when you switch.
 
 The Site URL also acts as the default redirect for magic links when the client
 does not pass an explicit `emailRedirectTo`.
