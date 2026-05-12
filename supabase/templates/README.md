@@ -34,6 +34,10 @@ For the live app at **`https://prepinsight.in/`**, set:
 If Site URL is still `http://localhost:3000`, emails will show localhost in the
 footer and default redirects can break for real users.
 
+**Do not** set Site URL to `https://localhost:10000` or any `localhost` port —
+Render’s internal port (sometimes shown as 10000 in logs) is **not** your public
+site. Your public URL is **`https://prepinsight.in`** only.
+
 For **local Next.js** development only, you can temporarily set Site URL to
 `http://localhost:3000` and include `http://localhost:3000/**` in redirect URLs
 — or use a separate Supabase branch project for dev.

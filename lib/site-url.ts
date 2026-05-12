@@ -45,3 +45,41 @@ export function getBrowserAuthRedirectBase(): string {
   if (fromEnv) return normalizeBase(fromEnv);
   return PRODUCTION_FALLBACK;
 }
+
+/**
+ * `next` query on /auth/callback must stay a same-site path only — never an
+ * absolute URL (open redirect + magic links accidentally carrying
+ * https://localhost:10000/exam style junk from bookmarks or bad Supabase config).
+ */
+export function sanitizeAuthNextPath(raw: string | null, fallback = "/exam"): string {
+  if (!raw) return fallback;
+  let t = raw.trim();
+  try {
+    t = decodeURIComponent(t);
+  } catch {
+    return fallback;
+  }
+  if (t.length > 512 || t.includes("://") || t.startsWith("//")) return fallback;
+  if (!t.startsWith("/") || t.includes("..")) return fallback;
+  if (!/^\/[A-Za-z0-9/_-]+$/.test(t)) return fallback;
+  return t;
+}
+
+/**
+ * Base URL for Location headers after OAuth/magic-link exchange. Prefer
+ * NEXT_PUBLIC_APP_URL when it is a non-localhost deploy so we never redirect
+ * to a mistaken localhost host even if the incoming request URL were wrong.
+ */
+export function getAuthCallbackRedirectOrigin(requestUrl: string): string {
+  const cfg = process.env.NEXT_PUBLIC_APP_URL?.trim();
+  if (cfg) {
+    const n = normalizeBase(cfg);
+    try {
+      const host = new URL(n.startsWith("http") ? n : `https://${n}`).hostname;
+      if (host !== "localhost" && host !== "127.0.0.1") return n;
+    } catch {
+      /* fall through */
+    }
+  }
+  return new URL(requestUrl).origin;
+}

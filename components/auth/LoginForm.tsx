@@ -5,12 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
-import { getBrowserAuthRedirectBase } from "@/lib/site-url";
+import { getBrowserAuthRedirectBase, sanitizeAuthNextPath } from "@/lib/site-url";
 
 export default function LoginForm() {
   const router = useRouter();
   const search = useSearchParams();
-  const next = search.get("next") ?? "/exam";
+  const next = sanitizeAuthNextPath(search.get("next"), "/exam");
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [pending, startTransition] = useTransition();

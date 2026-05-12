@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getServerSupabase, getServiceClient } from "@/lib/supabase-server";
+import { getAuthCallbackRedirectOrigin, sanitizeAuthNextPath } from "@/lib/site-url";
 
 /**
  * Email OTP magic-link callback.
@@ -9,9 +10,11 @@ import { getServerSupabase, getServiceClient } from "@/lib/supabase-server";
  * row (if missing) and redirect to `?next` or `/onboarding`.
  */
 export async function GET(request: NextRequest) {
-  const { searchParams, origin } = new URL(request.url);
+  const url = new URL(request.url);
+  const { searchParams } = url;
+  const origin = getAuthCallbackRedirectOrigin(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/onboarding";
+  const next = sanitizeAuthNextPath(searchParams.get("next"), "/onboarding");
 
   if (!code) {
     return NextResponse.redirect(`${origin}/login?error=missing_code`);
