@@ -1,0 +1,4 @@
+# Not used by `next build` — smaller uploads to Vercel
+/docs/
+/scripts/
+/*.pdf

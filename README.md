@@ -69,12 +69,24 @@ This writes `lib/answer-key.json` which is read by `lib/questions.ts` at boot. N
 npm run dev
 ```
 
-### 7. Deploy
+### 7. Deploy (Vercel only)
+
+This app is standard **Next.js** and is meant to run on **Vercel**. There is no Render-specific config in this repo.
+
+**If you were on Render:** in the [Render Dashboard](https://dashboard.render.com/), delete the web service (and any related workers/cron) so you are not paying for or routing traffic to an old host. Copy any secrets from Render’s environment tab into Vercel before you tear the service down.
+
+**On Vercel**
+
+1. **Import the repo** (Vercel dashboard → Add New → Project) or from the CLI: `npx vercel link` then `npx vercel --prod`.
+2. **Environment variables** — Project → Settings → Environment Variables: mirror everything in [`.env.example`](./.env.example) for Production (and Preview if you use previews). Use the same values you had on Render where they overlap.
+3. **`NEXT_PUBLIC_APP_URL`** — set to your live URL (`https://<project>.vercel.app` or your custom domain). This drives OpenRouter referrers, metadata, and redirects.
+4. **Supabase** — Dashboard → Authentication → URL configuration: set **Site URL** and allowed **Redirect URLs** to that same live URL. Remove any old `onrender.com` (or other) origins so magic links and OAuth return to Vercel.
+
 ```bash
 npx vercel --prod
 ```
 
-Add the same env vars to Vercel via the dashboard. `vercel.json` already extends function timeouts to 60s for AI routes.
+`vercel.json` already sets longer function durations for the AI-heavy API routes (`/api/analyze`, `/api/plan`, `/api/checkin`).
 
 ## Routes
 

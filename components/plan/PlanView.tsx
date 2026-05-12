@@ -339,15 +339,6 @@ export function PlanView() {
           ))}
         </motion.div>
       </AnimatePresence>
-
-      <div className="mt-10 flex justify-center">
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center gap-2 rounded-xl bg-[var(--color-brand)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--color-brand-600)]"
-        >
-          Go to today&apos;s focus <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
     </div>
   );
 }

@@ -6,6 +6,11 @@ import type {
   Question,
   Subject,
   SubjectScore,
+  SWOT,
+  SwotOpportunity,
+  SwotStrength,
+  SwotThreat,
+  SwotWeakness,
 } from "@/types";
 import { QUESTIONS_BY_NO, SUBJECTS } from "./questions";
 
@@ -300,4 +305,181 @@ export function aggregateBySubtopic(
     if (a.subject !== b.subject) return a.subject.localeCompare(b.subject);
     return a.topic.localeCompare(b.topic);
   });
+}
+
+function makeStrength(a: SubtopicAggregate): SwotStrength {
+  const right = a.correct + a.guessed_right;
+  const pct = a.total === 0 ? 0 : Math.round((right / a.total) * 100);
+  return {
+    topic: a.topic,
+    subtopic: a.subtopic,
+    subject: a.subject,
+    score_pct: pct,
+    marks: right * MARKS_CORRECT,
+    insight: `${right} of ${a.total} correct in this subtopic.`,
+  };
+}
+
+function makeWeakness(a: SubtopicAggregate): SwotWeakness {
+  return {
+    topic: a.topic,
+    subtopic: a.subtopic,
+    subject: a.subject,
+    marks_lost: a.marks_lost,
+    questions_wrong: a.wrong,
+    likely_gap: `${a.wrong} wrong of ${a.total} attempted — revisit ${a.subtopic}.`,
+    fix_priority: a.marks_lost >= 10 ? "high" : a.marks_lost >= 5 ? "medium" : "low",
+    fix_time_hours: Math.max(2, a.wrong * 2),
+  };
+}
+
+function makeOpportunity(a: SubtopicAggregate): SwotOpportunity {
+  return {
+    topic: a.topic,
+    subtopic: a.subtopic,
+    subject: a.subject,
+    questions_blank: a.blank,
+    marks_recoverable: a.marks_blank,
+    effort_hours: Math.max(1, Math.round(a.blank * 0.5)),
+    insight: `${a.blank} left blank — easy marks to recover with NCERT review.`,
+  };
+}
+
+function makeThreat(a: SubtopicAggregate): SwotThreat {
+  return {
+    topic: a.topic,
+    subtopic: a.subtopic,
+    subject: a.subject,
+    questions_guessed_right: a.guessed_right,
+    marks_at_risk: a.marks_at_risk,
+    warning: `${a.guessed_right} lucky guess${a.guessed_right > 1 ? "es" : ""} — revisit before relying on it.`,
+  };
+}
+
+/**
+ * Backfill empty SWOT categories from server-computed aggregates and ensure
+ * every subject the student attempted is represented somewhere. The AI tends
+ * to be selective (and the dev stub is sparse), so without this the SWOT cards
+ * and topic breakdown end up showing "Nothing here yet" / "0 chapters" for
+ * entire subjects.
+ */
+export function enrichSWOT(swot: SWOT, aggregates: SubtopicAggregate[]): SWOT {
+  const out: SWOT = {
+    ...swot,
+    strengths: [...swot.strengths],
+    weaknesses: [...swot.weaknesses],
+    opportunities: [...swot.opportunities],
+    threats: [...swot.threats],
+  };
+
+  const seenStrength = new Set(out.strengths.map((s) => `${s.subject}||${s.subtopic}`));
+  const seenWeakness = new Set(out.weaknesses.map((s) => `${s.subject}||${s.subtopic}`));
+  const seenOpportunity = new Set(out.opportunities.map((s) => `${s.subject}||${s.subtopic}`));
+  const seenThreat = new Set(out.threats.map((s) => `${s.subject}||${s.subtopic}`));
+
+  if (out.strengths.length === 0) {
+    const cands = aggregates
+      .filter((a) => a.correct + a.guessed_right > 0)
+      .sort((a, b) => {
+        const ra = a.correct + a.guessed_right;
+        const rb = b.correct + b.guessed_right;
+        if (rb !== ra) return rb - ra;
+        return b.marks_net - a.marks_net;
+      })
+      .slice(0, 4);
+    for (const a of cands) {
+      const key = `${a.subject}||${a.subtopic}`;
+      if (seenStrength.has(key)) continue;
+      out.strengths.push(makeStrength(a));
+      seenStrength.add(key);
+    }
+  }
+
+  if (out.weaknesses.length === 0) {
+    const cands = aggregates
+      .filter((a) => a.wrong > 0)
+      .sort((a, b) => b.marks_lost - a.marks_lost)
+      .slice(0, 4);
+    for (const a of cands) {
+      const key = `${a.subject}||${a.subtopic}`;
+      if (seenWeakness.has(key)) continue;
+      out.weaknesses.push(makeWeakness(a));
+      seenWeakness.add(key);
+    }
+  }
+
+  if (out.opportunities.length === 0) {
+    const cands = aggregates
+      .filter((a) => a.blank > 0)
+      .sort((a, b) => b.marks_blank - a.marks_blank)
+      .slice(0, 4);
+    for (const a of cands) {
+      const key = `${a.subject}||${a.subtopic}`;
+      if (seenOpportunity.has(key)) continue;
+      out.opportunities.push(makeOpportunity(a));
+      seenOpportunity.add(key);
+    }
+  }
+
+  if (out.threats.length === 0) {
+    const cands = aggregates
+      .filter((a) => a.guessed_right > 0)
+      .sort((a, b) => b.marks_at_risk - a.marks_at_risk)
+      .slice(0, 4);
+    for (const a of cands) {
+      const key = `${a.subject}||${a.subtopic}`;
+      if (seenThreat.has(key)) continue;
+      out.threats.push(makeThreat(a));
+      seenThreat.add(key);
+    }
+  }
+
+  // Guarantee every subject the student attempted shows up somewhere so the
+  // topic breakdown can never display "0 chapters" for a subject.
+  for (const subj of SUBJECTS) {
+    const covered =
+      out.strengths.some((s) => s.subject === subj) ||
+      out.weaknesses.some((s) => s.subject === subj) ||
+      out.opportunities.some((s) => s.subject === subj) ||
+      out.threats.some((s) => s.subject === subj);
+    if (covered) continue;
+
+    const subjectAggs = aggregates.filter((a) => a.subject === subj);
+    if (subjectAggs.length === 0) continue;
+
+    // Pick the most "interesting" subtopic for this subject and add it to
+    // whichever bucket fits its performance profile.
+    const ranked = [...subjectAggs].sort((a, b) => {
+      const aScore = a.marks_lost + a.marks_blank + a.marks_at_risk;
+      const bScore = b.marks_lost + b.marks_blank + b.marks_at_risk;
+      if (bScore !== aScore) return bScore - aScore;
+      return b.total - a.total;
+    });
+
+    for (const a of ranked) {
+      const key = `${a.subject}||${a.subtopic}`;
+      if (a.wrong > 0 && !seenWeakness.has(key)) {
+        out.weaknesses.push(makeWeakness(a));
+        seenWeakness.add(key);
+        break;
+      }
+      if (a.blank > 0 && !seenOpportunity.has(key)) {
+        out.opportunities.push(makeOpportunity(a));
+        seenOpportunity.add(key);
+        break;
+      }
+      if (a.guessed_right > 0 && !seenThreat.has(key)) {
+        out.threats.push(makeThreat(a));
+        seenThreat.add(key);
+        break;
+      }
+      if (a.correct + a.guessed_right > 0 && !seenStrength.has(key)) {
+        out.strengths.push(makeStrength(a));
+        seenStrength.add(key);
+        break;
+      }
+    }
+  }
+
+  return out;
 }

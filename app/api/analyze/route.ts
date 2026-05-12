@@ -13,6 +13,7 @@ import {
   computeOverallStats,
   computeSubjectScores,
   deriveWithBlanks,
+  enrichSWOT,
   percentileFor,
   rankEstimateFor,
 } from "@/lib/scoring";
@@ -95,7 +96,7 @@ export async function POST(req: Request) {
   }
 
   if (!isAiConfigured()) {
-    const stub = stubSWOT(subjectScores, quant);
+    const stub = enrichSWOT(stubSWOT(subjectScores, quant), aggregates);
     return NextResponse.json({
       swot: stub,
       overall: overallStats,
@@ -130,6 +131,10 @@ export async function POST(req: Request) {
   swot.estimated_percentile = percentile;
   swot.estimated_rank = rank;
   swot.subject_scores = subjectScores;
+
+  // Backfill any empty SWOT category and guarantee every subject is represented
+  // so the cards/breakdown never show "Nothing here yet" / "0 chapters".
+  swot = enrichSWOT(swot, aggregates);
 
   let analysisId = "dev-stub";
   if (userId && isSupabaseConfigured()) {

@@ -27,7 +27,6 @@ export function OMRSheet({ questions }: Props) {
   const [answers, setAnswers] = useState<AnswerMap>({});
   const [submitting, setSubmitting] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     try {
@@ -134,7 +133,9 @@ export function OMRSheet({ questions }: Props) {
               type="button"
               onClick={() => {
                 setActiveSubject(s);
-                containerRef.current?.scrollTo({ top: 0, behavior: "auto" });
+                if (typeof window !== "undefined") {
+                  window.scrollTo({ top: 0, behavior: "auto" });
+                }
               }}
               className={cn(
                 "rounded-xl py-2 text-sm font-medium capitalize transition",
@@ -158,7 +159,7 @@ export function OMRSheet({ questions }: Props) {
         </div>
       </div>
 
-      <div ref={containerRef} className="mt-4 space-y-3">
+      <div className="mt-4 space-y-3">
         {subjectQuestions.map((q) => (
           <QuestionCard
             key={q.q_no}
