@@ -13,7 +13,7 @@ import { Check, ChevronRight, Loader2, X } from "lucide-react";
 import type { AnswerMap, ClientQuestion, Option, Subject } from "@/types";
 import { cn } from "@/lib/utils";
 
-const LS_ANSWERS = "neetsurge:answers";
+const LS_ANSWERS = "prepinsights:answers";
 const OPTIONS: Option[] = ["A", "B", "C", "D"];
 const SUBJECTS: Subject[] = ["physics", "chemistry", "biology"];
 
@@ -107,10 +107,10 @@ export function OMRSheet({ questions }: Props) {
       }
       const data = await res.json();
       const { analysisId, swot, overall } = data;
-      if (analysisId) localStorage.setItem("neetsurge:analysisId", analysisId);
+      if (analysisId) localStorage.setItem("prepinsights:analysisId", analysisId);
       try {
-        if (swot) localStorage.setItem("neetsurge:swot", JSON.stringify(swot));
-        if (overall) localStorage.setItem("neetsurge:overall", JSON.stringify(overall));
+        if (swot) localStorage.setItem("prepinsights:swot", JSON.stringify(swot));
+        if (overall) localStorage.setItem("prepinsights:overall", JSON.stringify(overall));
         localStorage.removeItem(LS_ANSWERS);
       } catch {
         /* ignore */

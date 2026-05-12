@@ -74,7 +74,7 @@ export function UpiPayment({ onClose }: Props) {
       // service key) AND as a fallback if the DB lookup is empty.
       let cachedSwot: unknown = null;
       try {
-        const raw = localStorage.getItem("neetsurge:swot");
+        const raw = localStorage.getItem("prepinsights:swot");
         if (raw) cachedSwot = JSON.parse(raw);
       } catch {
         /* ignore */
@@ -91,7 +91,7 @@ export function UpiPayment({ onClose }: Props) {
       }
       try {
         if (planBody.plan)
-          localStorage.setItem("neetsurge:plan", JSON.stringify(planBody.plan));
+          localStorage.setItem("prepinsights:plan", JSON.stringify(planBody.plan));
       } catch {
         /* ignore */
       }

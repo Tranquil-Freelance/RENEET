@@ -1,7 +1,7 @@
 import LoginForm from "@/components/auth/LoginForm";
 
 export const metadata = {
-  title: "Sign in · NEETSurge",
+  title: "Sign in · PrepInsights",
   description: "Sign in with your email to start the gap analysis.",
 };
 

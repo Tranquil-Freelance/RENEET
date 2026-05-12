@@ -35,7 +35,7 @@ export function ShareCard({ swot, userName, onClose }: Props) {
       const url = canvas.toDataURL("image/png");
       const a = document.createElement("a");
       a.href = url;
-      a.download = `neetsurge-swot-${Date.now()}.png`;
+      a.download = `prepinsights-swot-${Date.now()}.png`;
       a.click();
     } finally {
       setExporting(false);
@@ -70,9 +70,9 @@ export function ShareCard({ swot, userName, onClose }: Props) {
         >
           <div className="flex items-center gap-2">
             <div className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-[var(--color-brand)] font-bold text-white">
-              N
+              P
             </div>
-            <div className="text-sm font-semibold">NEETSurge</div>
+            <div className="text-sm font-semibold">PrepInsights</div>
             <div className="text-xs opacity-60">· Re-NEET 2026</div>
           </div>
 
@@ -104,7 +104,7 @@ export function ShareCard({ swot, userName, onClose }: Props) {
           )}
 
           <div className="mt-5 text-[11px] opacity-60">
-            Get your own free SWOT at neetsurge.in
+            Get your own free SWOT at tranquilai.in
           </div>
         </div>
 

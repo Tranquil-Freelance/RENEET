@@ -3,7 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://neetsurge.in";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://tranquilai.in";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,7 +20,7 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
-  title: "NEETSurge — Your Personal Re-NEET 2026 Gap Analyzer",
+  title: "PrepInsights — Your Personal Re-NEET 2026 Gap Analyzer",
   description:
     "NEET 2026 cancelled? Mark your exam answers and get an AI-powered SWOT analysis + 30-day study plan. Free for all aspirants.",
   keywords: [
@@ -30,19 +30,20 @@ export const metadata: Metadata = {
     "NEET gap analysis",
     "NEET study plan",
     "NEET AI tutor",
+    "PrepInsights",
   ],
   openGraph: {
-    title: "NEETSurge — You gave the exam. We'll tell you what to fix.",
+    title: "PrepInsights — You gave the exam. We'll tell you what to fix.",
     description:
       "Mark what you actually wrote. Get your personal SWOT in 10 minutes. Free.",
     url: APP_URL,
-    siteName: "NEETSurge",
+    siteName: "PrepInsights",
     locale: "en_IN",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "NEETSurge — Re-NEET 2026 Gap Analyzer",
+    title: "PrepInsights — Re-NEET 2026 Gap Analyzer",
     description: "AI-powered SWOT + 30-day plan for Re-NEET 2026 aspirants.",
   },
   icons: {

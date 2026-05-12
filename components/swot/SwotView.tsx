@@ -23,12 +23,12 @@ export function SwotView({ initialSwot }: Props) {
   const [userName, setUserName] = useState("there");
 
   useEffect(() => {
-    setUserName(localStorage.getItem("neetsurge:userName") ?? "there");
+    setUserName(localStorage.getItem("prepinsights:userName") ?? "there");
     if (swot) return;
 
     // Prefer the cached SWOT written by OMRSheet on submit success.
     try {
-      const cachedRaw = localStorage.getItem("neetsurge:swot");
+      const cachedRaw = localStorage.getItem("prepinsights:swot");
       if (cachedRaw) {
         setSwot(JSON.parse(cachedRaw) as SWOT);
         setLoading(false);
@@ -38,7 +38,7 @@ export function SwotView({ initialSwot }: Props) {
       /* ignore */
     }
 
-    const answersRaw = localStorage.getItem("neetsurge:answers");
+    const answersRaw = localStorage.getItem("prepinsights:answers");
     if (!answersRaw) {
       toast.error("No exam data found. Please mark your answers first.");
       router.push("/exam");
@@ -63,13 +63,13 @@ export function SwotView({ initialSwot }: Props) {
         if (!cancelled) {
           setSwot(data.swot);
           try {
-            if (data.swot) localStorage.setItem("neetsurge:swot", JSON.stringify(data.swot));
+            if (data.swot) localStorage.setItem("prepinsights:swot", JSON.stringify(data.swot));
             if (data.overall)
-              localStorage.setItem("neetsurge:overall", JSON.stringify(data.overall));
+              localStorage.setItem("prepinsights:overall", JSON.stringify(data.overall));
           } catch {
             /* ignore */
           }
-          if (data.analysisId) localStorage.setItem("neetsurge:analysisId", data.analysisId);
+          if (data.analysisId) localStorage.setItem("prepinsights:analysisId", data.analysisId);
         }
       } catch (err) {
         if (!cancelled)

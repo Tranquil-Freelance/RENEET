@@ -1,4 +1,4 @@
--- NEETSurge initial schema. Run this in Supabase SQL editor (or via the CLI).
+-- PrepInsights initial schema. Run this in Supabase SQL editor (or via the CLI).
 -- All tables are written through the API layer using the service role key.
 -- The anon key has zero access; RLS is enabled but no anon policies exist.
 

@@ -33,7 +33,7 @@ export function LandingHero({ signupCount }: { signupCount: number }) {
           </div>
 
           <h1 className="mt-6 text-4xl md:text-6xl font-serif font-semibold tracking-tight text-ink">
-            You already sat the exam.
+            You already gave the exam.
             <br />
             <span className="text-brand underline-wave">
               Now let&apos;s fix what tripped you up.

@@ -3,13 +3,13 @@
  * Swap UPI_VPA to a real merchant VPA before launch.
  */
 
-export const UPI_VPA = process.env.NEXT_PUBLIC_UPI_VPA ?? "neetsurge@upi";
-export const UPI_PAYEE_NAME = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME ?? "NEETSurge";
+export const UPI_VPA = process.env.NEXT_PUBLIC_UPI_VPA ?? "prepinsights@upi";
+export const UPI_PAYEE_NAME = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME ?? "PrepInsights";
 export const UPI_AMOUNT_RS = 50;
 export const UPI_AMOUNT_PAISE = UPI_AMOUNT_RS * 100;
 
 export function buildUpiLink(refTag: string): string {
-  const tn = `NS_${refTag.slice(0, 8)}`;
+  const tn = `PI_${refTag.slice(0, 8)}`;
   const params = new URLSearchParams({
     pa: UPI_VPA,
     pn: UPI_PAYEE_NAME,

@@ -28,8 +28,8 @@ export function DashboardView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setName(localStorage.getItem("neetsurge:userName") ?? "there");
-    const stored = localStorage.getItem("neetsurge:planDone");
+    setName(localStorage.getItem("prepinsights:userName") ?? "there");
+    const stored = localStorage.getItem("prepinsights:planDone");
     if (stored) {
       try {
         setCompletedDays(new Set(JSON.parse(stored)));
@@ -85,7 +85,7 @@ export function DashboardView() {
       const next = new Set(prev);
       next.add(dayNumber);
       try {
-        localStorage.setItem("neetsurge:planDone", JSON.stringify([...next]));
+        localStorage.setItem("prepinsights:planDone", JSON.stringify([...next]));
       } catch {}
       return next;
     });

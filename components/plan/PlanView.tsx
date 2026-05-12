@@ -58,7 +58,7 @@ export function PlanView() {
   const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("neetsurge:planDone");
+    const saved = localStorage.getItem("prepinsights:planDone");
     if (saved) {
       try {
         setDoneDays(new Set(JSON.parse(saved)));
@@ -67,7 +67,7 @@ export function PlanView() {
 
     function readCachedPlan(): StudyPlan | null {
       try {
-        const raw = localStorage.getItem("neetsurge:plan");
+        const raw = localStorage.getItem("prepinsights:plan");
         if (!raw) return null;
         return JSON.parse(raw) as StudyPlan;
       } catch {
@@ -84,7 +84,7 @@ export function PlanView() {
         if (data.plan) {
           setPlan(data.plan as StudyPlan);
           try {
-            localStorage.setItem("neetsurge:plan", JSON.stringify(data.plan));
+            localStorage.setItem("prepinsights:plan", JSON.stringify(data.plan));
           } catch {
             /* ignore */
           }
@@ -113,7 +113,7 @@ export function PlanView() {
       if (next.has(day)) next.delete(day);
       else next.add(day);
       try {
-        localStorage.setItem("neetsurge:planDone", JSON.stringify([...next]));
+        localStorage.setItem("prepinsights:planDone", JSON.stringify([...next]));
       } catch {}
       fetch("/api/checkin", {
         method: "POST",
@@ -139,7 +139,7 @@ export function PlanView() {
 
       doc.setFont("helvetica", "bold");
       doc.setFontSize(20);
-      doc.text("NEETSurge — 30-Day Plan", 40, y);
+      doc.text("PrepInsights — 30-Day Plan", 40, y);
       y += 20;
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
@@ -192,7 +192,7 @@ export function PlanView() {
         y += 8;
       }
 
-      doc.save(`neetsurge-30day-plan.pdf`);
+      doc.save(`prepinsights-30day-plan.pdf`);
     } finally {
       setExporting(false);
     }
@@ -201,7 +201,7 @@ export function PlanView() {
   function shareToWhatsApp() {
     if (!plan) return;
     const text = encodeURIComponent(
-      `I just got my Re-NEET 2026 study plan from NEETSurge.\n\n${plan.plan_summary}\n\nGet yours: https://neetsurge.in`,
+      `I just got my Re-NEET 2026 study plan from PrepInsights.\n\n${plan.plan_summary}\n\nGet yours: https://tranquilai.in`,
     );
     window.open(`https://wa.me/?text=${text}`, "_blank");
   }

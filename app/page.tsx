@@ -27,16 +27,16 @@ export default async function LandingPage() {
         <div className="mx-auto max-w-5xl flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-[var(--color-brand)] text-white font-bold">
-              N
+              P
             </span>
-            <span className="font-semibold text-slate-700">NEETSurge</span>
+            <span className="font-semibold text-slate-700">PrepInsights</span>
             <span className="text-slate-400">— Built for Re-NEET 2026 aspirants</span>
           </div>
           <div className="flex gap-4">
             <Link href="/onboarding" className="hover:text-[var(--color-brand)]">
               Start free
             </Link>
-            <a href="mailto:hello@neetsurge.in" className="hover:text-[var(--color-brand)]">
+            <a href="mailto:hello@tranquilai.in" className="hover:text-[var(--color-brand)]">
               Contact
             </a>
           </div>
