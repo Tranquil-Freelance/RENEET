@@ -25,7 +25,7 @@ Both templates use `{{ .SiteURL }}` in the footer. Set this in
 **Authentication → URL Configuration → Site URL**:
 
 - **Local dev:** `http://localhost:3000`
-- **Production:** **`https://www.prepinsight.in`** (set **Site URL** and add the same under **Redirect URLs**). Remove any old hosts from the allowlist when you switch.
+- **Production (app on Vercel):** **`https://app.prepinsight.in`** — set **Site URL** and **Redirect URLs** in Supabase to match. **`www.prepinsight.in`** can stay on GitHub Pages for static content only; auth and APIs must use the app hostname.
 
 The Site URL also acts as the default redirect for magic links when the client
 does not pass an explicit `emailRedirectTo`.
