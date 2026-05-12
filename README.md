@@ -88,6 +88,8 @@ npx vercel --prod
 
 `vercel.json` already sets longer function durations for the AI-heavy API routes (`/api/analyze`, `/api/plan`, `/api/checkin`).
 
+**GitHub Pages:** not a fit for this project. Pages only hosts static HTML/CSS/JS; it cannot run Next.js **API routes** or keep **server secrets** (Supabase service role, Razorpay, OpenRouter). To stay on GitHub for git while hosting the app, connect the repo to **Vercel** (or Netlify / Cloudflare Workers) so pushes still deploy from GitHub—without using `github.io` static hosting.
+
 ## Routes
 
 | Path | Purpose |
