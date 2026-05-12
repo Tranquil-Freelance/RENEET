@@ -19,7 +19,7 @@ AI-powered Re-NEET 2026 gap analysis. Built for 22.79 lakh aspirants with a seco
 - OpenRouter (SWOT, plan, quiz, motivation)
 - Razorpay (UPI + cards)
 - Resend (transactional email — placeholder)
-- **Public site:** GitHub Pages (`index.html` at repo root + `CNAME` / `.nojekyll`)
+- **Public site:** GitHub Pages (`index.html` at repo root + **`.nojekyll`**; default URL `https://tranquil-freelance.github.io/RENEET/`)
 
 ## Setup (< 30 minutes from clone to deploy)
 
@@ -34,7 +34,7 @@ Copy `.env.example` to `.env.local` and fill in:
 - `OPENROUTER_API_KEY` — from [openrouter.ai/keys](https://openrouter.ai/keys)
 - `OPENROUTER_MODEL` — defaults to `openai/gpt-4o-mini` (JSON-mode capable; swap for any OpenRouter model)
 - `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `NEXT_PUBLIC_RAZORPAY_KEY_ID` — from Razorpay Dashboard → Settings → API Keys (use test keys first)
-- `NEXT_PUBLIC_APP_URL` — `http://localhost:3000` for local Next.js. For metadata or absolute links while developing against the static public URL, you can temporarily use **`https://www.prepinsight.in`**; GitHub Pages does **not** run the Next app or `/api/*`.
+- `NEXT_PUBLIC_APP_URL` — `http://localhost:3000` for local Next.js. For absolute URLs against this repo’s static Pages site, use **`https://tranquil-freelance.github.io/RENEET/`**; GitHub Pages does **not** run the Next app or `/api/*`.
 
 The app boots and routes work even with empty env vars — API calls degrade gracefully with stub data and warnings. Useful for UI iteration without keys.
 
@@ -71,30 +71,19 @@ npm run dev
 
 ### 7. Deploy (GitHub Pages only)
 
-The **live public website** for this project is **static** and is served from **GitHub Pages**:
+The **live public website** is **static** and is served from **GitHub Pages** at:
+
+**`https://tranquil-freelance.github.io/RENEET/`**
 
 1. Repository **Settings → Pages**
 2. **Build and deployment:** Source **Deploy from a branch**, branch **`main`**, folder **`/ (root)`**
-3. **Custom domain:** add **`www.prepinsight.in`** and **`prepinsight.in`** as needed; keep the **`CNAME`** file in the repo root in sync with your primary hostname
-4. After DNS verifies, enable **Enforce HTTPS**
+3. Under **Custom domain**, leave the field **empty** (or remove any old domain) so the site stays at **`https://tranquil-freelance.github.io/RENEET/`**. There is **no `CNAME` file** in this repo for now.
 
-Root files involved: **`index.html`** (landing), **`CNAME`**, **`.nojekyll`**.
+If GitHub still shows a previous custom domain after you push, clear it manually in **Settings → Pages** and save.
 
-**Reality check:** GitHub Pages cannot run the Next.js server, **Route Handlers** (`app/api/**`), or **`proxy.ts`** middleware. The exam, AI features, and payments in `app/` are for **local** (`npm run dev`) or for whatever **Node-capable host** you may add later — not part of the Pages deployment.
+Root files involved: **`index.html`** (landing), **`.nojekyll`**.
 
-#### DNS (GoDaddy) for `prepinsight.in`
-
-In [GoDaddy DNS](https://dcc.godaddy.com/manage/) for `prepinsight.in`:
-
-| Type  | Name (Host) | Points to                      | TTL     |
-|-------|-------------|--------------------------------|---------|
-| CNAME | `www`       | `tranquil-freelance.github.io` | Default |
-| A     | `@`         | `185.199.108.153`              | Default |
-| A     | `@`         | `185.199.109.153`              | Default |
-| A     | `@`         | `185.199.110.153`              | Default |
-| A     | `@`         | `185.199.111.153`              | Default |
-
-Use **four separate A records** for `@` (one IP each). See [GitHub: apex domain](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain).
+**Reality check:** GitHub Pages cannot run the Next.js server, **Route Handlers** (`app/api/**`), or **`proxy.ts`** middleware. The exam, AI features, and payments in `app/` are for **local** (`npm run dev`) or another **Node** host if you add one later — not part of the Pages deployment.
 
 ## Routes
 

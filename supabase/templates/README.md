@@ -24,9 +24,8 @@ For each one:
 Both templates use `{{ .SiteURL }}` in the footer. Set this in
 **Authentication → URL Configuration → Site URL**:
 
-- **Local dev:** `http://localhost:3000`
 - **Local Next.js:** `http://localhost:3000` — use for development and for Supabase redirect URLs while building locally.
-- **Public static site (GitHub Pages):** **`https://www.prepinsight.in`** — fine as **Site URL** only if you are not relying on server routes on that host. Magic links that redirect to **`/auth/callback`** need that route to be served by a **Node** deployment (e.g. your laptop with `npm run dev`); GitHub Pages will not run it.
+- **Public static site (GitHub Pages, this repo):** **`https://tranquil-freelance.github.io/RENEET/`** — static HTML only. Magic links that redirect to **`/auth/callback`** need that route on a **Node** host (e.g. `npm run dev`); GitHub Pages will not run it.
 
 The Site URL also acts as the default redirect for magic links when the client
 does not pass an explicit `emailRedirectTo`.
