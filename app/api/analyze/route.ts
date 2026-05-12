@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getServerClient, isSupabaseConfigured } from "@/lib/supabase";
+import {
+  getOrCreateAppUserId,
+  getServerSupabase,
+  getServiceClient,
+  isSupabaseConfigured,
+} from "@/lib/supabase-server";
 import { callClaudeJson, isClaudeConfigured } from "@/lib/claude";
 import { generateSWOTPrompt } from "@/lib/prompts";
-import { computeSubjectScores, deriveWithBlanks } from "@/lib/scoring";
+import { computeOverallStats, computeSubjectScores, deriveWithBlanks } from "@/lib/scoring";
 import { QUESTIONS } from "@/lib/questions";
 import type { SWOT } from "@/types";
 
@@ -16,7 +21,6 @@ const AnswerSchema = z.object({
 });
 
 const Body = z.object({
-  userId: z.string().min(1),
   answers: z.record(z.string(), AnswerSchema),
 });
 
@@ -37,39 +41,58 @@ export async function POST(req: Request) {
 
   const derived = deriveWithBlanks(answerMap, QUESTIONS);
   const subjectScores = computeSubjectScores(derived);
+  const overallStats = computeOverallStats(subjectScores);
 
-  let user = {
+  let userProfile = {
     name: "Student",
     state: null as string | null,
     attempt_no: 1,
     target: null as string | null,
   };
+  let userId: string | null = null;
 
-  if (isSupabaseConfigured() && !parsed.userId.startsWith("dev-")) {
-    const supabase = getServerClient();
-    const { data } = await supabase
-      .from("users")
-      .select("name, state, attempt_no, target")
-      .eq("id", parsed.userId)
-      .maybeSingle();
-    if (data) user = { ...user, ...data };
-
-    await supabase.from("responses").insert({
-      user_id: parsed.userId,
-      answers: parsed.answers,
-      derived,
-    });
+  if (isSupabaseConfigured()) {
+    const supa = await getServerSupabase();
+    const {
+      data: { user },
+    } = await supa.auth.getUser();
+    if (user) {
+      userId = await getOrCreateAppUserId();
+      if (userId) {
+        const service = getServiceClient();
+        const { data } = await service
+          .from("users")
+          .select("name, state, attempt_no, target")
+          .eq("id", userId)
+          .maybeSingle();
+        if (data) userProfile = { ...userProfile, ...data };
+        await service.from("responses").insert({
+          user_id: userId,
+          answers: parsed.answers,
+          derived,
+        });
+      }
+    }
   }
 
   if (!isClaudeConfigured()) {
     const stub = stubSWOT(subjectScores);
-    return NextResponse.json({ swot: stub, analysisId: "dev-stub", warning: "Claude not configured" });
+    return NextResponse.json({
+      swot: stub,
+      overall: overallStats,
+      analysisId: "dev-stub",
+      warning: "Claude not configured",
+    });
   }
 
   let swot: SWOT;
   try {
     swot = await callClaudeJson<SWOT>({
-      prompt: generateSWOTPrompt({ user, derived, subject_scores: subjectScores }),
+      prompt: generateSWOTPrompt({
+        user: userProfile,
+        derived,
+        subject_scores: subjectScores,
+      }),
       maxTokens: 6000,
     });
   } catch (err) {
@@ -80,16 +103,15 @@ export async function POST(req: Request) {
     );
   }
 
-  // Overwrite subject_scores from Claude with our authoritative values
   swot.subject_scores = subjectScores;
 
   let analysisId = "dev-stub";
-  if (isSupabaseConfigured() && !parsed.userId.startsWith("dev-")) {
-    const supabase = getServerClient();
-    const { data } = await supabase
+  if (userId && isSupabaseConfigured()) {
+    const service = getServiceClient();
+    const { data } = await service
       .from("analyses")
       .insert({
-        user_id: parsed.userId,
+        user_id: userId,
         swot,
         score_band: `${swot.estimated_score.min}-${swot.estimated_score.max}`,
       })
@@ -98,7 +120,7 @@ export async function POST(req: Request) {
     if (data?.id) analysisId = data.id;
   }
 
-  return NextResponse.json({ swot, analysisId });
+  return NextResponse.json({ swot, overall: overallStats, analysisId });
 }
 
 function stubSWOT(subjectScores: SWOT["subject_scores"]): SWOT {

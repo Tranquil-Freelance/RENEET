@@ -1,8 +1,22 @@
 import type { Metadata } from "next";
+import { Fraunces, Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://neetsurge.in";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-fraunces",
+  axes: ["SOFT"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
@@ -42,10 +56,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-white text-[var(--color-ink)]">
+    <html
+      lang="en"
+      className={`h-full antialiased ${inter.variable} ${fraunces.variable}`}
+    >
+      <body
+        className="min-h-full flex flex-col bg-paper text-ink"
+        style={{ fontFamily: "var(--font-inter), var(--font-sans)" }}
+      >
         {children}
-        <Toaster position="top-center" />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              borderRadius: "16px",
+              background: "#1f1b2e",
+              color: "#fafaf9",
+              fontSize: "13px",
+            },
+          }}
+        />
       </body>
     </html>
   );

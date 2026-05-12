@@ -26,11 +26,10 @@ export function SwotView({ initialSwot }: Props) {
     setUserName(localStorage.getItem("neetsurge:userName") ?? "there");
     if (swot) return;
 
-    const userId = localStorage.getItem("neetsurge:userId");
     const answersRaw = localStorage.getItem("neetsurge:answers");
-    if (!userId || !answersRaw) {
-      toast.error("No exam data found. Please start over.");
-      router.push("/onboarding");
+    if (!answersRaw) {
+      toast.error("No exam data found. Please mark your answers first.");
+      router.push("/exam");
       return;
     }
 
@@ -40,13 +39,18 @@ export function SwotView({ initialSwot }: Props) {
         const res = await fetch("/api/analyze", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ userId, answers: JSON.parse(answersRaw) }),
+          body: JSON.stringify({ answers: JSON.parse(answersRaw) }),
         });
+        if (res.status === 401) {
+          toast.error("Please sign in to view your SWOT.");
+          router.push("/login?next=/swot");
+          return;
+        }
         if (!res.ok) throw new Error("Analysis failed");
         const data = await res.json();
         if (!cancelled) {
           setSwot(data.swot);
-          localStorage.setItem("neetsurge:analysisId", data.analysisId);
+          if (data.analysisId) localStorage.setItem("neetsurge:analysisId", data.analysisId);
         }
       } catch (err) {
         if (!cancelled)

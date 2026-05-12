@@ -14,8 +14,14 @@ export interface QuestionOptions {
 export interface Question {
   q_no: number;
   subject: Subject;
+  /** Bare syllabus unit name from the official docx (e.g. "Kinematics"). */
   chapter: string;
+  /** Official NCERT/NTA syllabus unit number (1-20 per subject). */
+  syllabus_unit_no: number;
+  /** Verbatim subtopic from the official categorization docx. */
   subtopic: string;
+  /** Verbatim "What the question tests" text — the canonical concept phrasing. */
+  concept: string;
   correct_option: Option;
   ncert_class: 11 | 12;
   difficulty: Difficulty;
@@ -25,7 +31,14 @@ export interface Question {
   options: QuestionOptions;
 }
 
-export type ClientQuestion = Omit<Question, "correct_option">;
+/**
+ * Sanitized question shape for the exam UI. We strip:
+ *   - `correct_option`  — answer key must never reach the browser
+ *   - `concept`         — verbatim "what the question tests" text often
+ *                         spoils the answer (e.g. "P = mgh / t")
+ *   - `syllabus_unit_no`— internal grouping field; not needed in the UI
+ */
+export type ClientQuestion = Omit<Question, "correct_option" | "concept" | "syllabus_unit_no">;
 
 export interface AnswerState {
   chosen: Option | null;
@@ -38,7 +51,10 @@ export interface DerivedAnswer {
   q_no: number;
   subject: Subject;
   chapter: string;
+  syllabus_unit_no: number;
   subtopic: string;
+  /** Canonical concept text from the official categorization docx. */
+  concept: string;
   chosen: Option | null;
   correct: Option;
   guessed: boolean;

@@ -1,28 +1,50 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #4a90d9;
-  --color-brand-50: #eaf3fb;
-  --color-brand-100: #c7defa;
-  --color-brand-600: #2f72bb;
-  --color-brand-700: #245a96;
-  --color-accent: #27ae60;
-  --color-accent-50: #e9f8ef;
-  --color-accent-600: #1e8a4c;
-  --color-warn: #e67e22;
-  --color-warn-50: #fdefe1;
-  --color-danger: #e74c3c;
-  --color-danger-50: #fdeae8;
-  --color-ink: #0f172a;
-  --color-muted: #64748b;
+  /* Calm Gen-Z palette: indigo lead, lavender + warm gold + sage support */
+  --color-brand: #6366f1;
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-400: #818cf8;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-dark: #4f46e5;
 
-  --font-sans:
-    system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --color-lavender: #a5b4fc;
+  --color-lavender-50: #f5f3ff;
+
+  --color-accent: #34d399;
+  --color-accent-50: #ecfdf5;
+  --color-accent-600: #10b981;
+
+  --color-warn: #fbbf24;
+  --color-warn-50: #fef3c7;
+  --color-warn-600: #f59e0b;
+
+  --color-danger: #f472b6;
+  --color-danger-50: #fdf2f8;
+  --color-danger-600: #ec4899;
+
+  --color-success: #34d399;
+
+  --color-ink: #1f1b2e;
+  --color-ink-muted: #6b7280;
+  --color-ink-dark: #0f0a1f;
+  --color-paper: #fafaf9;
+  --color-line: #ece9f5;
+
+  --font-sans: var(--font-inter), "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, Cambria, "Times New Roman", serif;
+
+  /* Soft, low-blur shadows */
+  --shadow-soft: 0 4px 16px -8px rgba(31, 27, 46, 0.08), 0 1px 3px rgba(31, 27, 46, 0.04);
+  --shadow-soft-lg: 0 24px 48px -24px rgba(31, 27, 46, 0.18), 0 2px 8px rgba(31, 27, 46, 0.04);
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+  --background: #fafaf9;
+  --foreground: #1f1b2e;
 }
 
 html,
@@ -38,9 +60,54 @@ body {
   box-sizing: border-box;
 }
 
+.font-serif {
+  font-family: var(--font-serif);
+  font-feature-settings: "ss01", "ss03";
+  letter-spacing: -0.01em;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .no-scrollbar {
   scrollbar-width: none;
+}
+
+/* Hand-drawn underline (CSS-only) */
+.underline-wave {
+  background-image: linear-gradient(
+    transparent 70%,
+    rgba(99, 102, 241, 0.35) 70%,
+    rgba(99, 102, 241, 0.35) 90%,
+    transparent 90%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding-bottom: 0.05em;
+}
+
+/* Confetti-pulse on SWOT score reveal */
+@keyframes ns-pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+  50% { box-shadow: 0 0 0 12px rgba(99, 102, 241, 0.12); }
+}
+.animate-pulse-glow {
+  animation: ns-pulse-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes ns-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.animate-float {
+  animation: ns-float 4s ease-in-out infinite;
+}
+
+/* Slight rise on hover for cards */
+.lift {
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft-lg);
 }

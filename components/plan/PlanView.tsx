@@ -58,11 +58,6 @@ export function PlanView() {
   const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
-    const userId = localStorage.getItem("neetsurge:userId");
-    if (!userId) {
-      toast.error("Please complete onboarding first.");
-      return;
-    }
     const saved = localStorage.getItem("neetsurge:planDone");
     if (saved) {
       try {
@@ -70,7 +65,7 @@ export function PlanView() {
       } catch {}
     }
 
-    fetch(`/api/plan/get?userId=${encodeURIComponent(userId)}`)
+    fetch(`/api/plan/get`)
       .then(async (r) => {
         if (!r.ok) throw new Error("Could not load plan");
         return r.json();
@@ -88,19 +83,15 @@ export function PlanView() {
       try {
         localStorage.setItem("neetsurge:planDone", JSON.stringify([...next]));
       } catch {}
-      const userId = localStorage.getItem("neetsurge:userId");
-      if (userId) {
-        fetch("/api/checkin", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            userId,
-            dayNumber: day,
-            completed: !prev.has(day),
-            action: "toggle",
-          }),
-        }).catch(() => {});
-      }
+      fetch("/api/checkin", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          dayNumber: day,
+          completed: !prev.has(day),
+          action: "toggle",
+        }),
+      }).catch(() => {});
       return next;
     });
   }

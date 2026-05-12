@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getServerClient, isSupabaseConfigured } from "@/lib/supabase";
+import {
+  getOrCreateAppUserId,
+  getServerSupabase,
+  getServiceClient,
+  isSupabaseConfigured,
+} from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
 
 const Body = z.object({
-  name: z.string().min(2).max(80),
-  phone: z.string().regex(/^\d{10}$/, "Phone must be 10 digits"),
   state: z.string().min(1).max(60),
   attempt_no: z.number().int().min(1).max(10).default(1),
   target: z.string().max(80).optional(),
@@ -26,54 +29,41 @@ export async function POST(req: Request) {
   }
 
   if (!isSupabaseConfigured()) {
-    // Dev fallback: return a deterministic-ish id so the rest of the flow works
-    // without Supabase configured. Replace with real credentials before launch.
     return NextResponse.json({
-      userId: `dev-${parsed.phone}`,
-      warning: "Supabase not configured — user not persisted",
+      userId: "dev-anon",
+      warning: "Supabase service key not configured — onboarding not persisted",
     });
   }
 
-  const supabase = getServerClient();
-
-  const { data: existing } = await supabase
-    .from("users")
-    .select("id")
-    .eq("phone", parsed.phone)
-    .maybeSingle();
-
-  if (existing?.id) {
-    await supabase.from("users").update({
-      name: parsed.name,
-      state: parsed.state,
-      attempt_no: parsed.attempt_no,
-      target: parsed.target,
-      study_hours: parsed.study_hours,
-      exam_feel: parsed.exam_feel,
-    }).eq("id", existing.id);
-    return NextResponse.json({ userId: existing.id, returning: true });
+  const supa = await getServerSupabase();
+  const {
+    data: { user },
+  } = await supa.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Not signed in" }, { status: 401 });
   }
 
-  const { data, error } = await supabase
+  const userId = await getOrCreateAppUserId();
+  if (!userId) {
+    return NextResponse.json({ error: "Could not resolve user" }, { status: 500 });
+  }
+
+  const service = getServiceClient();
+  const { error } = await service
     .from("users")
-    .insert({
-      name: parsed.name,
-      phone: parsed.phone,
+    .update({
       state: parsed.state,
       attempt_no: parsed.attempt_no,
       target: parsed.target,
       study_hours: parsed.study_hours,
       exam_feel: parsed.exam_feel,
+      email: user.email ?? null,
     })
-    .select("id")
-    .single();
+    .eq("id", userId);
 
-  if (error || !data) {
-    return NextResponse.json(
-      { error: error?.message ?? "Could not create user" },
-      { status: 500 },
-    );
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ userId: data.id });
+  return NextResponse.json({ userId });
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getRazorpay, isRazorpayConfigured } from "@/lib/razorpay";
-import { getServerClient, isSupabaseConfigured } from "@/lib/supabase";
+import { getServiceClient, isSupabaseConfigured } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
 
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     });
 
     if (isSupabaseConfigured() && !parsed.userId.startsWith("dev-")) {
-      const supabase = getServerClient();
+      const supabase = getServiceClient();
       await supabase.from("plans").insert({
         user_id: parsed.userId,
         paid: false,

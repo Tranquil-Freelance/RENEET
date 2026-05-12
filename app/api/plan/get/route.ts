@@ -1,21 +1,23 @@
 import { NextResponse } from "next/server";
-import { getServerClient, isSupabaseConfigured } from "@/lib/supabase";
+import {
+  getOrCreateAppUserId,
+  getServiceClient,
+  isSupabaseConfigured,
+} from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
 
-export async function GET(req: Request) {
-  const url = new URL(req.url);
-  const userId = url.searchParams.get("userId");
-  if (!userId) {
-    return NextResponse.json({ error: "userId required" }, { status: 400 });
-  }
-
-  if (!isSupabaseConfigured() || userId.startsWith("dev-")) {
+export async function GET() {
+  if (!isSupabaseConfigured()) {
     return NextResponse.json({ plan: null, dev: true });
   }
+  const userId = await getOrCreateAppUserId();
+  if (!userId) {
+    return NextResponse.json({ error: "Not signed in" }, { status: 401 });
+  }
 
-  const supabase = getServerClient();
-  const { data, error } = await supabase
+  const service = getServiceClient();
+  const { data, error } = await service
     .from("plans")
     .select("plan_json, paid")
     .eq("user_id", userId)

@@ -31,7 +31,9 @@ export function deriveAnswer(qNo: number, state: { chosen: Option | null; guesse
     q_no: qNo,
     subject: question.subject,
     chapter: question.chapter,
+    syllabus_unit_no: question.syllabus_unit_no,
     subtopic: question.subtopic,
+    concept: question.concept,
     chosen: state.chosen,
     correct: question.correct_option,
     guessed: state.guessed,
@@ -84,6 +86,51 @@ export function totalNetMarks(scores: Record<Subject, SubjectScore>): number {
   return SUBJECTS.reduce((sum, s) => sum + scores[s].net_marks, 0);
 }
 
+export interface OverallStats {
+  total_attempted: number;
+  total_blank: number;
+  total_correct: number;
+  total_wrong: number;
+  total_guessed_right: number;
+  total_marks: number;
+  max_marks: number;
+  accuracy_pct: number;
+}
+
+export const MAX_MARKS = 720;
+
+/**
+ * Aggregate across all subjects. Used by the SWOT banner and the pre-submit summary.
+ */
+export function computeOverallStats(
+  scores: Record<Subject, SubjectScore>,
+): OverallStats {
+  const totals = SUBJECTS.reduce(
+    (acc, s) => {
+      const v = scores[s];
+      acc.correct += v.correct;
+      acc.wrong += v.wrong;
+      acc.blank += v.blank;
+      acc.guessed_right += v.guessed_right;
+      acc.net_marks += v.net_marks;
+      return acc;
+    },
+    { correct: 0, wrong: 0, blank: 0, guessed_right: 0, net_marks: 0 },
+  );
+  const attempted = totals.correct + totals.wrong + totals.guessed_right;
+  const accuracy = attempted === 0 ? 0 : Math.round(((totals.correct + totals.guessed_right) / attempted) * 100);
+  return {
+    total_attempted: attempted,
+    total_blank: totals.blank,
+    total_correct: totals.correct + totals.guessed_right,
+    total_wrong: totals.wrong,
+    total_guessed_right: totals.guessed_right,
+    total_marks: totals.net_marks,
+    max_marks: MAX_MARKS,
+    accuracy_pct: accuracy,
+  };
+}
+
 /**
  * Fill in unmarked questions as "blank" so the derived list always covers all 180.
  */
@@ -96,7 +143,9 @@ export function deriveWithBlanks(answers: AnswerMap, questions: Question[]): Der
       q_no: q.q_no,
       subject: q.subject,
       chapter: q.chapter,
+      syllabus_unit_no: q.syllabus_unit_no,
       subtopic: q.subtopic,
+      concept: q.concept,
       chosen,
       correct: q.correct_option,
       guessed,

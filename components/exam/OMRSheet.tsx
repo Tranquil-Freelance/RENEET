@@ -14,10 +14,8 @@ import type { AnswerMap, ClientQuestion, Option, Subject } from "@/types";
 import { cn } from "@/lib/utils";
 
 const LS_ANSWERS = "neetsurge:answers";
-const LS_USER = "neetsurge:userId";
 const OPTIONS: Option[] = ["A", "B", "C", "D"];
 const SUBJECTS: Subject[] = ["physics", "chemistry", "biology"];
-const MIN_TO_ANALYZE = 150;
 
 interface Props {
   questions: ClientQuestion[];
@@ -28,11 +26,10 @@ export function OMRSheet({ questions }: Props) {
   const [activeSubject, setActiveSubject] = useState<Subject>("physics");
   const [answers, setAnswers] = useState<AnswerMap>({});
   const [submitting, setSubmitting] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [showSummary, setShowSummary] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setUserId(localStorage.getItem(LS_USER));
     try {
       const saved = localStorage.getItem(LS_ANSWERS);
       if (saved) setAnswers(JSON.parse(saved));
@@ -65,44 +62,56 @@ export function OMRSheet({ questions }: Props) {
   );
 
   const counts = useMemo(() => {
-    const out: Record<Subject, { answered: number; total: number }> = {
-      physics: { answered: 0, total: 0 },
-      chemistry: { answered: 0, total: 0 },
-      biology: { answered: 0, total: 0 },
+    const out: Record<Subject, { answered: number; guessed: number; total: number }> = {
+      physics: { answered: 0, guessed: 0, total: 0 },
+      chemistry: { answered: 0, guessed: 0, total: 0 },
+      biology: { answered: 0, guessed: 0, total: 0 },
     };
     for (const q of questions) {
       out[q.subject].total += 1;
-      if (answers[q.q_no]?.chosen) out[q.subject].answered += 1;
+      const a = answers[q.q_no];
+      if (a?.chosen) {
+        out[q.subject].answered += 1;
+        if (a.guessed) out[q.subject].guessed += 1;
+      }
     }
     return out;
   }, [questions, answers]);
 
   const totalMarked = counts.physics.answered + counts.chemistry.answered + counts.biology.answered;
+  const totalGuessed = counts.physics.guessed + counts.chemistry.guessed + counts.biology.guessed;
+  const totalBlank = 180 - totalMarked;
+
+  const canSubmit = totalMarked >= 1;
 
   async function submit() {
-    if (totalMarked < MIN_TO_ANALYZE) {
-      toast.error(`Mark at least ${MIN_TO_ANALYZE} questions to analyze. You have ${totalMarked}.`);
+    if (!canSubmit) {
+      toast.error("Mark at least one answer first.");
       return;
     }
-    if (!userId) {
-      toast.error("Profile missing — please complete onboarding first.");
-      router.push("/onboarding");
-      return;
-    }
-
     setSubmitting(true);
     try {
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ userId, answers }),
+        body: JSON.stringify({ answers }),
       });
+      if (res.status === 401) {
+        toast.error("Please sign in to analyze.");
+        router.push("/login?next=/exam");
+        return;
+      }
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         throw new Error(body.error ?? "Analysis failed");
       }
       const { analysisId } = await res.json();
-      localStorage.setItem("neetsurge:analysisId", analysisId);
+      if (analysisId) localStorage.setItem("neetsurge:analysisId", analysisId);
+      try {
+        localStorage.removeItem(LS_ANSWERS);
+      } catch {
+        /* ignore */
+      }
       router.push("/swot");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not analyze");
@@ -112,15 +121,10 @@ export function OMRSheet({ questions }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6">
-      <Header
-        totalMarked={totalMarked}
-        canSubmit={totalMarked >= MIN_TO_ANALYZE}
-        submitting={submitting}
-        onSubmit={submit}
-      />
+      <Header totalMarked={totalMarked} />
 
-      <div className="sticky top-0 z-10 -mx-4 px-4 pt-2 pb-3 bg-slate-50/95 backdrop-blur">
-        <div className="grid grid-cols-3 gap-2 rounded-xl border border-slate-200 bg-white p-1.5 shadow-sm">
+      <div className="sticky top-0 z-10 -mx-4 px-4 pt-2 pb-3 bg-paper/95 backdrop-blur">
+        <div className="grid grid-cols-3 gap-2 rounded-2xl border border-line bg-white p-1.5 shadow-soft">
           {SUBJECTS.map((s) => (
             <button
               key={s}
@@ -130,10 +134,10 @@ export function OMRSheet({ questions }: Props) {
                 containerRef.current?.scrollTo({ top: 0, behavior: "auto" });
               }}
               className={cn(
-                "rounded-lg py-2 text-sm font-medium capitalize transition",
+                "rounded-xl py-2 text-sm font-medium capitalize transition",
                 activeSubject === s
-                  ? "bg-[var(--color-brand)] text-white"
-                  : "text-slate-600 hover:bg-slate-100",
+                  ? "bg-brand text-white shadow-soft"
+                  : "text-ink-muted hover:bg-paper",
               )}
             >
               <div>{s}</div>
@@ -143,9 +147,9 @@ export function OMRSheet({ questions }: Props) {
             </button>
           ))}
         </div>
-        <div className="mt-2 h-1.5 w-full rounded-full bg-slate-200">
+        <div className="mt-2 h-1.5 w-full rounded-full bg-line">
           <div
-            className="h-1.5 rounded-full bg-[var(--color-brand)] transition-all"
+            className="h-1.5 rounded-full bg-brand transition-all"
             style={{ width: `${(totalMarked / 180) * 100}%` }}
           />
         </div>
@@ -162,39 +166,46 @@ export function OMRSheet({ questions }: Props) {
         ))}
       </div>
 
-      <div className="mt-8 mb-24 text-center text-xs text-slate-400">
+      <div className="mt-8 mb-32 text-center text-xs text-ink-muted">
         Tip: keyboard 1/2/3/4 for A/B/C/D · G to toggle guessed · X to clear
       </div>
 
       <StickySubmit
         totalMarked={totalMarked}
-        canSubmit={totalMarked >= MIN_TO_ANALYZE}
+        totalGuessed={totalGuessed}
+        totalBlank={totalBlank}
+        canSubmit={canSubmit}
         submitting={submitting}
-        onSubmit={submit}
+        onSubmit={() => setShowSummary(true)}
       />
+
+      {showSummary && (
+        <PreSubmitSummary
+          counts={counts}
+          totalMarked={totalMarked}
+          totalGuessed={totalGuessed}
+          totalBlank={totalBlank}
+          submitting={submitting}
+          onConfirm={submit}
+          onCancel={() => setShowSummary(false)}
+        />
+      )}
     </div>
   );
 }
 
-function Header({
-  totalMarked,
-}: {
-  totalMarked: number;
-  canSubmit: boolean;
-  submitting: boolean;
-  onSubmit: () => void;
-}) {
+function Header({ totalMarked }: { totalMarked: number }) {
   return (
     <div className="mb-4">
-      <h1 className="text-2xl font-bold">Mark your answers</h1>
-      <p className="text-sm text-slate-600">
+      <h1 className="text-3xl font-serif font-semibold text-ink">Mark your answers</h1>
+      <p className="text-sm text-ink-muted mt-1">
         For each question, tap what you actually marked on exam day. Leave it
         blank if you didn&apos;t attempt. Use{" "}
-        <span className="font-medium text-slate-800">I guessed</span> if you
+        <span className="font-medium text-ink">I guessed</span> if you
         were unsure — it powers your Threats analysis.
       </p>
-      <div className="mt-2 text-xs text-slate-500">
-        Marked: <span className="font-semibold text-slate-700">{totalMarked} / 180</span>
+      <div className="mt-2 text-xs text-ink-muted">
+        Marked: <span className="font-semibold text-ink">{totalMarked} / 180</span>
       </div>
     </div>
   );
@@ -202,42 +213,121 @@ function Header({
 
 function StickySubmit({
   totalMarked,
+  totalGuessed,
+  totalBlank,
   canSubmit,
   submitting,
   onSubmit,
 }: {
   totalMarked: number;
+  totalGuessed: number;
+  totalBlank: number;
   canSubmit: boolean;
   submitting: boolean;
   onSubmit: () => void;
 }) {
   return (
-    <div className="fixed bottom-0 inset-x-0 z-20 border-t border-slate-200 bg-white/95 backdrop-blur px-4 py-3">
+    <div className="fixed bottom-0 inset-x-0 z-20 border-t border-line bg-white/95 backdrop-blur px-4 py-3">
       <div className="mx-auto max-w-3xl flex items-center justify-between gap-3">
-        <div className="text-xs text-slate-500">
-          {canSubmit ? (
-            <>You&apos;ve marked enough. Ready when you are.</>
-          ) : (
-            <>Mark {MIN_TO_ANALYZE - totalMarked} more to enable analysis.</>
-          )}
+        <div className="text-xs text-ink-muted">
+          {totalMarked} marked
+          {totalGuessed > 0 ? ` · ${totalGuessed} guessed` : ""}
+          {" · "}
+          {totalBlank} blank
         </div>
         <button
           type="button"
           onClick={onSubmit}
           disabled={!canSubmit || submitting}
-          className="inline-flex items-center gap-2 rounded-xl bg-[var(--color-brand)] px-5 py-2.5 text-sm font-semibold text-white shadow disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--color-brand-600)]"
+          className="inline-flex items-center gap-2 rounded-2xl bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-soft disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-dark transition"
         >
-          {submitting ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" /> Analyzing…
-            </>
-          ) : (
-            <>
-              Analyze My Exam <ChevronRight className="h-4 w-4" />
-            </>
-          )}
+          Review &amp; analyze <ChevronRight className="h-4 w-4" />
         </button>
       </div>
+    </div>
+  );
+}
+
+function PreSubmitSummary({
+  counts,
+  totalMarked,
+  totalGuessed,
+  totalBlank,
+  submitting,
+  onConfirm,
+  onCancel,
+}: {
+  counts: Record<Subject, { answered: number; guessed: number; total: number }>;
+  totalMarked: number;
+  totalGuessed: number;
+  totalBlank: number;
+  submitting: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-30 bg-ink/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-soft-lg p-6 sm:p-7">
+        <div className="text-xs font-semibold uppercase tracking-wider text-brand">Ready?</div>
+        <h2 className="mt-1 text-2xl font-serif font-semibold text-ink">
+          Submit for analysis
+        </h2>
+        <p className="mt-2 text-sm text-ink-muted">
+          We&apos;ll score your paper against the official NEET key
+          (<span className="font-medium text-ink">+4 / −1 / 0</span>) and run an
+          in-depth SWOT. This takes about a minute.
+        </p>
+
+        <div className="mt-5 grid grid-cols-3 gap-2">
+          {SUBJECTS.map((s) => (
+            <div key={s} className="rounded-2xl bg-paper border border-line p-3 text-center">
+              <div className="text-[10px] uppercase tracking-wide text-ink-muted">{s}</div>
+              <div className="text-xl font-semibold text-ink">{counts[s].answered}</div>
+              <div className="text-[10px] text-ink-muted">/ {counts[s].total}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-2xl bg-paper border border-line p-4 text-sm space-y-2">
+          <SummaryRow label="Marked" value={`${totalMarked}`} accent />
+          <SummaryRow label="Of which guessed" value={`${totalGuessed}`} />
+          <SummaryRow label="Blank" value={`${totalBlank}`} />
+        </div>
+
+        <div className="mt-6 flex gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={submitting}
+            className="flex-1 rounded-2xl border border-line bg-white text-ink py-3 text-sm font-medium hover:bg-paper transition disabled:opacity-50"
+          >
+            Keep editing
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={submitting}
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-brand text-white py-3 text-sm font-semibold shadow-soft hover:bg-brand-dark disabled:opacity-50 disabled:cursor-wait transition"
+          >
+            {submitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" /> Analyzing…
+              </>
+            ) : (
+              <>Run the analysis</>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SummaryRow({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text-ink-muted">{label}</span>
+      <span className={cn("font-semibold", accent ? "text-brand" : "text-ink")}>{value}</span>
     </div>
   );
 }
@@ -281,16 +371,16 @@ function QuestionCard({
       ref={ref}
       data-qno={q.q_no}
       className={cn(
-        "rounded-2xl border bg-white p-4 shadow-sm transition",
-        chosen ? "border-slate-300" : "border-slate-200",
+        "rounded-3xl border bg-white p-4 shadow-soft transition",
+        chosen ? "border-brand/30" : "border-line",
       )}
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
-          <span className="text-sm font-semibold text-[var(--color-brand)] tabular-nums">
+          <span className="text-sm font-semibold text-brand tabular-nums">
             Q{q.q_no}
           </span>
-          <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
+          <span className="shrink-0 rounded-full bg-paper px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
             {q.subject}
           </span>
         </div>
@@ -298,7 +388,7 @@ function QuestionCard({
           <button
             type="button"
             onClick={() => onChange({ chosen: null, guessed: false })}
-            className="shrink-0 text-xs text-slate-400 hover:text-slate-700 inline-flex items-center gap-1"
+            className="shrink-0 text-xs text-ink-muted hover:text-ink inline-flex items-center gap-1"
           >
             <X className="h-3.5 w-3.5" /> Clear
           </button>
@@ -316,10 +406,10 @@ function QuestionCard({
               type="button"
               onClick={() => onChange({ chosen: opt })}
               className={cn(
-                "rounded-xl border py-2.5 text-base font-semibold transition",
+                "rounded-2xl border py-2.5 text-base font-semibold transition",
                 isSelected
-                  ? "border-[var(--color-brand)] bg-[var(--color-brand)] text-white"
-                  : "border-slate-300 text-slate-700 hover:border-slate-400",
+                  ? "border-brand bg-brand text-white shadow-soft"
+                  : "border-line text-ink hover:border-ink-muted",
               )}
             >
               {opt}
@@ -329,21 +419,21 @@ function QuestionCard({
       </div>
 
       <div className="mt-3 flex items-center justify-between text-xs">
-        <label className="inline-flex items-center gap-2 cursor-pointer text-slate-600">
+        <label className="inline-flex items-center gap-2 cursor-pointer text-ink-muted">
           <input
             type="checkbox"
             checked={guessed}
             onChange={(e) => onChange({ guessed: e.target.checked })}
             disabled={chosen === null}
-            className="h-4 w-4 accent-[var(--color-warn)] disabled:opacity-40"
+            className="h-4 w-4 accent-warn disabled:opacity-40"
           />
           I guessed this
         </label>
-        <div className="text-slate-400">
+        <div className="text-ink-muted">
           {chosen === null ? (
             "Blank"
           ) : (
-            <span className="inline-flex items-center gap-1 text-[var(--color-brand)]">
+            <span className="inline-flex items-center gap-1 text-brand">
               <Check className="h-3.5 w-3.5" /> Marked {chosen}
               {guessed ? " · guessed" : ""}
             </span>
@@ -361,7 +451,7 @@ function QuestionImage({ src, qNo }: { src: string; qNo: number }) {
   if (!src) return null;
 
   return (
-    <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 shadow-inner overflow-hidden">
+    <div className="mt-3 rounded-2xl border border-line bg-paper shadow-inner overflow-hidden">
       <div className="relative flex min-h-[200px] max-h-[min(62vh,620px)] w-full items-center justify-center p-2 sm:p-3">
         {!errored && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -380,11 +470,11 @@ function QuestionImage({ src, qNo }: { src: string; qNo: number }) {
           />
         )}
         {(errored || !loaded) && (
-          <div className="absolute inset-0 flex items-center justify-center px-3 text-center text-sm text-slate-400">
+          <div className="absolute inset-0 flex items-center justify-center px-3 text-center text-sm text-ink-muted">
             {errored ? (
               <span>
                 Snippet for Q{qNo} missing — add{" "}
-                <code className="rounded bg-slate-200 px-1 py-0.5 text-[11px] text-slate-700">
+                <code className="rounded bg-line px-1 py-0.5 text-[11px] text-ink">
                   /public/questions/q{qNo}.png
                 </code>
               </span>

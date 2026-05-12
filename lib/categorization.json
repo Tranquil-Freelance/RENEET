@@ -1,0 +1,2375 @@
+{
+  "questions": {
+    "1": {
+      "q_no": 1,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Kinematics",
+      "subtopic": "Position/velocity-time graphs; uniformly accelerated motion under gravity",
+      "concept": "Identify correct v-t plot for a ball thrown vertically up and returning — velocity is +ve, drops to 0 at apex, then becomes −ve.",
+      "ncert_class": 11
+    },
+    "2": {
+      "q_no": 2,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 17,
+      "syllabus_unit": "Dual Nature of Matter & Radiation",
+      "subtopic": "Photoelectric effect; threshold wavelength",
+      "concept": "Condition for photoelectric emission: photon energy hc/λ ≥ φ, i.e. λ ≤ hc/φ.",
+      "ncert_class": 12
+    },
+    "3": {
+      "q_no": 3,
+      "subject": "physics",
+      "answer": "C",
+      "syllabus_unit_no": 4,
+      "syllabus_unit": "Work, Energy and Power",
+      "subtopic": "Power; work against gravity",
+      "concept": "Crane lifts 1000 kg by 20 m in 10 s; P = mgh / t.",
+      "ncert_class": 11
+    },
+    "4": {
+      "q_no": 4,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 17,
+      "syllabus_unit": "Dual Nature of Matter & Radiation",
+      "subtopic": "Energy of photon (E=hν), de Broglie wavelength (λ=h/p), wave/particle nature",
+      "concept": "List I (E=hν, Interference, λ=h/p, Compton) matched to List II (energy of photon, particle nature, de Broglie wavelength, wave nature).",
+      "ncert_class": 12
+    },
+    "5": {
+      "q_no": 5,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Laws of Motion",
+      "subtopic": "Newton's 2nd law; resultant of perpendicular forces",
+      "concept": "Two perpendicular forces (8 N, 6 N) on 5 kg body → resultant 10 N → a = 2 m/s².",
+      "ncert_class": 11
+    },
+    "6": {
+      "q_no": 6,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Oscillations and Waves",
+      "subtopic": "Energy in SHM; simple pendulum",
+      "concept": "Pendulum total energy 0.02 J → speed at mean position from KE = ½mv².",
+      "ncert_class": 11
+    },
+    "7": {
+      "q_no": 7,
+      "subject": "physics",
+      "answer": "A",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Laws of Motion",
+      "subtopic": "Static friction; equilibrium on an accelerating surface",
+      "concept": "Max trolley acceleration so box remains stationary → a_max = μ_s · g.",
+      "ncert_class": 11
+    },
+    "8": {
+      "q_no": 8,
+      "subject": "physics",
+      "answer": "C",
+      "syllabus_unit_no": 1,
+      "syllabus_unit": "Physics and Measurement",
+      "subtopic": "System of units; unit conversion",
+      "concept": "Sun-Earth distance with c = 1 (new unit system); distance = c × t = 400 light-seconds = 400 new-units.",
+      "ncert_class": 11
+    },
+    "9": {
+      "q_no": 9,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 19,
+      "syllabus_unit": "Electronic Devices",
+      "subtopic": "Semiconductor diode — half-wave rectification",
+      "concept": "Voltage across a single diode in series with R fed by AC source — clipped sine (negative half blocked).",
+      "ncert_class": 12
+    },
+    "10": {
+      "q_no": 10,
+      "subject": "physics",
+      "answer": "A",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Properties of Solids and Liquids",
+      "subtopic": "Pressure due to a fluid column; Pascal's law",
+      "concept": "Max depth before submarine hits 100 atm absolute: P_abs = P_atm + ρgh.",
+      "ncert_class": 11
+    },
+    "11": {
+      "q_no": 11,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 8,
+      "syllabus_unit": "Thermodynamics",
+      "subtopic": "First law of thermodynamics",
+      "concept": "dU/dt = dQ/dt − dW/dt — rate of change of internal energy from heat in and work done.",
+      "ncert_class": 11
+    },
+    "12": {
+      "q_no": 12,
+      "subject": "physics",
+      "answer": "C",
+      "syllabus_unit_no": 13,
+      "syllabus_unit": "Magnetic Effects of Current and Magnetism",
+      "subtopic": "Biot-Savart law — circular coil",
+      "concept": "B at centre of circular coil with N turns: B = μ₀NI / (2r) → solve for I.",
+      "ncert_class": 12
+    },
+    "13": {
+      "q_no": 13,
+      "subject": "physics",
+      "answer": "C",
+      "syllabus_unit_no": 16,
+      "syllabus_unit": "Optics",
+      "subtopic": "Wave optics — Young's double-slit (intensity, phase)",
+      "concept": "I = I_max cos²(φ/2); phase difference from given path difference.",
+      "ncert_class": 12
+    },
+    "14": {
+      "q_no": 14,
+      "subject": "physics",
+      "answer": "C",
+      "syllabus_unit_no": 19,
+      "syllabus_unit": "Electronic Devices",
+      "subtopic": "Ideal diode circuit analysis",
+      "concept": "Multi-branch circuit with ideal diodes; identify forward-biased branches and apply KVL/KCL for net current I.",
+      "ncert_class": 12
+    },
+    "15": {
+      "q_no": 15,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 16,
+      "syllabus_unit": "Optics",
+      "subtopic": "Refraction through thin lenses — concave (diverging) lens ray rules",
+      "concept": "Ray-tracing rules for a concave lens (parallel ray diverges; ray through optical centre is undeviated).",
+      "ncert_class": 12
+    },
+    "16": {
+      "q_no": 16,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 13,
+      "syllabus_unit": "Magnetic Effects of Current and Magnetism",
+      "subtopic": "Moving coil galvanometer → ammeter (shunt)",
+      "concept": "Shunt S = I_g G / (I − I_g) for G=100 Ω, I_g=1 mA, I=10 A.",
+      "ncert_class": 12
+    },
+    "17": {
+      "q_no": 17,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 18,
+      "syllabus_unit": "Atoms and Nuclei",
+      "subtopic": "Bohr model — orbit radius, energy levels",
+      "concept": "First excited state (n=2) of H; r_n = n²a₀ → r_2 = 4a₀.",
+      "ncert_class": 12
+    },
+    "18": {
+      "q_no": 18,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Gravitation",
+      "subtopic": "Gravitational PE; work done against gravity",
+      "concept": "Work to move mass between two radial distances from Earth's centre: W = ΔU = −GMm(1/r₂ − 1/r₁).",
+      "ncert_class": 11
+    },
+    "19": {
+      "q_no": 19,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 14,
+      "syllabus_unit": "Electromagnetic Induction and Alternating Currents",
+      "subtopic": "LCR series circuit — resonance",
+      "concept": "f₀ = 1 / (2π√(LC)) (independent of R).",
+      "ncert_class": 12
+    },
+    "20": {
+      "q_no": 20,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 11,
+      "syllabus_unit": "Electrostatics",
+      "subtopic": "Capacitors — charge sharing & energy loss",
+      "concept": "Charged capacitor (200 pF at 100 V) connected to identical uncharged one → energy lost = ½ × initial energy.",
+      "ncert_class": 12
+    },
+    "21": {
+      "q_no": 21,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 16,
+      "syllabus_unit": "Optics",
+      "subtopic": "Refraction through a prism — Snell's law",
+      "concept": "Equilateral prism, ray QR parallel to base → r = 30°; angle of deviation from i = 50°.",
+      "ncert_class": 12
+    },
+    "22": {
+      "q_no": 22,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 12,
+      "syllabus_unit": "Current Electricity",
+      "subtopic": "Metre/Wheatstone bridge — balance condition",
+      "concept": "Effect of interchanging galvanometer and cell positions on detected balance point.",
+      "ncert_class": 12
+    },
+    "23": {
+      "q_no": 23,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Kinetic Theory of Gases",
+      "subtopic": "RMS speed; degrees of freedom / molar mass",
+      "concept": "v_rms ∝ 1/√M; ratio for Argon (40) vs Chlorine (71).",
+      "ncert_class": 11
+    },
+    "24": {
+      "q_no": 24,
+      "subject": "physics",
+      "answer": "A",
+      "syllabus_unit_no": 19,
+      "syllabus_unit": "Electronic Devices",
+      "subtopic": "p-n junction diode — forward bias / I-V characteristics",
+      "concept": "Statements on threshold/knee voltage and exponential current rise in forward bias.",
+      "ncert_class": 12
+    },
+    "25": {
+      "q_no": 25,
+      "subject": "physics",
+      "answer": "A",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Oscillations and Waves",
+      "subtopic": "Travelling wave — phase difference vs path difference",
+      "concept": "y = 2.0 cos 2π(10t − 0.0080x + 0.35); ΔΦ = 2π × 0.0080 × Δx.",
+      "ncert_class": 11
+    },
+    "26": {
+      "q_no": 26,
+      "subject": "physics",
+      "answer": "A",
+      "syllabus_unit_no": 14,
+      "syllabus_unit": "Electromagnetic Induction and Alternating Currents",
+      "subtopic": "Faraday's / motional emf",
+      "concept": "emf = Blv with B=0.3 T, l=3 cm, v=2 cm/s → 1.8 × 10⁻⁴ V.",
+      "ncert_class": 12
+    },
+    "27": {
+      "q_no": 27,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Rotational Motion",
+      "subtopic": "Moment of inertia; parallel axis theorem",
+      "concept": "Ring about a tangent in its plane: I = ½mR² + mR² = (3/2)mR² with R from wire length L = 2πR.",
+      "ncert_class": 11
+    },
+    "28": {
+      "q_no": 28,
+      "subject": "physics",
+      "answer": "A",
+      "syllabus_unit_no": 12,
+      "syllabus_unit": "Current Electricity",
+      "subtopic": "EMF, internal resistance, terminal voltage",
+      "concept": "V_T = E − Ir for E=12 V, r=2 Ω, I=0.6 A.",
+      "ncert_class": 12
+    },
+    "29": {
+      "q_no": 29,
+      "subject": "physics",
+      "answer": "C",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Kinematics",
+      "subtopic": "Uniformly accelerated motion under gravity (reaction-time experiment)",
+      "concept": "Ruler falls from rest: d = ½gt² — distance proportional to t².",
+      "ncert_class": 11
+    },
+    "30": {
+      "q_no": 30,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Rotational Motion",
+      "subtopic": "Equations of rotational motion (angular kinematics)",
+      "concept": "Flywheel angular speed 600→1200 rpm; revolutions from θ = ω_avg × t (or ω² = ω₀² + 2αθ).",
+      "ncert_class": 11
+    },
+    "31": {
+      "q_no": 31,
+      "subject": "physics",
+      "answer": "A",
+      "syllabus_unit_no": 13,
+      "syllabus_unit": "Magnetic Effects of Current and Magnetism",
+      "subtopic": "Ampère's law — long straight current-carrying wire",
+      "concept": "B(r) for solid wire of radius a: B ∝ r for r ≤ a, B ∝ 1/r for r ≥ a.",
+      "ncert_class": 12
+    },
+    "32": {
+      "q_no": 32,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 18,
+      "syllabus_unit": "Atoms and Nuclei",
+      "subtopic": "Size of nucleus; mass number relations",
+      "concept": "R ∝ A^(1/3) ⇒ V ∝ A; identify true statements about nuclear volume and density.",
+      "ncert_class": 12
+    },
+    "33": {
+      "q_no": 33,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Oscillations and Waves",
+      "subtopic": "Simple pendulum — time period",
+      "concept": "T = 2 s from 30 oscillations in 60 s; L = gT²/(4π²).",
+      "ncert_class": 11
+    },
+    "34": {
+      "q_no": 34,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 20,
+      "syllabus_unit": "Experimental Skills",
+      "subtopic": "Vernier calipers — least count",
+      "concept": "20 VSD = 16 MSD, 1 MSD = 1 mm → LC = 1 MSD − 1 VSD = 0.2 mm.",
+      "ncert_class": 12
+    },
+    "35": {
+      "q_no": 35,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 1,
+      "syllabus_unit": "Physics and Measurement",
+      "subtopic": "Significant figures; error propagation",
+      "concept": "Density of cube from mass (4 sig fig) and side (2 sig fig); answer limited to 2 sig fig.",
+      "ncert_class": 11
+    },
+    "36": {
+      "q_no": 36,
+      "subject": "physics",
+      "answer": "C",
+      "syllabus_unit_no": 16,
+      "syllabus_unit": "Optics",
+      "subtopic": "Wave optics — interference & diffraction (conceptual)",
+      "concept": "Evaluate statements: energy redistribution (true), property of all waves (true/false).",
+      "ncert_class": 12
+    },
+    "37": {
+      "q_no": 37,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 11,
+      "syllabus_unit": "Electrostatics",
+      "subtopic": "Capacitors in series/parallel; charge on each capacitor",
+      "concept": "Four 10 μF in series, parallel with 2.5 μF → equivalent C and individual charges.",
+      "ncert_class": 12
+    },
+    "38": {
+      "q_no": 38,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Oscillations and Waves",
+      "subtopic": "Energy in SHM — KE vs time graph",
+      "concept": "KE non-negative, oscillates at 2× pendulum frequency, max at mean position, zero at extremes.",
+      "ncert_class": 11
+    },
+    "39": {
+      "q_no": 39,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 12,
+      "syllabus_unit": "Current Electricity",
+      "subtopic": "Electric power (heating effect)",
+      "concept": "Heater rated 400 W at 220 V; new P at reduced V keeping R constant.",
+      "ncert_class": 12
+    },
+    "40": {
+      "q_no": 40,
+      "subject": "physics",
+      "answer": "B",
+      "syllabus_unit_no": 14,
+      "syllabus_unit": "Electromagnetic Induction and Alternating Currents",
+      "subtopic": "Alternating current — instantaneous value, peak time",
+      "concept": "I(t) = I_p sin(ωt); reach peak when ωt = π/2 → t = T/4 = 1/(4f).",
+      "ncert_class": 12
+    },
+    "41": {
+      "q_no": 41,
+      "subject": "physics",
+      "answer": "A",
+      "syllabus_unit_no": 11,
+      "syllabus_unit": "Electrostatics",
+      "subtopic": "Conductors in electrostatic equilibrium; surface field",
+      "concept": "Truth of statements: field inside conductor is 0 (true); surface E depends on σ (true).",
+      "ncert_class": 12
+    },
+    "42": {
+      "q_no": 42,
+      "subject": "physics",
+      "answer": "C",
+      "syllabus_unit_no": 15,
+      "syllabus_unit": "Electromagnetic Waves",
+      "subtopic": "EM spectrum — production methods",
+      "concept": "Match microwave→klystron/magnetron, visible→atomic transitions, gamma→nuclear decay, IR→thermal radiation.",
+      "ncert_class": 12
+    },
+    "43": {
+      "q_no": 43,
+      "subject": "physics",
+      "answer": "D",
+      "syllabus_unit_no": 12,
+      "syllabus_unit": "Current Electricity",
+      "subtopic": "Kirchhoff's laws; balanced bridge",
+      "concept": "Square loop made from 4 Ω wire (each side 1 Ω) with 2 Ω across diagonal, 2 V battery — solve for I.",
+      "ncert_class": 12
+    },
+    "44": {
+      "q_no": 44,
+      "subject": "physics",
+      "answer": "A",
+      "syllabus_unit_no": 18,
+      "syllabus_unit": "Atoms and Nuclei",
+      "subtopic": "Nuclear density; R = R₀A^(1/3)",
+      "concept": "Find mass number A from given nuclear density and R₀ = 1.2 × 10⁻¹⁵ m.",
+      "ncert_class": 12
+    },
+    "45": {
+      "q_no": 45,
+      "subject": "physics",
+      "answer": "A",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Properties of Solids and Liquids",
+      "subtopic": "Elastic moduli — Young's modulus, compressibility, Poisson's ratio",
+      "concept": "Match physical property to defining formula (Y = FL/AΔL, β = −(1/V)(ΔV/ΔP), etc.).",
+      "ncert_class": 11
+    },
+    "46": {
+      "q_no": 46,
+      "subject": "chemistry",
+      "answer": "B",
+      "syllabus_unit_no": 19,
+      "syllabus_unit": "Biomolecules",
+      "subtopic": "Nucleic acids — DNA / RNA secondary structure",
+      "concept": "DNA is double-stranded with bases A,G,C,T; RNA is single-stranded with A,G,C,U.",
+      "ncert_class": 12
+    },
+    "47": {
+      "q_no": 47,
+      "subject": "chemistry",
+      "answer": "B",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Atomic Structure",
+      "subtopic": "Quantum numbers; orbital notation (n, l)",
+      "concept": "Match (n, l) pairs to s/p/d/f orbital notation using l = 0–3 ⇒ s/p/d/f.",
+      "ncert_class": 11
+    },
+    "48": {
+      "q_no": 48,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 20,
+      "syllabus_unit": "Principles Related to Practical Chemistry",
+      "subtopic": "Detection of extra elements — Lassaigne's test",
+      "concept": "Fusion with metallic Na converts C, N, S, X (halogens) in organics to their Na salts (NaCN, Na2S, NaX).",
+      "ncert_class": 12
+    },
+    "49": {
+      "q_no": 49,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 15,
+      "syllabus_unit": "Hydrocarbons",
+      "subtopic": "Aromatic compounds — electrophilic substitution / chlorination",
+      "concept": "C6H6 + 6Cl2 under anhyd. AlCl3 and UV gives different chlorinated products X and Y; count Cl atoms.",
+      "ncert_class": 12
+    },
+    "50": {
+      "q_no": 50,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 13,
+      "syllabus_unit": "Purification and Characterisation of Organic Compounds",
+      "subtopic": "Separation techniques — fractional distillation",
+      "concept": "Two miscible liquids X and Y with different boiling points — separated by fractional distillation.",
+      "ncert_class": 12
+    },
+    "51": {
+      "q_no": 51,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Chemical Bonding and Molecular Structure",
+      "subtopic": "VSEPR theory — shape and lone pairs",
+      "concept": "ClF3 with 5 electron pairs on Cl (3 BP + 2 LP) → T-shaped molecular geometry.",
+      "ncert_class": 11
+    },
+    "52": {
+      "q_no": 52,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 20,
+      "syllabus_unit": "Principles Related to Practical Chemistry",
+      "subtopic": "Detection of functional groups — phthalein dye test",
+      "concept": "Phthalic anhydride + active-H compound + conc. H2SO4 → leuco base → coloured phthalein — confirms phenolic group.",
+      "ncert_class": 12
+    },
+    "53": {
+      "q_no": 53,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Redox Reactions and Electrochemistry",
+      "subtopic": "Faraday's laws of electrolysis — mass deposited",
+      "concept": "Mass of Cu deposited at cathode from given current and time using m = (I·t·M)/(n·F).",
+      "ncert_class": 11
+    },
+    "54": {
+      "q_no": 54,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 11,
+      "syllabus_unit": "d- and f-Block Elements",
+      "subtopic": "Transition metal / oxide catalysis in industrial processes",
+      "concept": "Match: V2O5 → Contact process (H2SO4 from SO2); Fe → Haber process (NH3 from N2/H2).",
+      "ncert_class": 12
+    },
+    "55": {
+      "q_no": 55,
+      "subject": "chemistry",
+      "answer": "B",
+      "syllabus_unit_no": 12,
+      "syllabus_unit": "Co-ordination Compounds",
+      "subtopic": "Geometry of complexes (square planar, octahedral, tetrahedral)",
+      "concept": "[Pt(NH3)2Cl2] square planar; [Co(NH3)6]Cl3 octahedral; identify geometry of each complex.",
+      "ncert_class": 12
+    },
+    "56": {
+      "q_no": 56,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Classification of Elements and Periodicity in Properties",
+      "subtopic": "Atomic and ionic radii — size comparison",
+      "concept": "Cations smaller than parents; for isoelectronic Mg2+ vs Al3+ greater Z gives smaller size.",
+      "ncert_class": 11
+    },
+    "57": {
+      "q_no": 57,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 8,
+      "syllabus_unit": "Chemical Kinetics",
+      "subtopic": "Arrhenius equation — activation energy",
+      "concept": "Given ln k = 14.34 − 1.25×10^4/T, compare to ln A − Ea/RT → Ea = 1.25×10^4 × R.",
+      "ncert_class": 11
+    },
+    "58": {
+      "q_no": 58,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 20,
+      "syllabus_unit": "Principles Related to Practical Chemistry",
+      "subtopic": "Titrimetric exercises — acid-base indicators",
+      "concept": "NaOH (alkaline, phenolphthalein pink) titrated with oxalic acid → colour change pink → colourless.",
+      "ncert_class": 12
+    },
+    "59": {
+      "q_no": 59,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 15,
+      "syllabus_unit": "Hydrocarbons",
+      "subtopic": "Reactions of alkanes — steam reforming of methane",
+      "concept": "CH4 + H2O —(Ni, 1273 K)→ CO + 3H2 (syngas).",
+      "ncert_class": 12
+    },
+    "60": {
+      "q_no": 60,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 17,
+      "syllabus_unit": "Organic Compounds Containing Oxygen",
+      "subtopic": "Functional-group conversions — benzene to phenolsulfonic acid; carboxylic acid to alcohol",
+      "concept": "Reagent matching: oleum / NaOH Δ / H+ for benzene → p-hydroxybenzenesulfonic acid; reductions to convert CH3COOH → CH3CH2OH.",
+      "ncert_class": 12
+    },
+    "61": {
+      "q_no": 61,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 14,
+      "syllabus_unit": "Some Basic Principles of Organic Chemistry",
+      "subtopic": "Isomerism — metamerism",
+      "concept": "Metamers: same molecular formula + same functional group, different alkyl groups across the functional group (e.g. ethers like CH3OC3H7 vs C2H5OC2H5).",
+      "ncert_class": 12
+    },
+    "62": {
+      "q_no": 62,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 12,
+      "syllabus_unit": "Co-ordination Compounds",
+      "subtopic": "Isomerism in coordination compounds (geometrical, optical, ionisation, solvate)",
+      "concept": "[Pt(NH3)2Cl2] cis/trans (geometrical); [Co(en)3]3+ optical; match each complex to its isomerism type.",
+      "ncert_class": 12
+    },
+    "63": {
+      "q_no": 63,
+      "subject": "chemistry",
+      "answer": "B",
+      "syllabus_unit_no": 1,
+      "syllabus_unit": "Some Basic Concepts in Chemistry",
+      "subtopic": "Mole concept — Avogadro's number, atom counting",
+      "concept": "Number of H atoms in given mass of urea via moles × NA × (H atoms per formula unit).",
+      "ncert_class": 11
+    },
+    "64": {
+      "q_no": 64,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 11,
+      "syllabus_unit": "d- and f-Block Elements",
+      "subtopic": "Magnetic moment of transition metal ions (spin-only)",
+      "concept": "Ti2+ is 3d2 → n = 2 unpaired → μs = √(n(n+2)) = √8 BM.",
+      "ncert_class": 12
+    },
+    "65": {
+      "q_no": 65,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 8,
+      "syllabus_unit": "Chemical Kinetics",
+      "subtopic": "Order of reaction from concentration–time plot",
+      "concept": "Linear decrease in [R] vs t at constant slope → zero-order; rate = k, independent of [R].",
+      "ncert_class": 11
+    },
+    "66": {
+      "q_no": 66,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 17,
+      "syllabus_unit": "Organic Compounds Containing Oxygen",
+      "subtopic": "Aldehydes and ketones — chemical tests (2,4-DNP, Fehling, Tollens)",
+      "concept": "C8H8O compound: 2,4-DNP +ve and Fehling −ve → ketone or aromatic aldehyde — identify P and Q from given tests.",
+      "ncert_class": 12
+    },
+    "67": {
+      "q_no": 67,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 8,
+      "syllabus_unit": "Chemical Kinetics",
+      "subtopic": "Order and units of the rate constant",
+      "concept": "Match: zero-order → mol L⁻¹ s⁻¹; 1st → s⁻¹; 2nd → mol⁻¹ L s⁻¹; 3rd → mol⁻² L² s⁻¹.",
+      "ncert_class": 11
+    },
+    "68": {
+      "q_no": 68,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 11,
+      "syllabus_unit": "d- and f-Block Elements",
+      "subtopic": "Lanthanoid oxidation states — stability of +4 in Ce",
+      "concept": "Ce ([Xe] 4f¹ 5d¹ 6s²) → Ce⁴⁺ has empty 4f⁰ configuration which is energetically favourable.",
+      "ncert_class": 12
+    },
+    "69": {
+      "q_no": 69,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 20,
+      "syllabus_unit": "Principles Related to Practical Chemistry",
+      "subtopic": "Qualitative anion analysis — acetate (CH3COO⁻)",
+      "concept": "Colourless vinegar-smelling acidic vapours on adding dil. H2SO4 → acetate ion (acetic acid liberated).",
+      "ncert_class": 12
+    },
+    "70": {
+      "q_no": 70,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Redox Reactions and Electrochemistry",
+      "subtopic": "Nernst equation — EMF of half-cell",
+      "concept": "H2 / H+ electrode: E = E° − (2.303RT/nF) log([H+]² / pH2).",
+      "ncert_class": 11
+    },
+    "71": {
+      "q_no": 71,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Equilibrium",
+      "subtopic": "Ionic equilibrium — buffer pH (Henderson-Hasselbalch)",
+      "concept": "[HX] = [X⁻] → pH = pKa; use given Kb of conjugate base to find Ka and hence pKa = 14 − pKb.",
+      "ncert_class": 11
+    },
+    "72": {
+      "q_no": 72,
+      "subject": "chemistry",
+      "answer": "B",
+      "syllabus_unit_no": 14,
+      "syllabus_unit": "Some Basic Principles of Organic Chemistry",
+      "subtopic": "IUPAC nomenclature of branched alkanes",
+      "concept": "Longest chain = 7 C (heptane); substituents at C3 (ethyl) and C5 (methyl) → 3-ethyl-5-methylheptane.",
+      "ncert_class": 12
+    },
+    "73": {
+      "q_no": 73,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 16,
+      "syllabus_unit": "Organic Compounds Containing Halogens",
+      "subtopic": "Substitution reactions of alkyl halides",
+      "concept": "C2H5Cl + AgCN → ethyl isocyanide (C2H5NC, foul-smelling) — ambident nucleophile gives –NC with AgCN.",
+      "ncert_class": 12
+    },
+    "74": {
+      "q_no": 74,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Solutions",
+      "subtopic": "Raoult's law — negative deviation, intermolecular forces",
+      "concept": "Chloroform-acetone form H-bonds between H of CHCl3 and lone pair on acetone’s O → stronger A-B attraction → negative deviation.",
+      "ncert_class": 11
+    },
+    "75": {
+      "q_no": 75,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Solutions",
+      "subtopic": "Concentration units — molality",
+      "concept": "m = moles solute / kg solvent; 2.5 g acetic acid (M=60) in 75 g benzene → m ≈ 0.555 mol/kg.",
+      "ncert_class": 11
+    },
+    "76": {
+      "q_no": 76,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "P-Block Elements",
+      "subtopic": "Group 13 elements — BCl3 monomer vs AlCl3 dimer (Al2Cl6)",
+      "concept": "Evaluate statements about ECl3 (E = B or Al): BCl3 is monomeric (electron deficient); AlCl3 dimerises via Cl bridges.",
+      "ncert_class": 11
+    },
+    "77": {
+      "q_no": 77,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Chemical Bonding and Molecular Structure",
+      "subtopic": "Resonance and formal charge",
+      "concept": "Ozone (O3): central O (+1), terminal single-bonded O (−1), terminal double-bonded O (0).",
+      "ncert_class": 11
+    },
+    "78": {
+      "q_no": 78,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 4,
+      "syllabus_unit": "Chemical Thermodynamics",
+      "subtopic": "First law of thermodynamics — ΔU = Q − W",
+      "concept": "Heat absorbed by system = +500 J; work done by system = +200 J → ΔU = +300 J.",
+      "ncert_class": 11
+    },
+    "79": {
+      "q_no": 79,
+      "subject": "chemistry",
+      "answer": "B",
+      "syllabus_unit_no": 4,
+      "syllabus_unit": "Chemical Thermodynamics",
+      "subtopic": "Gibbs free energy; ΔG° = ΔH° − TΔS°; spontaneity",
+      "concept": "Compute ΔH° from ΔU° + Δn_g RT, then ΔG° = ΔH° − TΔS° at 298 K; sign of ΔG° → spontaneity.",
+      "ncert_class": 11
+    },
+    "80": {
+      "q_no": 80,
+      "subject": "chemistry",
+      "answer": "B",
+      "syllabus_unit_no": 18,
+      "syllabus_unit": "Organic Compounds Containing Nitrogen",
+      "subtopic": "Amines — reduction of nitriles to primary amines",
+      "concept": "LiAlH4/H2O, H2/Ni, Na(Hg)/EtOH all reduce R–CN to R–CH2–NH2 (primary amine); Sn/HCl and Br2/aq.NaOH do not.",
+      "ncert_class": 12
+    },
+    "81": {
+      "q_no": 81,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 12,
+      "syllabus_unit": "Co-ordination Compounds",
+      "subtopic": "Ligands — ambidentate ligand",
+      "concept": "Ambidentate ligand can bond through two different donor atoms (e.g., SCN⁻ via S or N; NO2⁻ via N or O) — not oxalate or EDTA.",
+      "ncert_class": 12
+    },
+    "82": {
+      "q_no": 82,
+      "subject": "chemistry",
+      "answer": "B",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Atomic Structure",
+      "subtopic": "Photon energy E = hν; photoelectric / radiation calculations",
+      "concept": "Photons per second = (power converted to light) / (energy per photon) = (150 W × 0.08) / (hν).",
+      "ncert_class": 11
+    },
+    "83": {
+      "q_no": 83,
+      "subject": "chemistry",
+      "answer": "C",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "P-Block Elements",
+      "subtopic": "Group 15 (N, P, As) — bonding (pπ-pπ in N2; dπ-dπ back-bonding for P, As)",
+      "concept": "Identify the incorrect statement among bonding characteristics of nitrogen family.",
+      "ncert_class": 11
+    },
+    "84": {
+      "q_no": 84,
+      "subject": "chemistry",
+      "answer": "A",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Classification of Elements and Periodicity in Properties",
+      "subtopic": "Periodic trends — metallic character",
+      "concept": "Metallic character decreases across a period and increases down a group; rank Na, Be, P, Mg, Si accordingly.",
+      "ncert_class": 11
+    },
+    "85": {
+      "q_no": 85,
+      "subject": "chemistry",
+      "answer": "B",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Equilibrium",
+      "subtopic": "Solubility / Ksp-type equilibrium calculation",
+      "concept": "BiO(OH)(s) ⇌ BiO+ + OH⁻; K = [BiO+][OH⁻] = x² = 4×10⁻¹⁰ → [OH⁻] = 2×10⁻⁵ M.",
+      "ncert_class": 11
+    },
+    "86": {
+      "q_no": 86,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Chemical Bonding and Molecular Structure",
+      "subtopic": "Hybridization; sigma / pi bond count",
+      "concept": "Match C2H4 (5σ+1π), C2H2 (3σ+2π), CH4 (4σ), NH3 (3σ) to their bonding descriptors.",
+      "ncert_class": 11
+    },
+    "87": {
+      "q_no": 87,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Equilibrium",
+      "subtopic": "Kp vs Kc relationship",
+      "concept": "Kp = Kc(RT)^Δn_g; use stoichiometry to find Δn_g and compute Kp from given Kc.",
+      "ncert_class": 11
+    },
+    "88": {
+      "q_no": 88,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 17,
+      "syllabus_unit": "Organic Compounds Containing Oxygen",
+      "subtopic": "Alcohols — conversion to alkyl halide, then dehydrohalogenation to alkene",
+      "concept": "Propanol + PCl5 → propyl chloride (X = POCl3); + alc. KOH → propene (Y); identify intermediates and products.",
+      "ncert_class": 12
+    },
+    "89": {
+      "q_no": 89,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 15,
+      "syllabus_unit": "Hydrocarbons",
+      "subtopic": "Alkanes — free-radical chlorination (UV)",
+      "concept": "C2H6 + Cl2 (UV) → C2H5Cl (X); subsequent reactions in sequence to identify final product Z.",
+      "ncert_class": 12
+    },
+    "90": {
+      "q_no": 90,
+      "subject": "chemistry",
+      "answer": "D",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "P-Block Elements",
+      "subtopic": "Carbon family (Group 14) — reaction of CO2 with hot coke",
+      "concept": "CO2(g) + C(s) → 2CO(g): 1 volume reactant → 2 volumes product → net increase in gas volume.",
+      "ncert_class": 11
+    },
+    "91": {
+      "q_no": 91,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Cell Structure and Function",
+      "subtopic": "Cell division — phases of the cell cycle",
+      "concept": "Match G1, S, G2, M phases to their key activities (growth, DNA replication, mitosis).",
+      "ncert_class": 11
+    },
+    "92": {
+      "q_no": 92,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Deviations from Mendelism — incomplete dominance, codominance, multiple alleles",
+      "concept": "Match each inheritance pattern with its classic example (e.g., incomplete dominance → Antirrhinum).",
+      "ncert_class": 12
+    },
+    "93": {
+      "q_no": 93,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Biodiversity loss — habitat loss; extinction examples",
+      "concept": "Amazon deforestation for soy → habitat loss; Steller’s sea cow and passenger pigeon hunted to extinction.",
+      "ncert_class": 12
+    },
+    "94": {
+      "q_no": 94,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Molecular basis of inheritance — transcription unit (promoter, structural gene, terminator)",
+      "concept": "Identify true statements about the three regions of a transcription unit and their orientation.",
+      "ncert_class": 12
+    },
+    "95": {
+      "q_no": 95,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Sex determination — haplodiploidy in honeybees",
+      "concept": "Fertilised diploid eggs → females; unfertilised haploid eggs → drones (males).",
+      "ncert_class": 12
+    },
+    "96": {
+      "q_no": 96,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 4,
+      "syllabus_unit": "Plant Physiology",
+      "subtopic": "Cellular respiration — site of glycolysis, ETS, TCA",
+      "concept": "Glycolysis → cytoplasm; ETS → inner mitochondrial membrane; TCA → mitochondrial matrix.",
+      "ncert_class": 11
+    },
+    "97": {
+      "q_no": 97,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 4,
+      "syllabus_unit": "Plant Physiology",
+      "subtopic": "Photosynthesis — Calvin cycle ATP/NADPH stoichiometry",
+      "concept": "Per glucose, Calvin cycle consumes 18 ATP and 12 NADPH (3 ATP + 2 NADPH per CO2 × 6).",
+      "ncert_class": 11
+    },
+    "98": {
+      "q_no": 98,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Biotechnology and Its Applications",
+      "subtopic": "Applications of biotechnology — GMOs, recombinant insulin, gene therapy",
+      "concept": "Match: GMO → Bt cotton; recombinant insulin → Humulin; etc.",
+      "ncert_class": 12
+    },
+    "99": {
+      "q_no": 99,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 1,
+      "syllabus_unit": "Diversity in Living World",
+      "subtopic": "Plant classification — gymnosperms (naked seeds)",
+      "concept": "Pinus is a gymnosperm; its ovules are borne exposed on megasporophylls (not enclosed in an ovary).",
+      "ncert_class": 11
+    },
+    "100": {
+      "q_no": 100,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 4,
+      "syllabus_unit": "Plant Physiology",
+      "subtopic": "Photosynthesis — Calvin cycle carboxylation enzyme",
+      "concept": "RuBisCO (Ribulose-1,5-bisphosphate carboxylase/oxygenase) catalyses CO2 fixation onto RuBP.",
+      "ncert_class": 11
+    },
+    "101": {
+      "q_no": 101,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Cell Structure and Function",
+      "subtopic": "Biomolecules — enzymes, alkaloids, lectins, drugs",
+      "concept": "Match trypsin (enzyme), morphine (alkaloid), concanavalin A (lectin), and a drug to their categories.",
+      "ncert_class": 11
+    },
+    "102": {
+      "q_no": 102,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Cell Structure and Function",
+      "subtopic": "Biomolecules — amino acid structure",
+      "concept": "Amino acids have an α-carbon bearing –NH2, –COOH, –H, and an R-group — substituted methanes; zwitterions at neutral pH.",
+      "ncert_class": 11
+    },
+    "103": {
+      "q_no": 103,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Mendelian disorders — sickle-cell anaemia mutation",
+      "concept": "Point mutation in β-globin gene: Glu → Val at the 6th amino-acid position.",
+      "ncert_class": 12
+    },
+    "104": {
+      "q_no": 104,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Cell Structure and Function",
+      "subtopic": "Nucleus and nucleolus — site of rRNA synthesis",
+      "concept": "Nucleolus is the dense sub-nuclear body where rRNA is transcribed and ribosomal subunits are assembled.",
+      "ncert_class": 11
+    },
+    "105": {
+      "q_no": 105,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 1,
+      "syllabus_unit": "Diversity in Living World",
+      "subtopic": "Taxonomy — binomial nomenclature rules",
+      "concept": "Italics in print / underline when handwritten; genus capitalised; species lowercase; etc.",
+      "ncert_class": 11
+    },
+    "106": {
+      "q_no": 106,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 4,
+      "syllabus_unit": "Plant Physiology",
+      "subtopic": "Plant growth regulators — auxins, gibberellins, cytokinins, ethylene, ABA",
+      "concept": "Match 2,4-D (herbicide), GA3 (malting), cytokinin (cell division), ABA (dormancy) to functions.",
+      "ncert_class": 11
+    },
+    "107": {
+      "q_no": 107,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Structural Organisation in Animals and Plants",
+      "subtopic": "Plant anatomy — conjunctive tissue, Casparian strips, endodermis, pericycle",
+      "concept": "Match anatomical terms (conjunctive tissue between xylem & phloem; Casparian strips in endodermis) to their definitions.",
+      "ncert_class": 11
+    },
+    "108": {
+      "q_no": 108,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Reproduction",
+      "subtopic": "Sexual reproduction in flowering plants — pollination types (autogamy, geitonogamy, xenogamy)",
+      "concept": "Xenogamy alone introduces genetically different pollen (from a different plant) to the stigma.",
+      "ncert_class": 12
+    },
+    "109": {
+      "q_no": 109,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Structural Organisation in Animals and Plants",
+      "subtopic": "Morphology — heterophylly and environmental (phenotypic) plasticity",
+      "concept": "Different leaf forms on the same plant in response to environmental cues = environmental / phenotypic plasticity.",
+      "ncert_class": 11
+    },
+    "110": {
+      "q_no": 110,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Biotechnology and Its Applications",
+      "subtopic": "Tools of recombinant DNA — restriction endonucleases",
+      "concept": "Identify which statements about restriction enzymes are NOT true (\"molecular scissors\", specific recognition sites, etc.).",
+      "ncert_class": 12
+    },
+    "111": {
+      "q_no": 111,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Molecular basis of inheritance — DNA fingerprinting steps",
+      "concept": "Correct order: isolate DNA + digest with restriction enzymes → electrophoresis → blotting → hybridisation with VNTR probe → autoradiography.",
+      "ncert_class": 12
+    },
+    "112": {
+      "q_no": 112,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 4,
+      "syllabus_unit": "Plant Physiology",
+      "subtopic": "Photosynthesis — PSII water splitting; C3 vs C4 pathway",
+      "concept": "Identify the incorrect photosynthesis statement (e.g., water splitting at PSII, C4 plants still use C3 cycle for biosynthesis).",
+      "ncert_class": 11
+    },
+    "113": {
+      "q_no": 113,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Biotechnology and Its Applications",
+      "subtopic": "Plant biotechnology — somatic hybridisation (protoplast fusion)",
+      "concept": "Order: isolate single cells → digest cell walls → isolate naked protoplasts → fuse → culture → regenerate hybrid plants.",
+      "ncert_class": 12
+    },
+    "114": {
+      "q_no": 114,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Structural Organisation in Animals and Plants",
+      "subtopic": "Plant anatomy — bulliform (motor) cells in grasses",
+      "concept": "Large thin-walled epidermal cells; turgid → leaf flat; flaccid → leaf rolls to reduce transpiration.",
+      "ncert_class": 11
+    },
+    "115": {
+      "q_no": 115,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Reproduction",
+      "subtopic": "Sexual reproduction in flowering plants — microsporogenesis sequence",
+      "concept": "Sporogenous tissue → pollen mother cells → microspore tetrads → pollen grains.",
+      "ncert_class": 12
+    },
+    "116": {
+      "q_no": 116,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Biodiversity conservation — in situ vs ex situ",
+      "concept": "In situ = protection of species in their natural habitat (national parks, biosphere reserves); seed banks / safari parks are ex situ.",
+      "ncert_class": 12
+    },
+    "117": {
+      "q_no": 117,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Reproduction",
+      "subtopic": "Double fertilisation in angiosperms — ploidy of cells (n, 2n, 3n)",
+      "concept": "Egg/synergids/antipodals = n; zygote = 2n; primary endosperm nucleus / endosperm = 3n.",
+      "ncert_class": 12
+    },
+    "118": {
+      "q_no": 118,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Sixth mass extinction — unprecedented current rate of species loss",
+      "concept": "Current extinction rate is several orders of magnitude higher than the geological background rate.",
+      "ncert_class": 12
+    },
+    "119": {
+      "q_no": 119,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Gene expression regulation — lac operon",
+      "concept": "lacZ → β-galactosidase; lacY → permease; lacA → transacetylase; lacI → repressor.",
+      "ncert_class": 12
+    },
+    "120": {
+      "q_no": 120,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Structural Organisation in Animals and Plants",
+      "subtopic": "Inflorescence — racemose (acropetal succession)",
+      "concept": "Main axis grows indefinitely; older flowers towards base, younger ones towards apex.",
+      "ncert_class": 11
+    },
+    "121": {
+      "q_no": 121,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 1,
+      "syllabus_unit": "Diversity in Living World",
+      "subtopic": "Whittaker’s five-kingdom classification — criteria",
+      "concept": "Cell structure (pro/eu), body organisation (uni/multi), mode of nutrition, ecological role, phylogeny.",
+      "ncert_class": 11
+    },
+    "122": {
+      "q_no": 122,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Biodiversity loss — ‘Evil Quartet’ (Wilson)",
+      "concept": "Habitat loss & fragmentation, over-exploitation, alien species invasion, co-extinctions.",
+      "ncert_class": 12
+    },
+    "123": {
+      "q_no": 123,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Biotechnology and Its Applications",
+      "subtopic": "Tools of biotechnology — PCR cycle (denaturation, annealing, extension)",
+      "concept": "Correct chronological steps of one PCR cycle: melt strands → anneal primers → Taq polymerase extends.",
+      "ncert_class": 12
+    },
+    "124": {
+      "q_no": 124,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 4,
+      "syllabus_unit": "Plant Physiology",
+      "subtopic": "Respiration — Respiratory Quotient (RQ)",
+      "concept": "RQ = volume of CO2 evolved / volume of O2 consumed; varies with substrate (carbs = 1, fats < 1, organic acids > 1).",
+      "ncert_class": 11
+    },
+    "125": {
+      "q_no": 125,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Biodiversity — bioprospecting definition",
+      "concept": "Bioprospecting is the systematic exploration of molecular, genetic and species-level diversity for economically valuable products.",
+      "ncert_class": 12
+    },
+    "126": {
+      "q_no": 126,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Ecosystem — decomposition terms (detritus, fragmentation, leaching, humification, mineralisation)",
+      "concept": "Match each decomposition term to its correct definition.",
+      "ncert_class": 12
+    },
+    "127": {
+      "q_no": 127,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Cell Structure and Function",
+      "subtopic": "Biomolecules — lipids, proteins (polypeptides), nucleic acids",
+      "concept": "Identify which biomolecule statements are correct: lipids hydrophobic; proteins = chains of amino acids; etc.",
+      "ncert_class": 11
+    },
+    "128": {
+      "q_no": 128,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Structural Organisation in Animals and Plants",
+      "subtopic": "Plant anatomy — root zones (meristem, elongation, maturation / root hair)",
+      "concept": "Root hairs originate from the maturation (root-hair) zone of the root epidermis.",
+      "ncert_class": 11
+    },
+    "129": {
+      "q_no": 129,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 4,
+      "syllabus_unit": "Plant Physiology",
+      "subtopic": "Plant growth and development — phase of cell elongation",
+      "concept": "Elongation phase: rapid vacuolation, cell-wall loosening, increase in cell size — nuclei become less conspicuous, not more.",
+      "ncert_class": 11
+    },
+    "130": {
+      "q_no": 130,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Structural Organisation in Animals and Plants",
+      "subtopic": "Plant families — Solanaceae floral formula",
+      "concept": "Solanaceae: ⊕ ♀ K(5) C(5) A5 G(2) — actinomorphic, bisexual, pentamerous, syncarpous.",
+      "ncert_class": 11
+    },
+    "131": {
+      "q_no": 131,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Molecular basis — DNA packaging, histones, nucleosome",
+      "concept": "Histone octamer (2 each of H2A, H2B, H3, H4); histones are positively charged basic proteins; ~200 bp wraps each nucleosome.",
+      "ncert_class": 12
+    },
+    "132": {
+      "q_no": 132,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Biotechnology and Its Applications",
+      "subtopic": "Tools of biotechnology — cutting, separating, visualising DNA",
+      "concept": "Restriction enzymes cut DNA; agarose-gel electrophoresis separates fragments; ethidium-bromide / UV visualisation.",
+      "ncert_class": 12
+    },
+    "133": {
+      "q_no": 133,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Cell Structure and Function",
+      "subtopic": "Biomolecules — protein structure (primary, secondary α-helix, tertiary, quaternary)",
+      "concept": "Secondary structure = α-helix / β-sheet stabilised by H-bonds between backbone atoms.",
+      "ncert_class": 11
+    },
+    "134": {
+      "q_no": 134,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Ecosystem — GPP, NPP, secondary productivity",
+      "concept": "GPP = total carbon fixed; NPP = GPP − R (energy available to consumers); secondary productivity = rate of consumer assimilation.",
+      "ncert_class": 12
+    },
+    "135": {
+      "q_no": 135,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Structural Organisation in Animals and Plants",
+      "subtopic": "Flower — types of placentation",
+      "concept": "Marginal → Pea; axile → China rose / lemon; parietal → mustard; free central → Dianthus; basal → sunflower.",
+      "ncert_class": 11
+    },
+    "136": {
+      "q_no": 136,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Structural Organisation in Animals and Plants",
+      "subtopic": "Frog anatomy — hepatic portal system, cranial nerves",
+      "concept": "Identify correct frog statements (hepatic portal vein takes blood from gut → liver; frog has 10 pairs of cranial nerves).",
+      "ncert_class": 11
+    },
+    "137": {
+      "q_no": 137,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 1,
+      "syllabus_unit": "Diversity in Living World",
+      "subtopic": "Class Aves — flightless bird with paddle-like forelimbs",
+      "concept": "Penguin: flightless bird whose wings are modified into flippers / paddles adapted for swimming.",
+      "ncert_class": 11
+    },
+    "138": {
+      "q_no": 138,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 2,
+      "syllabus_unit": "Structural Organisation in Animals and Plants",
+      "subtopic": "Frog — sexual dimorphism",
+      "concept": "Male frogs have vocal sacs and nuptial pads; \"bulging eyes\" is NOT a male-distinguishing feature.",
+      "ncert_class": 11
+    },
+    "139": {
+      "q_no": 139,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 1,
+      "syllabus_unit": "Diversity in Living World",
+      "subtopic": "Animal classification — Cyclostomata (Class Agnatha)",
+      "concept": "Cartilage endoskeleton, ecto-parasitic circular sucking mouth, 6–15 pairs of gill slits, no paired fins / scales → lamprey / hagfish.",
+      "ncert_class": 11
+    },
+    "140": {
+      "q_no": 140,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Breathing and respiration — ordered steps",
+      "concept": "Pulmonary ventilation → gas exchange across alveoli → transport in blood → diffusion at tissues → cellular respiration.",
+      "ncert_class": 11
+    },
+    "141": {
+      "q_no": 141,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Cell Structure and Function",
+      "subtopic": "Cell organelles — non-membrane-bound, present in pro- & eukaryotes",
+      "concept": "Ribosomes are non-membrane-bound and present in both prokaryotes and eukaryotes.",
+      "ncert_class": 11
+    },
+    "142": {
+      "q_no": 142,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Reproduction",
+      "subtopic": "Reproductive health — assisted reproductive technologies (GIFT)",
+      "concept": "GIFT (Gamete Intrafallopian Transfer): transfer of gametes directly into the fallopian tube for in vivo fertilisation.",
+      "ncert_class": 12
+    },
+    "143": {
+      "q_no": 143,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Locomotion and movement — mechanism of muscle contraction",
+      "concept": "Motor neuron → sarcolemma → sarcoplasmic reticulum releases Ca2+ → troponin–tropomyosin → cross-bridge cycle.",
+      "ncert_class": 11
+    },
+    "144": {
+      "q_no": 144,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Biotechnology and Its Applications",
+      "subtopic": "Cloning vectors — pBR322, BamHI, antibiotic-resistance selection",
+      "concept": "BamHI site in pBR322 lies within the tet gene → insertional inactivation → select on ampicillin, screen for tetracycline sensitivity.",
+      "ncert_class": 12
+    },
+    "145": {
+      "q_no": 145,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Neural control and coordination — chemical synapse",
+      "concept": "Neurotransmitter binds receptors on the post-synaptic membrane (not the pre-synaptic membrane).",
+      "ncert_class": 11
+    },
+    "146": {
+      "q_no": 146,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Locomotion and movement — axial skeleton (skull, vertebrae, ribs)",
+      "concept": "Human skull is dicondylic; 7 cervical vertebrae; rib classification (true / false / bicephalic) — evaluate which statements are correct.",
+      "ncert_class": 11
+    },
+    "147": {
+      "q_no": 147,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Biotechnology and Its Applications",
+      "subtopic": "Applications in health — α-1 antitrypsin for emphysema",
+      "concept": "Recombinant α-1 antitrypsin is used to treat hereditary emphysema (genetic AAT deficiency).",
+      "ncert_class": 12
+    },
+    "148": {
+      "q_no": 148,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Body fluids and circulation — Rh blood grouping, erythroblastosis foetalis",
+      "concept": "EBF occurs when an Rh− mother carries an Rh+ fetus (after first sensitisation); identify incorrect Rh-compatibility claims.",
+      "ncert_class": 11
+    },
+    "149": {
+      "q_no": 149,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 8,
+      "syllabus_unit": "Biology and Human Welfare",
+      "subtopic": "Drug and alcohol abuse — effects of nicotine, opioids, cannabinoids, cocaine",
+      "concept": "Match each drug to its primary physiological effect (e.g., nicotine → stimulant via catecholamines).",
+      "ncert_class": 12
+    },
+    "150": {
+      "q_no": 150,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Locomotion and movement — muscular/skeletal disorders",
+      "concept": "Tetany — muscle spasms from low Ca2+; arthritis — joint inflammation; osteoporosis; myasthenia gravis; muscular dystrophy.",
+      "ncert_class": 11
+    },
+    "151": {
+      "q_no": 151,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Reproduction",
+      "subtopic": "Reproductive health — contraceptive methods (IUDs)",
+      "concept": "Progestasert → hormone-releasing IUD; Multiload 375 → Cu-releasing IUD; LNG-20; CuT etc.",
+      "ncert_class": 12
+    },
+    "152": {
+      "q_no": 152,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Cell Structure and Function",
+      "subtopic": "Cell membrane — fluid-mosaic model, lipid bilayer, proteins",
+      "concept": "Identify correct membrane statements (~52% protein in RBC membrane, phospholipid bilayer); mesosomes belong to prokaryotes.",
+      "ncert_class": 11
+    },
+    "153": {
+      "q_no": 153,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Cell Structure and Function",
+      "subtopic": "Cell organelles — endomembrane system (ER, Golgi, lysosomes, vesicles)",
+      "concept": "Endomembrane system: nuclear envelope, ER, Golgi, lysosomes, vesicles — mitochondria, plastids, peroxisomes are NOT part of it.",
+      "ncert_class": 11
+    },
+    "154": {
+      "q_no": 154,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Reproduction",
+      "subtopic": "Human reproduction — embryonic developmental milestones (gestational weeks)",
+      "concept": "First movement & hair on head → ~20 weeks; eyelashes by ~24 wks; full term → ~38–40 wks.",
+      "ncert_class": 12
+    },
+    "155": {
+      "q_no": 155,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Population interactions — sexual deceit (orchid – wasp mimicry)",
+      "concept": "Mediterranean orchid Ophrys mimics female bee/wasp to attract males for pollination — pseudo-copulation → sexual deceit.",
+      "ncert_class": 12
+    },
+    "156": {
+      "q_no": 156,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 1,
+      "syllabus_unit": "Diversity in Living World",
+      "subtopic": "Animal classification — Class Osteichthyes (bony fishes)",
+      "concept": "Identify the option containing only bony fishes (e.g., Catla, Labeo, sea horse); exclude Chondrichthyes / non-fish.",
+      "ncert_class": 11
+    },
+    "157": {
+      "q_no": 157,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Biological evolution — geological timeline of life",
+      "concept": "65 mya → K-Pg extinction (dinosaurs); 500 mya → invertebrate radiation; 200 mya → mammals appear; etc.",
+      "ncert_class": 12
+    },
+    "158": {
+      "q_no": 158,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Sex determination / gametogenesis — haploid gametes by mitosis (honeybee drones)",
+      "concept": "Drones are haploid (parthenogenetic) and produce sperm by mitotic divisions, not meiosis.",
+      "ncert_class": 12
+    },
+    "159": {
+      "q_no": 159,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Body fluids and circulation — differential WBC count",
+      "concept": "Given 8000 WBC/mm³ with eosinophils ~1–6% and lymphocytes ~20–45%, compute approximate counts.",
+      "ncert_class": 11
+    },
+    "160": {
+      "q_no": 160,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "ABO blood group — multiple alleles, Mendelian probability",
+      "concept": "Heterozygous A (IA i) × heterozygous B (IB i) → 1 AB : 1 A : 1 B : 1 O → probability of given offspring blood group.",
+      "ncert_class": 12
+    },
+    "161": {
+      "q_no": 161,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Excretion — renin–angiotensin–aldosterone system (RAAS)",
+      "concept": "Order: ↓BP/GFR → renin from JGA → angiotensin I → II → vasoconstriction + aldosterone → Na⁺/H2O reabsorption.",
+      "ncert_class": 11
+    },
+    "162": {
+      "q_no": 162,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Population interactions — mutualism, parasitism, amensalism, predation, competition",
+      "concept": "Evaluate statements describing each interaction (mutualism +/+, parasitism +/−, amensalism 0/−, etc.).",
+      "ncert_class": 12
+    },
+    "163": {
+      "q_no": 163,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Reproduction",
+      "subtopic": "Human reproduction — spermatogenesis",
+      "concept": "Spermatogonia divide mitotically → primary spermatocyte (2n) → meiosis I → secondary spermatocyte (n) → meiosis II → spermatids.",
+      "ncert_class": 12
+    },
+    "164": {
+      "q_no": 164,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 8,
+      "syllabus_unit": "Biology and Human Welfare",
+      "subtopic": "Human disease — Plasmodium life cycle (malaria)",
+      "concept": "Sequence in human host: sporozoites injected by mosquito → liver (exo-erythrocytic) → RBC → trophozoite → schizont → merozoite → gametocytes.",
+      "ncert_class": 12
+    },
+    "165": {
+      "q_no": 165,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 8,
+      "syllabus_unit": "Biology and Human Welfare",
+      "subtopic": "Microbes in human welfare — microbial bioactive molecules",
+      "concept": "Streptokinase → dissolve clots; statins → cholesterol-lowering; cyclosporin A → immunosuppressant; LAB → curd.",
+      "ncert_class": 12
+    },
+    "166": {
+      "q_no": 166,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Evolution — convergent vs divergent (homologous vs analogous structures)",
+      "concept": "Whale and bat forelimbs are homologous (divergent evolution) — NOT an example of convergent evolution.",
+      "ncert_class": 12
+    },
+    "167": {
+      "q_no": 167,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 8,
+      "syllabus_unit": "Biology and Human Welfare",
+      "subtopic": "Microbes in food processing — Swiss cheese",
+      "concept": "Propionibacterium sharmanii ferments lactic acid producing CO2 → large holes in Swiss cheese.",
+      "ncert_class": 12
+    },
+    "168": {
+      "q_no": 168,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Chemical coordination — adrenal hormones (cortisol, aldosterone)",
+      "concept": "Cortisol → anti-inflammatory / stress response; aldosterone → Na⁺ and water reabsorption from renal tubules.",
+      "ncert_class": 11
+    },
+    "169": {
+      "q_no": 169,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 6,
+      "syllabus_unit": "Reproduction",
+      "subtopic": "Human reproduction — layers around the ovum",
+      "concept": "Outer → inner: corona radiata → zona pellucida → plasma membrane of the egg.",
+      "ncert_class": 12
+    },
+    "170": {
+      "q_no": 170,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Populations — Verhulst–Pearl logistic growth",
+      "concept": "dN/dt = rN × (K − N)/K, where K is the carrying capacity (sigmoid curve).",
+      "ncert_class": 12
+    },
+    "171": {
+      "q_no": 171,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 9,
+      "syllabus_unit": "Biotechnology and Its Applications",
+      "subtopic": "Applications in agriculture — Bt crops, Cry proteins",
+      "concept": "cryIAc → cotton bollworms; cryIIAb → corn borer; cryIAb similar; specific Cry proteins target specific insect orders.",
+      "ncert_class": 12
+    },
+    "172": {
+      "q_no": 172,
+      "subject": "biology",
+      "answer": "D",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Excretion — Juxta Glomerular Apparatus (JGA)",
+      "concept": "JGA components: macula densa (DCT) + juxtaglomerular cells (afferent arteriole) + extraglomerular mesangial cells.",
+      "ncert_class": 11
+    },
+    "173": {
+      "q_no": 173,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Respiration — modes of breathing across animals",
+      "concept": "Molluscs → branchial (gills); Reptiles → pulmonary only; Adult amphibians → pulmonary + cutaneous; Amoeba → cellular / by diffusion.",
+      "ncert_class": 11
+    },
+    "174": {
+      "q_no": 174,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Genetic code — sickle-cell anaemia mutant codon",
+      "concept": "Normal codon GAG (Glu) → mutant GUG (Val) at the 6th position of β-globin → HbS → polymerisation and sickling.",
+      "ncert_class": 12
+    },
+    "175": {
+      "q_no": 175,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Sex determination — XO system (grasshopper)",
+      "concept": "Female grasshopper = XX (2n + 2 chromosomes); male = XO (2n + 1) — one fewer chromosome than the female.",
+      "ncert_class": 12
+    },
+    "176": {
+      "q_no": 176,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 1,
+      "syllabus_unit": "Diversity in Living World",
+      "subtopic": "Animal kingdom — characteristic features (Platyhelminthes, Echinodermata, etc.)",
+      "concept": "Platyhelminthes → incomplete digestive system (true); adult echinoderms → radial symmetry (so claim of bilateral is false).",
+      "ncert_class": 11
+    },
+    "177": {
+      "q_no": 177,
+      "subject": "biology",
+      "answer": "C",
+      "syllabus_unit_no": 3,
+      "syllabus_unit": "Cell Structure and Function",
+      "subtopic": "Biomolecules — enzyme classification (IUBMB classes)",
+      "concept": "Reaction cleaves C–C bond, forms C=C without hydrolysis / oxidation → enzyme is a LYASE.",
+      "ncert_class": 11
+    },
+    "178": {
+      "q_no": 178,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 10,
+      "syllabus_unit": "Ecology and Environment",
+      "subtopic": "Ecosystem — ecological pyramids (number, biomass, energy)",
+      "concept": "Pyramid of energy is always upright; biomass / number pyramids can be inverted (e.g., parasite trees, marine ecosystems).",
+      "ncert_class": 12
+    },
+    "179": {
+      "q_no": 179,
+      "subject": "biology",
+      "answer": "A",
+      "syllabus_unit_no": 7,
+      "syllabus_unit": "Genetics and Evolution",
+      "subtopic": "Human evolution — ancestral sequence",
+      "concept": "Ramapithecus → Australopithecus → Homo habilis → Homo erectus → Neanderthal → Homo sapiens.",
+      "ncert_class": 12
+    },
+    "180": {
+      "q_no": 180,
+      "subject": "biology",
+      "answer": "B",
+      "syllabus_unit_no": 5,
+      "syllabus_unit": "Human Physiology",
+      "subtopic": "Breathing — respiratory volumes (TV, IRV, ERV, RV)",
+      "concept": "Tidal Volume ≈ 500 mL; IRV ≈ 2500–3000 mL; ERV ≈ 1000–1100 mL; Residual Volume ≈ 1100–1200 mL.",
+      "ncert_class": 11
+    }
+  },
+  "unit_totals": {
+    "physics": [
+      {
+        "unit_no": 1,
+        "name": "Physics and Measurement",
+        "q_count": 2,
+        "q_nos": [
+          8,
+          35
+        ]
+      },
+      {
+        "unit_no": 2,
+        "name": "Kinematics",
+        "q_count": 2,
+        "q_nos": [
+          1,
+          29
+        ]
+      },
+      {
+        "unit_no": 3,
+        "name": "Laws of Motion",
+        "q_count": 2,
+        "q_nos": [
+          5,
+          7
+        ]
+      },
+      {
+        "unit_no": 4,
+        "name": "Work, Energy and Power",
+        "q_count": 1,
+        "q_nos": [
+          3
+        ]
+      },
+      {
+        "unit_no": 5,
+        "name": "Rotational Motion",
+        "q_count": 2,
+        "q_nos": [
+          27,
+          30
+        ]
+      },
+      {
+        "unit_no": 6,
+        "name": "Gravitation",
+        "q_count": 1,
+        "q_nos": [
+          18
+        ]
+      },
+      {
+        "unit_no": 7,
+        "name": "Properties of Solids and Liquids",
+        "q_count": 2,
+        "q_nos": [
+          10,
+          45
+        ]
+      },
+      {
+        "unit_no": 8,
+        "name": "Thermodynamics",
+        "q_count": 1,
+        "q_nos": [
+          11
+        ]
+      },
+      {
+        "unit_no": 9,
+        "name": "Kinetic Theory of Gases",
+        "q_count": 1,
+        "q_nos": [
+          23
+        ]
+      },
+      {
+        "unit_no": 10,
+        "name": "Oscillations and Waves",
+        "q_count": 4,
+        "q_nos": [
+          6,
+          25,
+          33,
+          38
+        ]
+      },
+      {
+        "unit_no": 11,
+        "name": "Electrostatics",
+        "q_count": 3,
+        "q_nos": [
+          20,
+          37,
+          41
+        ]
+      },
+      {
+        "unit_no": 12,
+        "name": "Current Electricity",
+        "q_count": 4,
+        "q_nos": [
+          22,
+          28,
+          39,
+          43
+        ]
+      },
+      {
+        "unit_no": 13,
+        "name": "Magnetic Effects of Current and Magnetism",
+        "q_count": 3,
+        "q_nos": [
+          12,
+          16,
+          31
+        ]
+      },
+      {
+        "unit_no": 14,
+        "name": "Electromagnetic Induction and Alternating Currents",
+        "q_count": 3,
+        "q_nos": [
+          19,
+          26,
+          40
+        ]
+      },
+      {
+        "unit_no": 15,
+        "name": "Electromagnetic Waves",
+        "q_count": 1,
+        "q_nos": [
+          42
+        ]
+      },
+      {
+        "unit_no": 16,
+        "name": "Optics",
+        "q_count": 4,
+        "q_nos": [
+          13,
+          15,
+          21,
+          36
+        ]
+      },
+      {
+        "unit_no": 17,
+        "name": "Dual Nature of Matter and Radiation",
+        "q_count": 2,
+        "q_nos": [
+          2,
+          4
+        ]
+      },
+      {
+        "unit_no": 18,
+        "name": "Atoms and Nuclei",
+        "q_count": 3,
+        "q_nos": [
+          17,
+          32,
+          44
+        ]
+      },
+      {
+        "unit_no": 19,
+        "name": "Electronic Devices",
+        "q_count": 3,
+        "q_nos": [
+          9,
+          14,
+          24
+        ]
+      },
+      {
+        "unit_no": 20,
+        "name": "Experimental Skills",
+        "q_count": 1,
+        "q_nos": [
+          34
+        ]
+      }
+    ],
+    "chemistry": [
+      {
+        "unit_no": 1,
+        "name": "Some Basic Concepts in Chemistry",
+        "q_count": 1,
+        "q_nos": [
+          63
+        ]
+      },
+      {
+        "unit_no": 2,
+        "name": "Atomic Structure",
+        "q_count": 2,
+        "q_nos": [
+          47,
+          82
+        ]
+      },
+      {
+        "unit_no": 3,
+        "name": "Chemical Bonding and Molecular Structure",
+        "q_count": 3,
+        "q_nos": [
+          51,
+          77,
+          86
+        ]
+      },
+      {
+        "unit_no": 4,
+        "name": "Chemical Thermodynamics",
+        "q_count": 2,
+        "q_nos": [
+          78,
+          79
+        ]
+      },
+      {
+        "unit_no": 5,
+        "name": "Solutions",
+        "q_count": 2,
+        "q_nos": [
+          74,
+          75
+        ]
+      },
+      {
+        "unit_no": 6,
+        "name": "Equilibrium",
+        "q_count": 3,
+        "q_nos": [
+          71,
+          85,
+          87
+        ]
+      },
+      {
+        "unit_no": 7,
+        "name": "Redox Reactions and Electrochemistry",
+        "q_count": 2,
+        "q_nos": [
+          53,
+          70
+        ]
+      },
+      {
+        "unit_no": 8,
+        "name": "Chemical Kinetics",
+        "q_count": 3,
+        "q_nos": [
+          57,
+          65,
+          67
+        ]
+      },
+      {
+        "unit_no": 9,
+        "name": "Classification of Elements and Periodicity in Properties",
+        "q_count": 2,
+        "q_nos": [
+          56,
+          84
+        ]
+      },
+      {
+        "unit_no": 10,
+        "name": "P-Block Elements",
+        "q_count": 3,
+        "q_nos": [
+          76,
+          83,
+          90
+        ]
+      },
+      {
+        "unit_no": 11,
+        "name": "d- and f-Block Elements",
+        "q_count": 3,
+        "q_nos": [
+          54,
+          64,
+          68
+        ]
+      },
+      {
+        "unit_no": 12,
+        "name": "Co-ordination Compounds",
+        "q_count": 3,
+        "q_nos": [
+          55,
+          62,
+          81
+        ]
+      },
+      {
+        "unit_no": 13,
+        "name": "Purification and Characterisation of Organic Compounds",
+        "q_count": 1,
+        "q_nos": [
+          50
+        ]
+      },
+      {
+        "unit_no": 14,
+        "name": "Some Basic Principles of Organic Chemistry",
+        "q_count": 2,
+        "q_nos": [
+          61,
+          72
+        ]
+      },
+      {
+        "unit_no": 15,
+        "name": "Hydrocarbons",
+        "q_count": 3,
+        "q_nos": [
+          49,
+          59,
+          89
+        ]
+      },
+      {
+        "unit_no": 16,
+        "name": "Organic Compounds Containing Halogens",
+        "q_count": 1,
+        "q_nos": [
+          73
+        ]
+      },
+      {
+        "unit_no": 17,
+        "name": "Organic Compounds Containing Oxygen",
+        "q_count": 3,
+        "q_nos": [
+          60,
+          66,
+          88
+        ]
+      },
+      {
+        "unit_no": 18,
+        "name": "Organic Compounds Containing Nitrogen",
+        "q_count": 1,
+        "q_nos": [
+          80
+        ]
+      },
+      {
+        "unit_no": 19,
+        "name": "Biomolecules",
+        "q_count": 1,
+        "q_nos": [
+          46
+        ]
+      },
+      {
+        "unit_no": 20,
+        "name": "Principles Related to Practical Chemistry",
+        "q_count": 4,
+        "q_nos": [
+          48,
+          52,
+          58,
+          69
+        ]
+      }
+    ],
+    "biology": [
+      {
+        "unit_no": 1,
+        "name": "Diversity in Living World",
+        "q_count": 7,
+        "q_nos": [
+          99,
+          105,
+          121,
+          137,
+          139,
+          156,
+          176
+        ]
+      },
+      {
+        "unit_no": 2,
+        "name": "Structural Organisation in Animals and Plants",
+        "q_count": 9,
+        "q_nos": [
+          107,
+          109,
+          114,
+          120,
+          128,
+          130,
+          135,
+          136,
+          138
+        ]
+      },
+      {
+        "unit_no": 3,
+        "name": "Cell Structure and Function",
+        "q_count": 10,
+        "q_nos": [
+          91,
+          101,
+          102,
+          104,
+          127,
+          133,
+          141,
+          152,
+          153,
+          177
+        ]
+      },
+      {
+        "unit_no": 4,
+        "name": "Plant Physiology",
+        "q_count": 7,
+        "q_nos": [
+          96,
+          97,
+          100,
+          106,
+          112,
+          124,
+          129
+        ]
+      },
+      {
+        "unit_no": 5,
+        "name": "Human Physiology",
+        "q_count": 12,
+        "q_nos": [
+          140,
+          143,
+          145,
+          146,
+          148,
+          150,
+          159,
+          161,
+          168,
+          172,
+          173,
+          180
+        ]
+      },
+      {
+        "unit_no": 6,
+        "name": "Reproduction",
+        "q_count": 8,
+        "q_nos": [
+          108,
+          115,
+          117,
+          142,
+          151,
+          154,
+          163,
+          169
+        ]
+      },
+      {
+        "unit_no": 7,
+        "name": "Genetics and Evolution",
+        "q_count": 14,
+        "q_nos": [
+          92,
+          94,
+          95,
+          103,
+          111,
+          119,
+          131,
+          157,
+          158,
+          160,
+          166,
+          174,
+          175,
+          179
+        ]
+      },
+      {
+        "unit_no": 8,
+        "name": "Biology and Human Welfare",
+        "q_count": 4,
+        "q_nos": [
+          149,
+          164,
+          165,
+          167
+        ]
+      },
+      {
+        "unit_no": 9,
+        "name": "Biotechnology and Its Applications",
+        "q_count": 8,
+        "q_nos": [
+          98,
+          110,
+          113,
+          123,
+          132,
+          144,
+          147,
+          171
+        ]
+      },
+      {
+        "unit_no": 10,
+        "name": "Ecology and Environment",
+        "q_count": 11,
+        "q_nos": [
+          93,
+          116,
+          118,
+          122,
+          125,
+          126,
+          134,
+          155,
+          162,
+          170,
+          178
+        ]
+      }
+    ]
+  },
+  "class_boundaries": {
+    "physics": {
+      "11": [
+        1,
+        10
+      ],
+      "12": [
+        11,
+        19
+      ]
+    },
+    "chemistry": {
+      "11": [
+        1,
+        10
+      ],
+      "12": [
+        11,
+        20
+      ]
+    },
+    "biology": {
+      "11": [
+        1,
+        5
+      ],
+      "12": [
+        6,
+        10
+      ]
+    }
+  },
+  "answer_mismatches": []
+}

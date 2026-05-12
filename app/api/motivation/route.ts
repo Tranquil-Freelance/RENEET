@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { callClaudeText, isClaudeConfigured } from "@/lib/claude";
 import { generateMotivationalQuotePrompt } from "@/lib/prompts";
-import { getServerClient, isSupabaseConfigured } from "@/lib/supabase";
+import {
+  getOrCreateAppUserId,
+  getServiceClient,
+  isSupabaseConfigured,
+} from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
 
@@ -15,19 +19,21 @@ const FALLBACKS = [
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const userId = url.searchParams.get("userId") ?? "";
   const day = Number(url.searchParams.get("day") ?? "1") || 1;
 
   let name = "there";
-  if (isSupabaseConfigured() && userId && !userId.startsWith("dev-")) {
+  if (isSupabaseConfigured()) {
     try {
-      const supabase = getServerClient();
-      const { data } = await supabase
-        .from("users")
-        .select("name")
-        .eq("id", userId)
-        .maybeSingle();
-      if (data?.name) name = data.name;
+      const userId = await getOrCreateAppUserId();
+      if (userId) {
+        const service = getServiceClient();
+        const { data } = await service
+          .from("users")
+          .select("name")
+          .eq("id", userId)
+          .maybeSingle();
+        if (data?.name) name = data.name;
+      }
     } catch {
       /* ignore */
     }

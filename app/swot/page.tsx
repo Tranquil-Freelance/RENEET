@@ -1,5 +1,5 @@
 import { SwotView } from "@/components/swot/SwotView";
-import { getServerClient, isSupabaseConfigured } from "@/lib/supabase";
+import { getServiceClient, isSupabaseConfigured } from "@/lib/supabase-server";
 import type { SWOT } from "@/types";
 
 interface PageProps {
@@ -12,7 +12,7 @@ export default async function SwotPage({ searchParams }: PageProps) {
 
   if (params.analysisId && isSupabaseConfigured() && !params.analysisId.startsWith("dev-")) {
     try {
-      const supabase = getServerClient();
+      const supabase = getServiceClient();
       const { data } = await supabase
         .from("analyses")
         .select("swot")
@@ -25,7 +25,7 @@ export default async function SwotPage({ searchParams }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-32">
+    <main className="min-h-screen bg-paper pb-32">
       <SwotView initialSwot={initialSwot} />
     </main>
   );

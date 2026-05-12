@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getServerClient, isSupabaseConfigured } from "@/lib/supabase";
+import {
+  getOrCreateAppUserId,
+  getServiceClient,
+  isSupabaseConfigured,
+} from "@/lib/supabase-server";
 import { callClaudeJson, isClaudeConfigured } from "@/lib/claude";
 import { generatePlanPrompt } from "@/lib/prompts";
 import type { StudyPlan, SWOT } from "@/types";
@@ -9,7 +13,6 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 const Body = z.object({
-  userId: z.string().min(1),
   daysRemaining: z.number().int().min(7).max(60).default(30),
 });
 
@@ -24,28 +27,38 @@ export async function POST(req: Request) {
     );
   }
 
+  if (!isSupabaseConfigured()) {
+    return NextResponse.json(
+      { error: "Supabase not configured." },
+      { status: 503 },
+    );
+  }
+
+  const userId = await getOrCreateAppUserId();
+  if (!userId) {
+    return NextResponse.json({ error: "Not signed in" }, { status: 401 });
+  }
+
+  const service = getServiceClient();
   let user = { name: "Student", attempt_no: 1, target: null as string | null };
   let swot: SWOT | null = null;
 
-  if (isSupabaseConfigured() && !parsed.userId.startsWith("dev-")) {
-    const supabase = getServerClient();
-    const [userRes, swotRes] = await Promise.all([
-      supabase
-        .from("users")
-        .select("name, attempt_no, target")
-        .eq("id", parsed.userId)
-        .maybeSingle(),
-      supabase
-        .from("analyses")
-        .select("swot")
-        .eq("user_id", parsed.userId)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle(),
-    ]);
-    if (userRes.data) user = { ...user, ...userRes.data };
-    if (swotRes.data?.swot) swot = swotRes.data.swot as SWOT;
-  }
+  const [userRes, swotRes] = await Promise.all([
+    service
+      .from("users")
+      .select("name, attempt_no, target")
+      .eq("id", userId)
+      .maybeSingle(),
+    service
+      .from("analyses")
+      .select("swot")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ]);
+  if (userRes.data) user = { ...user, ...userRes.data };
+  if (swotRes.data?.swot) swot = swotRes.data.swot as SWOT;
 
   if (!swot) {
     return NextResponse.json(
@@ -56,7 +69,7 @@ export async function POST(req: Request) {
 
   if (!isClaudeConfigured()) {
     const stub = stubPlan();
-    await savePlan(parsed.userId, stub);
+    await savePlan(userId, stub);
     return NextResponse.json({ plan: stub, warning: "Claude not configured" });
   }
 
@@ -74,15 +87,13 @@ export async function POST(req: Request) {
     );
   }
 
-  await savePlan(parsed.userId, plan);
-
+  await savePlan(userId, plan);
   return NextResponse.json({ plan });
 }
 
 async function savePlan(userId: string, plan: StudyPlan) {
-  if (!isSupabaseConfigured() || userId.startsWith("dev-")) return;
-  const supabase = getServerClient();
-  const { data: latest } = await supabase
+  const service = getServiceClient();
+  const { data: latest } = await service
     .from("plans")
     .select("id")
     .eq("user_id", userId)
@@ -90,9 +101,9 @@ async function savePlan(userId: string, plan: StudyPlan) {
     .limit(1)
     .maybeSingle();
   if (latest?.id) {
-    await supabase.from("plans").update({ plan_json: plan }).eq("id", latest.id);
+    await service.from("plans").update({ plan_json: plan }).eq("id", latest.id);
   } else {
-    await supabase
+    await service
       .from("plans")
       .insert({ user_id: userId, plan_json: plan, paid: false });
   }

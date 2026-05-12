@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getServerClient, isSupabaseConfigured } from "@/lib/supabase";
+import {
+  getOrCreateAppUserId,
+  getServiceClient,
+  isSupabaseConfigured,
+} from "@/lib/supabase-server";
 import { callClaudeJson, isClaudeConfigured } from "@/lib/claude";
 import { generateDailyQuizPrompt } from "@/lib/prompts";
 import type { CheckInQuiz, StudyPlan, SWOT } from "@/types";
@@ -9,7 +13,6 @@ export const runtime = "nodejs";
 export const maxDuration = 45;
 
 const Body = z.object({
-  userId: z.string().min(1),
   dayNumber: z.number().int().min(1).max(60),
   action: z.enum(["fetch", "submit", "toggle"]).default("fetch"),
   score: z.number().int().min(0).max(5).optional(),
@@ -27,18 +30,16 @@ export async function POST(req: Request) {
     );
   }
 
-  const supabase = isSupabaseConfigured() && !parsed.userId.startsWith("dev-")
-    ? getServerClient()
-    : null;
+  const userId = isSupabaseConfigured() ? await getOrCreateAppUserId() : null;
+  const supabase = userId ? getServiceClient() : null;
 
-  // --- Submit quiz score
   if (parsed.action === "submit" && parsed.score !== undefined) {
-    if (supabase) {
+    if (supabase && userId) {
       await supabase
         .from("checkins")
         .upsert(
           {
-            user_id: parsed.userId,
+            user_id: userId,
             day_number: parsed.dayNumber,
             score: parsed.score,
             completed: true,
@@ -49,14 +50,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  // --- Toggle day-done from /plan
   if (parsed.action === "toggle") {
-    if (supabase) {
+    if (supabase && userId) {
       await supabase
         .from("checkins")
         .upsert(
           {
-            user_id: parsed.userId,
+            user_id: userId,
             day_number: parsed.dayNumber,
             completed: Boolean(parsed.completed),
           },
@@ -66,12 +66,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  // --- Fetch (or generate) today's quiz
-  if (supabase) {
+  if (supabase && userId) {
     const { data: existing } = await supabase
       .from("checkins")
       .select("quiz, score, completed")
-      .eq("user_id", parsed.userId)
+      .eq("user_id", userId)
       .eq("day_number", parsed.dayNumber)
       .maybeSingle();
 
@@ -89,19 +88,19 @@ export async function POST(req: Request) {
   let subject: "physics" | "chemistry" | "biology" = "biology";
   let weaknessInsight: string | undefined;
 
-  if (supabase) {
+  if (supabase && userId) {
     const [{ data: planRow }, { data: swotRow }] = await Promise.all([
       supabase
         .from("plans")
         .select("plan_json")
-        .eq("user_id", parsed.userId)
+        .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle(),
       supabase
         .from("analyses")
         .select("swot")
-        .eq("user_id", parsed.userId)
+        .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle(),
@@ -146,12 +145,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ quiz: stubQuiz(), warning: "AI fallback" });
   }
 
-  if (supabase) {
+  if (supabase && userId) {
     await supabase
       .from("checkins")
       .upsert(
         {
-          user_id: parsed.userId,
+          user_id: userId,
           day_number: parsed.dayNumber,
           quiz,
           completed: false,

@@ -28,14 +28,7 @@ export function DashboardView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userId = localStorage.getItem("neetsurge:userId");
     setName(localStorage.getItem("neetsurge:userName") ?? "there");
-    if (!userId) {
-      toast.error("Please complete onboarding first.");
-      setLoading(false);
-      return;
-    }
-
     const stored = localStorage.getItem("neetsurge:planDone");
     if (stored) {
       try {
@@ -44,10 +37,8 @@ export function DashboardView() {
     }
 
     Promise.all([
-      fetch(`/api/plan/get?userId=${encodeURIComponent(userId)}`).then((r) =>
-        r.json(),
-      ),
-      fetch(`/api/motivation?userId=${encodeURIComponent(userId)}&day=1`).then((r) =>
+      fetch(`/api/plan/get`).then((r) => r.json()),
+      fetch(`/api/motivation?day=1`).then((r) =>
         r.json().catch(() => ({ quote: "" })),
       ),
     ])
@@ -69,15 +60,13 @@ export function DashboardView() {
 
   const loadQuiz = useCallback(
     async (dayNumber: number) => {
-      const userId = localStorage.getItem("neetsurge:userId");
-      if (!userId) return;
       setQuizLoading(true);
       setQuiz(null);
       try {
         const res = await fetch("/api/checkin", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ userId, dayNumber, action: "fetch" }),
+          body: JSON.stringify({ dayNumber, action: "fetch" }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error ?? "Quiz fetch failed");
@@ -100,28 +89,22 @@ export function DashboardView() {
       } catch {}
       return next;
     });
-    const userId = localStorage.getItem("neetsurge:userId");
-    if (userId) {
-      fetch("/api/checkin", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          userId,
-          dayNumber,
-          action: "toggle",
-          completed: true,
-        }),
-      }).catch(() => {});
-    }
-  }
-
-  function submitQuizScore(score: number) {
-    const userId = localStorage.getItem("neetsurge:userId");
-    if (!userId) return;
     fetch("/api/checkin", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ userId, dayNumber: day, action: "submit", score }),
+      body: JSON.stringify({
+        dayNumber,
+        action: "toggle",
+        completed: true,
+      }),
+    }).catch(() => {});
+  }
+
+  function submitQuizScore(score: number) {
+    fetch("/api/checkin", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ dayNumber: day, action: "submit", score }),
     }).catch(() => {});
     markDone(day);
   }
