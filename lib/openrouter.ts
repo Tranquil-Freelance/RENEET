@@ -7,10 +7,11 @@
  * Override via OPENROUTER_MODEL if you want a different one.
  */
 
+import { getPublicSiteUrl } from "@/lib/site-url";
+
 const API_KEY = process.env.OPENROUTER_API_KEY ?? "";
 const MODEL = process.env.OPENROUTER_MODEL ?? "openai/gpt-4o-mini";
-const APP_URL =
-  process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const APP_URL = getPublicSiteUrl();
 const SITE_NAME = "PrepInsights";
 
 const ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";

@@ -19,13 +19,24 @@ For each one:
 3. Set the **Subject** as above.
 4. Click **Save**.
 
-## Required Site URL
+## Required Site URL (production)
 
-Both templates use `{{ .SiteURL }}` in the footer. Set this in
-**Authentication → URL Configuration → Site URL**:
+Both templates use `{{ .SiteURL }}` in the footer. That value comes from
+**Authentication → URL Configuration → Site URL** in the Supabase dashboard.
 
-- **Local Next.js:** `http://localhost:3000` — use for development and for Supabase redirect URLs while building locally.
-- **Public static site (GitHub Pages, this repo):** **`https://tranquil-freelance.github.io/RENEET/`** — static HTML only. Magic links that redirect to **`/auth/callback`** need that route on a **Node** host (e.g. `npm run dev`); GitHub Pages will not run it.
+For the live app at **`https://prepinsight.in/`**, set:
+
+- **Site URL:** `https://prepinsight.in` (no trailing slash)
+- **Redirect URLs:** add at least:
+  - `https://prepinsight.in/**`
+  - `https://prepinsight.in/auth/callback`
+
+If Site URL is still `http://localhost:3000`, emails will show localhost in the
+footer and default redirects can break for real users.
+
+For **local Next.js** development only, you can temporarily set Site URL to
+`http://localhost:3000` and include `http://localhost:3000/**` in redirect URLs
+— or use a separate Supabase branch project for dev.
 
 The Site URL also acts as the default redirect for magic links when the client
 does not pass an explicit `emailRedirectTo`.

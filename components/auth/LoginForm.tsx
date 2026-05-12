@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
+import { getBrowserAuthRedirectBase } from "@/lib/site-url";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -23,7 +24,8 @@ export default function LoginForm() {
     startTransition(async () => {
       try {
         const supabase = getBrowserSupabase();
-        const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
+        const base = getBrowserAuthRedirectBase();
+        const redirectTo = `${base}/auth/callback?next=${encodeURIComponent(next)}`;
         const { error } = await supabase.auth.signInWithOtp({
           email: email.trim(),
           options: { emailRedirectTo: redirectTo },

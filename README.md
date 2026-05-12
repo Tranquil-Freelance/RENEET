@@ -34,7 +34,7 @@ Copy `.env.example` to `.env.local` and fill in:
 - `OPENROUTER_API_KEY` — from [openrouter.ai/keys](https://openrouter.ai/keys)
 - `OPENROUTER_MODEL` — defaults to `openai/gpt-4o-mini` (JSON-mode capable; swap for any OpenRouter model)
 - `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `NEXT_PUBLIC_RAZORPAY_KEY_ID` — from Razorpay Dashboard → Settings → API Keys (use test keys first)
-- `NEXT_PUBLIC_APP_URL` — `http://localhost:3000` for local Next.js. For absolute URLs against this repo’s static Pages site, use **`https://tranquil-freelance.github.io/RENEET/`**; GitHub Pages does **not** run the Next app or `/api/*`.
+- `NEXT_PUBLIC_APP_URL` — **`https://prepinsight.in`** on production (Render). Use `http://localhost:3000` only for local dev. If this is wrong or missing at build time, Open Graph URLs and some server-side links can break; magic links from the live site still prefer the browser origin (see `lib/site-url.ts`).
 
 The app boots and routes work even with empty env vars — API calls degrade gracefully with stub data and warnings. Useful for UI iteration without keys.
 

@@ -11,6 +11,7 @@ import {
   getServiceClient,
   isSupabaseConfigured,
 } from "@/lib/supabase-server";
+import { getPublicSiteUrl } from "@/lib/site-url";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -64,10 +65,7 @@ export async function POST(req: Request) {
     }
   }
 
-  const origin =
-    req.headers.get("origin") ??
-    process.env.NEXT_PUBLIC_APP_URL ??
-    "http://localhost:3000";
+  const origin = req.headers.get("origin") ?? getPublicSiteUrl();
 
   try {
     const order = await createCashfreeOrder({
