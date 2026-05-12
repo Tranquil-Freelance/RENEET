@@ -13,13 +13,13 @@ AI-powered Re-NEET 2026 gap analysis. Built for 22.79 lakh aspirants with a seco
 
 ## Stack
 
-- Next.js 16 (App Router) + React 19 + TypeScript
+- Next.js 16 (App Router) + React 19 + TypeScript (run locally or on any Node host you choose)
 - Tailwind CSS 4
 - Supabase (Postgres + service role for server writes)
-- Anthropic Claude (Sonnet 4.5 by default)
+- OpenRouter (SWOT, plan, quiz, motivation)
 - Razorpay (UPI + cards)
 - Resend (transactional email — placeholder)
-- Vercel hosting
+- **Public site:** GitHub Pages (`index.html` at repo root + `CNAME` / `.nojekyll`)
 
 ## Setup (< 30 minutes from clone to deploy)
 
@@ -34,7 +34,7 @@ Copy `.env.example` to `.env.local` and fill in:
 - `OPENROUTER_API_KEY` — from [openrouter.ai/keys](https://openrouter.ai/keys)
 - `OPENROUTER_MODEL` — defaults to `openai/gpt-4o-mini` (JSON-mode capable; swap for any OpenRouter model)
 - `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `NEXT_PUBLIC_RAZORPAY_KEY_ID` — from Razorpay Dashboard → Settings → API Keys (use test keys first)
-- `NEXT_PUBLIC_APP_URL` — `http://localhost:3000` locally; production app: **`https://app.prepinsight.in`** (Vercel). Use that same URL in Vercel env and Supabase auth when **www** / apex point at GitHub Pages (see [GitHub Pages and DNS](#github-pages-and-dns-for-prepinsightin)).
+- `NEXT_PUBLIC_APP_URL` — `http://localhost:3000` for local Next.js. For metadata or absolute links while developing against the static public URL, you can temporarily use **`https://www.prepinsight.in`**; GitHub Pages does **not** run the Next app or `/api/*`.
 
 The app boots and routes work even with empty env vars — API calls degrade gracefully with stub data and warnings. Useful for UI iteration without keys.
 
@@ -69,57 +69,32 @@ This writes `lib/answer-key.json` which is read by `lib/questions.ts` at boot. N
 npm run dev
 ```
 
-### 7. Deploy (Vercel only)
+### 7. Deploy (GitHub Pages only)
 
-This app is standard **Next.js** and is meant to run on **Vercel**. There is no Render-specific config in this repo.
+The **live public website** for this project is **static** and is served from **GitHub Pages**:
 
-**If you were on Render:** in the [Render Dashboard](https://dashboard.render.com/), delete the web service (and any related workers/cron) so you are not paying for or routing traffic to an old host. Copy any secrets from Render’s environment tab into Vercel before you tear the service down.
+1. Repository **Settings → Pages**
+2. **Build and deployment:** Source **Deploy from a branch**, branch **`main`**, folder **`/ (root)`**
+3. **Custom domain:** add **`www.prepinsight.in`** and **`prepinsight.in`** as needed; keep the **`CNAME`** file in the repo root in sync with your primary hostname
+4. After DNS verifies, enable **Enforce HTTPS**
 
-**On Vercel**
+Root files involved: **`index.html`** (landing), **`CNAME`**, **`.nojekyll`**.
 
-1. **Import the repo** (Vercel dashboard → Add New → Project) or from the CLI: `npx vercel link` then `npx vercel --prod`.
-2. **Environment variables** — Project → Settings → Environment Variables: mirror everything in [`.env.example`](./.env.example) for Production (and Preview if you use previews). Use the same values you had on Render where they overlap.
-3. **`NEXT_PUBLIC_APP_URL`** — use **`https://app.prepinsight.in`** for the live Next.js app when **www** / apex are served by GitHub Pages (see DNS section below). That value drives OpenRouter referrers, metadata, and redirects.
-4. **Supabase** — Authentication → URL configuration: set **Site URL** and **Redirect URLs** to **`https://app.prepinsight.in`** (and `http://localhost:3000` for local dev). Remove stale hosts.
+**Reality check:** GitHub Pages cannot run the Next.js server, **Route Handlers** (`app/api/**`), or **`proxy.ts`** middleware. The exam, AI features, and payments in `app/` are for **local** (`npm run dev`) or for whatever **Node-capable host** you may add later — not part of the Pages deployment.
 
-```bash
-npx vercel --prod
-```
-
-`vercel.json` already sets longer function durations for the AI-heavy API routes (`/api/analyze`, `/api/plan`, `/api/checkin`).
-
-### GitHub Pages and DNS for prepinsight.in
-
-**Hosting split:** **`www.prepinsight.in`** and apex **`prepinsight.in`** can point at **GitHub Pages** (static `index.html` in this repo). The **Next.js app** must use another hostname, e.g. **`app.prepinsight.in`** on **Vercel**, with `NEXT_PUBLIC_APP_URL` / Supabase set to `https://app.prepinsight.in`.
-
-#### GoDaddy → GitHub Pages
+#### DNS (GoDaddy) for `prepinsight.in`
 
 In [GoDaddy DNS](https://dcc.godaddy.com/manage/) for `prepinsight.in`:
 
-| Type  | Name (Host) | Points to                 | TTL     |
-|-------|-------------|---------------------------|---------|
+| Type  | Name (Host) | Points to                      | TTL     |
+|-------|-------------|--------------------------------|---------|
 | CNAME | `www`       | `tranquil-freelance.github.io` | Default |
-| A     | `@`         | `185.199.108.153`         | Default |
-| A     | `@`         | `185.199.109.153`         | Default |
-| A     | `@`         | `185.199.110.153`         | Default |
-| A     | `@`         | `185.199.111.153`         | Default |
+| A     | `@`         | `185.199.108.153`              | Default |
+| A     | `@`         | `185.199.109.153`              | Default |
+| A     | `@`         | `185.199.110.153`              | Default |
+| A     | `@`         | `185.199.111.153`              | Default |
 
-Use **four separate A records** for `@` (one IP each). These match [GitHub Pages apex IPs](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain).
-
-#### Repo files for Pages
-
-- **`CNAME`** — contains `www.prepinsight.in` so GitHub Pages accepts the custom domain (keep in sync with **Repository → Settings → Pages → Custom domain**).
-- **`.nojekyll`**, **`index.html`** — static site at `/` for the Pages deployment.
-
-After DNS propagates: **Settings → Pages** — add custom domain **`www.prepinsight.in`** (and **`prepinsight.in`** if you use apex), wait for the DNS check, then enable **Enforce HTTPS**.
-
-#### GoDaddy → Vercel (web app)
-
-In Vercel: **Project → Settings → Domains** → add **`app.prepinsight.in`**. Then in GoDaddy create the record Vercel shows (commonly **CNAME** host **`app`** → target **`cname.vercel-dns.com`** or the exact value from the Vercel UI).
-
-The static **`index.html`** “Open web app” button points to **`https://app.prepinsight.in`**.
-
-The interactive product still needs **Vercel** per [§7](#7-deploy-vercel-only).
+Use **four separate A records** for `@` (one IP each). See [GitHub: apex domain](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain).
 
 ## Routes
 

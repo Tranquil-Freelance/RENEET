@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PrepInsights · RENEET</title>
+    <title>PrepInsights · Re-NEET 2026</title>
     <meta
       name="description"
-      content="AI-powered Re-NEET gap analysis — GitHub Pages hosts this static notice only."
+      content="AI-powered Re-NEET gap analysis — public site hosted on GitHub Pages."
     />
     <style>
       :root {
@@ -39,7 +39,7 @@
         line-height: 1.6;
       }
       main {
-        max-width: 36rem;
+        max-width: 38rem;
         background: #fff;
         border: 1px solid #e2e8f0;
         border-radius: 12px;
@@ -47,7 +47,7 @@
         box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06);
       }
       h1 {
-        font-size: 1.35rem;
+        font-size: 1.45rem;
         font-weight: 700;
         margin: 0 0 0.5rem;
         letter-spacing: -0.02em;
@@ -112,29 +112,27 @@
   </head>
   <body>
     <main>
-      <div class="badge">GitHub Pages · static only</div>
-      <h1>PrepInsights (RENEET)</h1>
+      <div class="badge">GitHub Pages</div>
+      <h1>PrepInsights · Re-NEET 2026</h1>
       <p>
-        You are viewing the <strong>static</strong> GitHub Pages deployment for this repository.
-        The full product is a <strong>Next.js</strong> application with API routes, server logic,
-        and Supabase auth — that stack cannot run on GitHub Pages.
+        This public site is <strong>static HTML</strong> served from
+        <strong>GitHub Pages</strong> (branch <code>main</code>, repository root). It is the
+        brochure and entry point for the project.
       </p>
-      <p>To use the real app:</p>
+      <p>
+        The full interactive product — OMR exam flow, AI SWOT, Razorpay, daily check-ins — lives in
+        the <strong>Next.js</strong> application in the same repository (<code>app/</code>,
+        <code>/api/*</code>). That code does <strong>not</strong> execute on GitHub Pages (no
+        server, no API routes). To run it, clone the repo and use your own machine:
+      </p>
       <ul>
-        <li>Deploy the <code>main</code> branch to <strong>Vercel</strong> (or another Node host), or</li>
-        <li>Run it locally with <code>npm install</code> and <code>npm run dev</code>.</li>
+        <li><code>git clone</code> this repository</li>
+        <li><code>npm install</code> then <code>npm run dev</code></li>
+        <li>Copy <code>.env.example</code> to <code>.env.local</code> and add keys when you are ready</li>
       </ul>
-      <p>
-        <strong>www.prepinsight.in</strong> is served from GitHub Pages (this page). The Next.js app
-        should use a separate hostname, for example <strong>app.prepinsight.in</strong> on Vercel — add
-        that DNS record in GoDaddy per the README, then open the app below.
-      </p>
       <div class="actions">
-        <a class="button" href="https://app.prepinsight.in">Open web app</a>
-        <a class="link" href="https://github.com/Tranquil-Freelance/RENEET#7-deploy-vercel-only"
-          >Deploy instructions</a
-        >
-        <a class="link" href="https://github.com/Tranquil-Freelance/RENEET">View repository</a>
+        <a class="button" href="https://github.com/Tranquil-Freelance/RENEET">View source on GitHub</a>
+        <a class="link" href="https://github.com/Tranquil-Freelance/RENEET#readme">Setup &amp; DNS (README)</a>
       </div>
     </main>
   </body>
