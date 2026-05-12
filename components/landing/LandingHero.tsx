@@ -47,7 +47,7 @@ export function LandingHero({ signupCount }: { signupCount: number }) {
 
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <Link
-              href="/login"
+              href="/login?next=/exam"
               className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-base font-semibold text-white shadow-soft-lg transition hover:bg-brand-dark"
             >
               Start my free analysis

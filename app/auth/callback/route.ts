@@ -8,13 +8,17 @@ import { getAuthCallbackRedirectOrigin, sanitizeAuthNextPath } from "@/lib/site-
  * Supabase appends `?code=...` (PKCE) when the user clicks the link.
  * We exchange that for a session cookie, then bootstrap a `public.users`
  * row (if missing) and redirect to `?next` or `/onboarding`.
+ *
+ * Default `next` is `/exam` (not `/onboarding`): Supabase often returns only
+ * `?code=` on the callback URL, dropping our original `next` query — returning
+ * users should land on the exam flow, not onboarding.
  */
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const { searchParams } = url;
   const origin = getAuthCallbackRedirectOrigin(request.url);
   const code = searchParams.get("code");
-  const next = sanitizeAuthNextPath(searchParams.get("next"), "/onboarding");
+  const next = sanitizeAuthNextPath(searchParams.get("next"), "/exam");
 
   if (!code) {
     return NextResponse.redirect(`${origin}/login?error=missing_code`);

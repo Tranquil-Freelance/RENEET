@@ -34,7 +34,7 @@ export default async function LandingPage() {
               <span className="text-slate-400">— Built for Re-NEET 2026 aspirants</span>
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
-              <Link href="/onboarding" className="hover:text-[var(--color-brand)]">
+              <Link href="/login?next=/exam" className="hover:text-[var(--color-brand)]">
                 Start free
               </Link>
               <Link href="/pricing" className="hover:text-[var(--color-brand)]">

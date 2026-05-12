@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getMiddlewareSupabase } from "@/lib/supabase-server";
+import { sanitizeAuthNextPath } from "@/lib/site-url";
 
 const PROTECTED_PREFIXES = ["/exam", "/swot", "/plan", "/dashboard", "/onboarding"];
 
@@ -28,7 +29,9 @@ export async function proxy(request: NextRequest) {
 
   if (pathname === "/login" && user) {
     const url = request.nextUrl.clone();
-    url.pathname = "/exam";
+    const nextPath = sanitizeAuthNextPath(url.searchParams.get("next"), "/exam");
+    url.pathname = nextPath;
+    url.searchParams.delete("next");
     return NextResponse.redirect(url);
   }
 

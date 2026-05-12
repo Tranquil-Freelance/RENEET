@@ -27,9 +27,16 @@ Both templates use `{{ .SiteURL }}` in the footer. That value comes from
 For the live app at **`https://prepinsight.in/`**, set:
 
 - **Site URL:** `https://prepinsight.in` (no trailing slash)
-- **Redirect URLs:** add at least:
-  - `https://prepinsight.in/**`
-  - `https://prepinsight.in/auth/callback`
+- **Redirect URLs** (add each line; wildcards help):
+
+  `https://prepinsight.in/**`
+
+  Or explicitly:
+
+  - `https://prepinsight.in/auth/callback` — **required** for email magic links (PKCE).
+  - `https://prepinsight.in/exam`, `https://prepinsight.in/swot`, `https://prepinsight.in/plan`, `https://prepinsight.in/onboarding`, `https://prepinsight.in/dashboard` — optional if not using `/**`.
+
+  **Never remove** `auth/callback` — without it, sign-in returns you to `/login` with an error.
 
 If Site URL is still `http://localhost:3000`, emails will show localhost in the
 footer and default redirects can break for real users.
