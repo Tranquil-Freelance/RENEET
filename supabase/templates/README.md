@@ -38,6 +38,12 @@ For the live app at **`https://prepinsight.in/`**, set:
 
   **Never remove** `auth/callback` — without it, sign-in returns you to `/login` with an error.
 
+**If verify links show `redirect_to=https://prepinsight.in` only (no `/auth/callback`):**
+Supabase can reject `emailRedirectTo` when it includes a **query string**. The app
+sends `https://prepinsight.in/auth/callback` only and stores the intended path in
+a short-lived cookie before sending the OTP. The app also forwards stray `?code=`
+URLs on the homepage to `/auth/callback`.
+
 If Site URL is still `http://localhost:3000`, emails will show localhost in the
 footer and default redirects can break for real users.
 

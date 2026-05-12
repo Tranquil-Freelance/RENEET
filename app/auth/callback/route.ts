@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { cookies } from "next/headers";
 import { getServerSupabase, getServiceClient } from "@/lib/supabase-server";
 import { getAuthCallbackRedirectOrigin, sanitizeAuthNextPath } from "@/lib/site-url";
 
@@ -18,17 +19,32 @@ export async function GET(request: NextRequest) {
   const { searchParams } = url;
   const origin = getAuthCallbackRedirectOrigin(request.url);
   const code = searchParams.get("code");
-  const next = sanitizeAuthNextPath(searchParams.get("next"), "/exam");
+
+  const cookieStore = await cookies();
+  const cookieRaw = cookieStore.get("prepinsights_intended_next")?.value;
+  let fromCookie: string | null = null;
+  if (cookieRaw) {
+    try {
+      fromCookie = decodeURIComponent(cookieRaw);
+    } catch {
+      fromCookie = null;
+    }
+  }
+  const next = sanitizeAuthNextPath(searchParams.get("next") ?? fromCookie, "/exam");
 
   if (!code) {
-    return NextResponse.redirect(`${origin}/login?error=missing_code`);
+    const res = NextResponse.redirect(`${origin}/login?error=missing_code`);
+    res.cookies.delete("prepinsights_intended_next");
+    return res;
   }
 
   const supabase = await getServerSupabase();
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
   if (error || !data.user) {
     console.error("[auth/callback] exchange error:", error?.message);
-    return NextResponse.redirect(`${origin}/login?error=exchange_failed`);
+    const res = NextResponse.redirect(`${origin}/login?error=exchange_failed`);
+    res.cookies.delete("prepinsights_intended_next");
+    return res;
   }
 
   // Ensure a `public.users` row exists for this auth user.
@@ -51,9 +67,13 @@ export async function GET(request: NextRequest) {
     } else if (!existing.state) {
       redirectTo = "/onboarding";
     }
-    return NextResponse.redirect(`${origin}${redirectTo}`);
+    const res = NextResponse.redirect(`${origin}${redirectTo}`);
+    res.cookies.delete("prepinsights_intended_next");
+    return res;
   } catch (err) {
     console.warn("[auth/callback] user bootstrap warning:", err);
-    return NextResponse.redirect(`${origin}${next}`);
+    const res = NextResponse.redirect(`${origin}${next}`);
+    res.cookies.delete("prepinsights_intended_next");
+    return res;
   }
 }

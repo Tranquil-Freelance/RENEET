@@ -25,7 +25,17 @@ export default function LoginForm() {
       try {
         const supabase = getBrowserSupabase();
         const base = getBrowserAuthRedirectBase();
-        const redirectTo = `${base}/auth/callback?next=${encodeURIComponent(next)}`;
+        // Supabase allow-list often matches path-only URLs; `?next=` on
+        // emailRedirectTo is rejected → verify link falls back to Site URL root.
+        // Store intended path in a short-lived cookie; callback reads it.
+        const maxAge = 600;
+        const secure =
+          typeof window !== "undefined" && window.location.protocol === "https:"
+            ? "; Secure"
+            : "";
+        document.cookie = `prepinsights_intended_next=${encodeURIComponent(next)}; Path=/; Max-Age=${maxAge}; SameSite=Lax${secure}`;
+
+        const redirectTo = `${base}/auth/callback`;
         const { error } = await supabase.auth.signInWithOtp({
           email: email.trim(),
           options: { emailRedirectTo: redirectTo },
