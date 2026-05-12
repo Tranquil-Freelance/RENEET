@@ -8,7 +8,7 @@ AI-powered Re-NEET 2026 gap analysis. Built for 22.79 lakh aspirants with a seco
 2. Student picks ABCD for each of 180 questions on an OMR sheet (`/exam`), with an optional "I guessed this" toggle per question
 3. The backend derives Correct / Wrong / Blank / Guessed-Right objectively from the answer key
 4. Claude generates a personalized SWOT (`/swot`) — the **free** value drop
-5. Student pays ₹149 via Razorpay → Claude generates a 30-day study plan (`/plan`)
+5. Student pays ₹99 via Cashfree → AI (OpenRouter) generates a 30-day study plan (`/plan`)
 6. Daily check-ins with AI-generated 5-question quizzes (`/dashboard`)
 
 ## Stack

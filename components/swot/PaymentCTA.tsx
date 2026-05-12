@@ -27,7 +27,7 @@ export function PaymentCTA({ totalMarksLost }: { totalMarksLost: number }) {
           >
             <Sparkles className="h-4 w-4" />
             Unlock 30-day plan ·{" "}
-            <span className="line-through opacity-60">₹499</span>{" "}
+            <span className="line-through opacity-60">₹999</span>{" "}
             <span>₹{PAYMENT_AMOUNT_RS}</span>
           </button>
         </div>

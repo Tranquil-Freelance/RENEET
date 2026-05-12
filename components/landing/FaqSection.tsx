@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const FAQS = [
   {
     q: "Is the SWOT really free?",
-    a: "Yes — completely. You only pay ₹149 if you choose to unlock the 30-day AI study plan after seeing your SWOT. No account, no card needed for the free analysis.",
+    a: "Yes — completely. You only pay ₹99 if you choose to unlock the 30-day AI study plan after seeing your SWOT. No account, no card needed for the free analysis.",
   },
   {
     q: "What if I don't remember all my answers?",
@@ -18,7 +18,7 @@ const FAQS = [
     a: "We use NEET's standard scoring rules (+4 / -1 / 0) and cross-reference your answers with the official NTA answer key. The estimated band is typically within ±15 marks.",
   },
   {
-    q: "What does the ₹149 plan include?",
+    q: "What does the ₹99 plan include?",
     a: "A day-by-day 30-day study plan personalized to your SWOT: which NCERT chapters to revisit, which PYQs to solve, daily time targets, two mock test days, and PDF download. WhatsApp reminders included.",
   },
   {

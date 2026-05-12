@@ -16,7 +16,7 @@ const STEPS = [
   {
     icon: CalendarDays,
     title: "3. Get your 30-day plan",
-    body: "Day-by-day study plan to close your specific gaps before Re-NEET. ₹149 one-time.",
+    body: "Day-by-day study plan to close your specific gaps before Re-NEET. ₹99 one-time.",
     accent: "var(--color-warn)",
   },
 ];

@@ -8,15 +8,24 @@ import {
 import {
   PAYMENT_AMOUNT_PAISE,
   PAYMENT_PROVIDER,
-  isValidPaymentRef,
+  fetchCashfreeOrder,
+  isCashfreeConfigured,
+  isValidCashfreeOrderId,
 } from "@/lib/payment";
 
 export const runtime = "nodejs";
+export const maxDuration = 30;
 
 const Body = z.object({
-  payment_ref: z.string().min(6).max(64),
+  order_id: z.string().min(6).max(64),
 });
 
+/**
+ * Verify a Cashfree order and mark the user's latest plan as paid.
+ *
+ * We don't trust anything the client sends except the order_id — we re-fetch
+ * the order from Cashfree and only accept order_status === "PAID".
+ */
 export async function POST(req: Request) {
   let parsed: z.infer<typeof Body>;
   try {
@@ -28,14 +37,37 @@ export async function POST(req: Request) {
     );
   }
 
-  const cleanRef = parsed.payment_ref.trim().replace(/\s+/g, "");
-  if (!isValidPaymentRef(cleanRef)) {
+  const orderId = parsed.order_id.trim();
+  if (!isValidCashfreeOrderId(orderId)) {
+    return NextResponse.json({ error: "Invalid order id" }, { status: 400 });
+  }
+
+  if (!isCashfreeConfigured()) {
+    return NextResponse.json(
+      { error: "Cashfree credentials missing on the server." },
+      { status: 503 },
+    );
+  }
+
+  let orderStatus: string;
+  let amountPaise: number;
+  try {
+    const order = await fetchCashfreeOrder(orderId);
+    orderStatus = order.order_status;
+    amountPaise = Math.round(order.order_amount * 100);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Cashfree lookup failed";
+    console.error("[payment/confirm]", message);
+    return NextResponse.json({ error: message }, { status: 502 });
+  }
+
+  if (orderStatus !== "PAID") {
     return NextResponse.json(
       {
-        error:
-          "That reference doesn't look right. Paste the Razorpay payment ID (starts with pay_) from your receipt.",
+        error: `Payment not completed (status: ${orderStatus}). If you just paid, wait a few seconds and retry.`,
+        order_status: orderStatus,
       },
-      { status: 400 },
+      { status: 402 },
     );
   }
 
@@ -44,7 +76,8 @@ export async function POST(req: Request) {
       ok: true,
       paid: true,
       dev: true,
-      warning: "Supabase not configured — payment not persisted",
+      order_id: orderId,
+      warning: "Supabase not configured — payment verified but not persisted.",
     });
   }
 
@@ -63,28 +96,25 @@ export async function POST(req: Request) {
     .limit(1)
     .maybeSingle();
 
+  const paymentPayload = {
+    paid: true,
+    txn_ref: orderId,
+    amount_paise: amountPaise || PAYMENT_AMOUNT_PAISE,
+    payment_method: PAYMENT_PROVIDER,
+  };
+
   if (existing?.id) {
     const { error } = await service
       .from("plans")
-      .update({
-        paid: true,
-        txn_ref: cleanRef,
-        amount_paise: PAYMENT_AMOUNT_PAISE,
-        payment_method: PAYMENT_PROVIDER,
-      })
+      .update(paymentPayload)
       .eq("id", existing.id);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    return NextResponse.json({ ok: true, paid: true });
+  } else {
+    const { error } = await service
+      .from("plans")
+      .insert({ user_id: userId, ...paymentPayload });
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  const { error } = await service.from("plans").insert({
-    user_id: userId,
-    paid: true,
-    txn_ref: cleanRef,
-    amount_paise: PAYMENT_AMOUNT_PAISE,
-    payment_method: PAYMENT_PROVIDER,
-  });
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-
-  return NextResponse.json({ ok: true, paid: true });
+  return NextResponse.json({ ok: true, paid: true, order_id: orderId });
 }

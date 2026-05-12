@@ -19,7 +19,7 @@ const ROWS = [
   },
   {
     coaching: "₹15,000+ for a full crash course",
-    ours: "Free SWOT + ₹50 for the 30-day AI plan",
+    ours: "Free SWOT + ₹99 for the 30-day AI plan",
   },
 ];
 
