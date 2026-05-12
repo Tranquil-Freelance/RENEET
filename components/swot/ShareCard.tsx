@@ -104,7 +104,7 @@ export function ShareCard({ swot, userName, onClose }: Props) {
           )}
 
           <div className="mt-5 text-[11px] opacity-60">
-            Get your own free SWOT at tranquilai.in
+            Your own SWOT · PrepInsights
           </div>
         </div>
 

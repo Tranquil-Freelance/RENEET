@@ -36,7 +36,10 @@ export default async function LandingPage() {
             <Link href="/onboarding" className="hover:text-[var(--color-brand)]">
               Start free
             </Link>
-            <a href="mailto:hello@tranquilai.in" className="hover:text-[var(--color-brand)]">
+            <a
+              href="mailto:noreply@tranquilai.in"
+              className="hover:text-[var(--color-brand)]"
+            >
               Contact
             </a>
           </div>

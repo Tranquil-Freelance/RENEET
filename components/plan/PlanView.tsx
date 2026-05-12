@@ -200,8 +200,10 @@ export function PlanView() {
 
   function shareToWhatsApp() {
     if (!plan) return;
+    const appUrl =
+      typeof window !== "undefined" ? window.location.origin : "PrepInsights";
     const text = encodeURIComponent(
-      `I just got my Re-NEET 2026 study plan from PrepInsights.\n\n${plan.plan_summary}\n\nGet yours: https://tranquilai.in`,
+      `I just got my Re-NEET 2026 study plan from PrepInsights.\n\n${plan.plan_summary}\n\nGet yours: ${appUrl}`,
     );
     window.open(`https://wa.me/?text=${text}`, "_blank");
   }
