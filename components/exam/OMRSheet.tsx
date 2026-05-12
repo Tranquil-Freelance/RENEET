@@ -11,12 +11,12 @@ import {
 import toast from "react-hot-toast";
 import { Check, ChevronRight, Loader2, X } from "lucide-react";
 import type { AnswerMap, ClientQuestion, Option, Subject } from "@/types";
-import { SUBJECTS } from "@/lib/questions";
 import { cn } from "@/lib/utils";
 
 const LS_ANSWERS = "neetsurge:answers";
 const LS_USER = "neetsurge:userId";
 const OPTIONS: Option[] = ["A", "B", "C", "D"];
+const SUBJECTS: Subject[] = ["physics", "chemistry", "biology"];
 const MIN_TO_ANALYZE = 150;
 
 interface Props {
@@ -285,20 +285,20 @@ function QuestionCard({
         chosen ? "border-slate-300" : "border-slate-200",
       )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <div className="text-xs font-semibold text-[var(--color-brand)]">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-2">
+          <span className="text-sm font-semibold text-[var(--color-brand)] tabular-nums">
             Q{q.q_no}
-          </div>
-          <div className="mt-0.5 text-[11px] text-slate-500">
-            {q.chapter} · {q.subtopic}
-          </div>
+          </span>
+          <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
+            {q.subject}
+          </span>
         </div>
         {chosen && (
           <button
             type="button"
             onClick={() => onChange({ chosen: null, guessed: false })}
-            className="text-xs text-slate-400 hover:text-slate-700 inline-flex items-center gap-1"
+            className="shrink-0 text-xs text-slate-400 hover:text-slate-700 inline-flex items-center gap-1"
           >
             <X className="h-3.5 w-3.5" /> Clear
           </button>
@@ -316,7 +316,7 @@ function QuestionCard({
               type="button"
               onClick={() => onChange({ chosen: opt })}
               className={cn(
-                "rounded-xl border py-2.5 text-sm font-semibold transition",
+                "rounded-xl border py-2.5 text-base font-semibold transition",
                 isSelected
                   ? "border-[var(--color-brand)] bg-[var(--color-brand)] text-white"
                   : "border-slate-300 text-slate-700 hover:border-slate-400",
@@ -358,36 +358,42 @@ function QuestionImage({ src, qNo }: { src: string; qNo: number }) {
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
 
+  if (!src) return null;
+
   return (
-    <div className="mt-3 relative rounded-xl border border-dashed border-slate-200 bg-slate-50 overflow-hidden">
-      {!errored && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={src}
-          alt={`Question ${qNo}`}
-          onLoad={() => setLoaded(true)}
-          onError={() => setErrored(true)}
-          className={cn(
-            "w-full block",
-            loaded ? "opacity-100" : "opacity-0",
-            "transition-opacity",
-          )}
-        />
-      )}
-      {(errored || !loaded) && (
-        <div className="flex items-center justify-center py-10 text-slate-400 text-sm">
-          {errored ? (
-            <span>
-              Question {qNo} image not uploaded yet · drop{" "}
-              <code className="text-[11px] bg-slate-200 px-1 py-0.5 rounded">
-                /public/questions/q{qNo}.jpg
-              </code>
-            </span>
-          ) : (
-            <span>Loading Q{qNo}…</span>
-          )}
-        </div>
-      )}
+    <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 shadow-inner overflow-hidden">
+      <div className="relative flex min-h-[200px] max-h-[min(62vh,620px)] w-full items-center justify-center p-2 sm:p-3">
+        {!errored && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={src}
+            alt={`Question ${qNo}`}
+            onLoad={() => setLoaded(true)}
+            onError={() => setErrored(true)}
+            loading="lazy"
+            className={cn(
+              "max-h-full max-w-full object-contain object-center select-none",
+              loaded ? "opacity-100" : "opacity-0",
+              "transition-opacity duration-200",
+            )}
+            draggable={false}
+          />
+        )}
+        {(errored || !loaded) && (
+          <div className="absolute inset-0 flex items-center justify-center px-3 text-center text-sm text-slate-400">
+            {errored ? (
+              <span>
+                Snippet for Q{qNo} missing — add{" "}
+                <code className="rounded bg-slate-200 px-1 py-0.5 text-[11px] text-slate-700">
+                  /public/questions/q{qNo}.png
+                </code>
+              </span>
+            ) : (
+              <span>Loading…</span>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

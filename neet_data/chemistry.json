@@ -1,0 +1,587 @@
+[
+  {
+    "id": 46,
+    "subject": "chemistry",
+    "stem": "46. The correct statement with regard to the secondary structure of DNA/RNA is :",
+    "options": {
+      "a": "DNA possesses a single strand helix structure and contains uracil as one of the four bases.",
+      "b": "DNA possesses a double strand helix structure and contains thymine as one of the four bases.",
+      "c": "RNA possesses a double strand helix structure and contains uracil as one of the four bases.",
+      "d": "RNA possesses a single strand helix structure and contains thymine as one of the four bases."
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 29
+  },
+  {
+    "id": 47,
+    "subject": "chemistry",
+    "stem": "47. Match List I with List II :\n\n\n\nList I (Quantum Numbers )\nList II (Orbital)\nn, l\n\n\nA. 2, 1                     I. 3d\n\nB. 4, 0                     II. 2p\n\nC. 5, 3                     III. 4s\n\nD. 3, 2                     IV. 5f\n\n\nChoose the correct answer from the options given below :",
+    "options": {
+      "a": "A-II, B-III, C-I, D-IV",
+      "b": "A-II, B-III, C-IV, D-I",
+      "c": "A-IV, B-II, C-III, D-I",
+      "d": "A-I, B-II, C-IV, D-III"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 29
+  },
+  {
+    "id": 48,
+    "subject": "chemistry",
+    "stem": "48. During Lassaigne's test, the elements present in an organic compound are\nconverted from :",
+    "options": {
+      "a": "covalent form to ionic form",
+      "b": "covalent form to covalent form",
+      "c": "ionic form to ionic form",
+      "d": "ionic form to covalent form"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 30
+  },
+  {
+    "id": 49,
+    "subject": "chemistry",
+    "stem": "49. The number of chlorine atoms present in the organic products X and Y of the\nfollowing reactions, respectively, are :",
+    "options": {
+      "a": "3 and 6",
+      "b": "6 and 3",
+      "c": "3 and 3",
+      "d": "6 and 6"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 30
+  },
+  {
+    "id": 50,
+    "subject": "chemistry",
+    "stem": "50. Two products X and Y are formed in the following reaction sequence.\n\nThe suitable method that can be used for the separation of products X and Y is :",
+    "options": {
+      "a": "Fractional distillation",
+      "b": "Differential extraction",
+      "c": "Continuous extraction",
+      "d": "Sublimation"
+    },
+    "needs_diagram_asset": true,
+    "pdf_page": 30
+  },
+  {
+    "id": 51,
+    "subject": "chemistry",
+    "stem": "51. Identify the correct statement about ClF3 from the following options :\n​",
+    "options": {
+      "a": "It has T-shaped geometry with three lone pairs on Cl atom.",
+      "b": "It has a planar trigonal geometry with two lone pairs on Cl atom.",
+      "c": "It has T-shaped geometry with two lone pairs on Cl atom.",
+      "d": "It has a trigonal pyramidal geometry with two lone pairs on Cl atom."
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 31
+  },
+  {
+    "id": 52,
+    "subject": "chemistry",
+    "stem": "52. The functional group that can be identified through phthalein dye test is :",
+    "options": {
+      "a": "Alcohol",
+      "b": "Aldehyde",
+      "c": "Phenolic",
+      "d": "Carboxylic acid"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 31
+  },
+  {
+    "id": 53,
+    "subject": "chemistry",
+    "stem": "53. A solution of copper sulphate is electrolysed for 10 minutes with a current of\n1.5 amperes . The mass of copper deposited at cathode is :\n(Given : Molar mass of Cu = 63 g mol−1 , 1 F = 96487 C mol−1 )",
+    "options": {
+      "a": "0.2938 g",
+      "b": "1.7018 g",
+      "c": "2.4036 g",
+      "d": "0.5876 g"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 32
+  },
+  {
+    "id": 54,
+    "subject": "chemistry",
+    "stem": "54. Match List I with List II :\n\n\nList I (Transition\nList II (Catalytic Role)\nmetal/compound)\n\nI. Preparation of ammonia from N2 /H2\nA. V2 O5\n​   ​\n\n\n\n\nmixture\n​     ​\n\n\n\n\nB. Fe                               II. Polymerisation of alkynes\n\nC. P dCl2      ​                    III. Preparation of H2 S O4 from SO2\n​    ​           ​\n\n\n\n\nD. Ni complex                       IV. Oxidation of ethyne to ethanal\n\n\nChoose the correct answer :",
+    "options": {
+      "a": "A-III, B-I, C-II, D-IV",
+      "b": "A-III, B-I, C-IV, D-II",
+      "c": "A-I, B-III, C-IV, D-II",
+      "d": "A-II, B-III, C-IV, D-III"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 32
+  },
+  {
+    "id": 55,
+    "subject": "chemistry",
+    "stem": "55. Match List I with List II :\n\nList I (Complex/Ion) List II (Shape/geometry)\n\nA. [Pt(Cl)2 (N H3 )2 ]\n​               ​       ​   I. Octahedral\n\nB. [Co(N H3 )6 ]Cl3 ​       ​       ​       II. Trigonal bipyramidal\n\nC. [N iCl4 ]2−\n​                               III. Square planar\n\nD. [F e(CO)5 ]          ​\nIV. Tetrahedral\n\n\nChoose the correct answer :",
+    "options": {
+      "a": "A-IV, B-I, C-III, D-II",
+      "b": "A-III, B-I, C-IV, D-II",
+      "c": "A-I, B-III, C-IV, D-II",
+      "d": "A-III, B-IV, C-I, D-II"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 32
+  },
+  {
+    "id": 56,
+    "subject": "chemistry",
+    "stem": "56. Identify the incorrect statement from the following :",
+    "options": {
+      "a": "The largest and the smallest species among M g , M g 2 , Al and Al3+ are Al and M g 2+ respectively",
+      "b": "The oxidation state and covalency of Al in [AlCl(H2 O)5 ]2+ are +3 and 6        ​   ​ respectively.",
+      "c": "The IUPAC name of the element with atomic number 107 is Unnilseptium.",
+      "d": "The similarity in behaviour of Li with Mg is referred to as 'diagonal relationship\""
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 33
+  },
+  {
+    "id": 57,
+    "subject": "chemistry",
+    "stem": "57. Given below is an expression for the rate constant of a first order reaction\noccurring at a certain temperature, T (K).\n4\nln k = 14.34 − 1.25×10\nT         ​\n\n\n\n\nThe energy of activation in kcal mol−1 for the reaction is :\n(Given : k in s−1 , R = 1.987 cal mol−1 K−1 )",
+    "options": {
+      "a": "14.34",
+      "b": "18.63",
+      "c": "24.84",
+      "d": "12.42"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 33
+  },
+  {
+    "id": 58,
+    "subject": "chemistry",
+    "stem": "58. Phenolphthalein is used as an indicator for the titration of sodium hydroxide\nsolution against a standard solution of oxalic acid. The colour change that is\nobserved at an alkaline pH close to the equivalence point during this titration is :",
+    "options": {
+      "a": "pink to colourless",
+      "b": "pinkish red to yellow",
+      "c": "colourless to pink",
+      "d": "yellow to pinkish red"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 34
+  },
+  {
+    "id": 59,
+    "subject": "chemistry",
+    "stem": "59. Methane reacts with steam at 1273 K in the presence of nickel catalyst to form :",
+    "options": {
+      "a": "CO and H2     ​",
+      "b": "CO2 and H2 ​             ​",
+      "c": "CO and H2 O ​",
+      "d": "CO2 and H2 O ​             ​"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 34
+  },
+  {
+    "id": 60,
+    "subject": "chemistry",
+    "stem": "60. List I (Reactions)                                   List II (Reagents)\n\nA.\n\nI. (i) oleum, (ii) N aOH, Δ , (iii) H +\n\n\n\n\nB. CH3 COOH → CH3 C H2 OH\n​                           ​       ​       II. (i) O3 , (ii) H2 O/H +\n​            ​\n\n\n\n\nC. CH3 C H2 C H2 OH →\n​       ​       ​\n\n\n\n\nIII. (i) CH3 OH, H + , (ii) H2 , catalyst\n​                ​\n\n\n\n\nD.\n\n\n\nIV. (i) conc. H2 S O4 , Δ , (ii) H2 O\n​       ​        ​\n\n\n\n\nMatch List I with List II.",
+    "options": {
+      "a": "A-I, B-III, C-IV, D-II",
+      "b": "A-II, B-III, C-I, D-IV",
+      "c": "A-II, B-III, C-IV, D-I",
+      "d": "A-II, B-IV, C-III, D-I"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 35
+  },
+  {
+    "id": 61,
+    "subject": "chemistry",
+    "stem": "61. The pair of molecules that are metamers among the following is :",
+    "options": {
+      "a": "CH3 OCH2 C H2 C H3 and CH3 C H2 OCH2 C H3 ​        ​           ​       ​       ​       ​       ​        ​",
+      "b": "CH3 C H2 C H2 C H3 and ​    ​    ​           ​ CH3 C H(CH3 )CH3 ​             ​           ​",
+      "c": "",
+      "d": "CH3 C H2 C H2 OH and CH3 − CH(OH) − CH3 ​    ​    ​                               ​                                                ​"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 35
+  },
+  {
+    "id": 62,
+    "subject": "chemistry",
+    "stem": "62. Match List I with List II :\n\n\nList I (Complex)                                                 List II (Type of Isomerism)\n\nA. [Pt(N H3 )2 C l2 ]\n​           ​           ​                    I. Optical\n\nB. [Co(en)3 ]3+ ​                                                II. Solvate\n\nC. [Co(N H3 )4 (N O2 )2 ]Cl III. Geometrical\n​           ​           ​   ​\n\n\n\n\nD. [Cr(H2 O)6 ]Cl3\n​                       ​           ​\nIV. Linkage\n\n\nChoose the correct answer :",
+    "options": {
+      "a": "A-II, B-IV, C-III, D-I",
+      "b": "A-III, B-I, C-II, D-IV",
+      "c": "A-I, B-III, C-II, D-IV",
+      "d": "A-III, B-II, C-IV, D-II"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 36
+  },
+  {
+    "id": 63,
+    "subject": "chemistry",
+    "stem": "63. The number of hydrogen atoms present in 5.4 g of urea is :\n−1                                            −1\n(Given : Molar mass of urea : 60 g mol                                                     , NA : 6.022 × 10\n​\n23\nparticles mol        )",
+    "options": {
+      "a": "2.168 × 1022",
+      "b": "2.168 × 1023",
+      "c": "1.084 × 1022",
+      "d": "1.084 × 1023"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 36
+  },
+  {
+    "id": 64,
+    "subject": "chemistry",
+    "stem": "64. The calculated 'spin-only' magnetic moment of T i2+ ( 3d2 ) is :",
+    "options": {
+      "a": "3.87 BM",
+      "b": "5.92 BM",
+      "c": "4.90 BM",
+      "d": "2.84 BM"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 37
+  },
+  {
+    "id": 65,
+    "subject": "chemistry",
+    "stem": "65. For a certain reaction R → Product, the plot of [R] vs time has a negative slope\nas shown. The order of reaction is :",
+    "options": {
+      "a": "1",
+      "b": "2",
+      "c": "2.5",
+      "d": "0"
+    },
+    "needs_diagram_asset": true,
+    "pdf_page": 37
+  },
+  {
+    "id": 66,
+    "subject": "chemistry",
+    "stem": "66. Compound P ( C8 H8 O ) gives a red orange precipitate with 2,4-DNP reagent and\n​   ​\n\nit does not reduce Fehling's reagent. On drastic oxidation with chromic acid, P\ngives an aromatic product Q that produces effervescence on treating with aq.\nN aHCO3 . Compounds P and Q, respectively, are :\n​",
+    "options": {
+      "a": "",
+      "b": "",
+      "c": "",
+      "d": ""
+    },
+    "needs_diagram_asset": true,
+    "pdf_page": 38
+  },
+  {
+    "id": 67,
+    "subject": "chemistry",
+    "stem": "67. Match List I with List II :\n\n\n\nList I (Order of reaction) List II (Unit of rate constant)\n\nA. Zero order              I. mol−1 Ls−1\n\nB. First order             II. mol−2 L2 s−1\n\nC. Second order            III. s−1\n\nD. Third order             IV. molL−1 s−1\n\n\n\nChoose the correct answer from the options given below :",
+    "options": {
+      "a": "A-IV, B-III, C-I, D-II",
+      "b": "A-IV, B-III, C-II, D-I",
+      "c": "A-IV, B-II, C-I, D-III",
+      "d": "A-I, B-II, C-III, D-IV"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 39
+  },
+  {
+    "id": 68,
+    "subject": "chemistry",
+    "stem": "68. Although +3 oxidation state is most common in lanthanoids, cerium shows +4\noxidation state because :",
+    "options": {
+      "a": "After losing one more electron, it acquires 4f 14 electronic configuration.",
+      "b": "Its atomic number is 61.",
+      "c": "After losing one more electron, it acquires 4f 0 electronic configuration.",
+      "d": "Its nearest inert gas is Radon."
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 40
+  },
+  {
+    "id": 69,
+    "subject": "chemistry",
+    "stem": "69. In a test tube containing a salt, a few drops of dilute H2 S O4 was added, which\n​   ​\ngave colourless vapours having the smell of vinegar. The vapours turned the\nblue litmus paper red. Identify the correct anion from the following :",
+    "options": {
+      "a": "Carbonate, CO32−         ​",
+      "b": "Sulphate, SO42−      ​",
+      "c": "Acetate, CH3 COO−​",
+      "d": "Sulphide, S 2−"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 40
+  },
+  {
+    "id": 70,
+    "subject": "chemistry",
+    "stem": "70. Calculate emf of the half cell given below :\n\nPt(s)∣H2 (g, 2 atm)∣HCl(aq, 0.02 M)\n​\n\n\n\n\n∘\nEH      + = 0 V\n2 /H\n​\n\n\n\n​\n\n\n\n\n(Given : 2.303RT\nF\n​= 0.059 , log 2 = 0.3010 )",
+    "options": {
+      "a": "0.035 V",
+      "b": "−0.035 V",
+      "c": "−0.109 V",
+      "d": "0.109 V"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 40
+  },
+  {
+    "id": 71,
+    "subject": "chemistry",
+    "stem": "71. At 298 K, a certain buffer solution contains equal concentrations of X − and HX .\nKb for X\n​\n−\nis 10   −10\n. What is the pH of this buffer solution ?",
+    "options": {
+      "a": "4",
+      "b": "6",
+      "c": "2",
+      "d": "10"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 41
+  },
+  {
+    "id": 72,
+    "subject": "chemistry",
+    "stem": "72. The correct IUPAC name of the following compound is :",
+    "options": {
+      "a": "3-methyl-5-ethylhexane",
+      "b": "3-ethyl-5-methylheptane",
+      "c": "3,5-diethylhexane",
+      "d": "2,4-diethylhexane"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 41
+  },
+  {
+    "id": 73,
+    "subject": "chemistry",
+    "stem": "73. The following two reactions give the same foul smelling product Z.\n\nX\nC2 H5 Cl\n​   ​        ​\nZ\n\n\n\n\nX and Z, respectively, are :",
+    "options": {
+      "a": "X = AgCN ; Z = C2 H5 CN     ​           ​",
+      "b": "X = KCN ; Z = C2 H5 CN  ​           ​",
+      "c": "X = KCN ; Z = C2 H5 NC ​           ​",
+      "d": "X = AgCN ; Z = C2 H5 NC     ​           ​"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 41
+  },
+  {
+    "id": 74,
+    "subject": "chemistry",
+    "stem": "74. Mixture of chloroform and acetone forms a solution with negative deviation\nfrom Raoult's law due to",
+    "options": {
+      "a": "increase in escaping tendency of molecules of each component.",
+      "b": "repulsive forces.",
+      "c": "stronger intermolecular forces between chloroform molecules than those between chloroform and acetone molecules.",
+      "d": "formation of hydrogen bonding between acetone and chloroform."
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 42
+  },
+  {
+    "id": 75,
+    "subject": "chemistry",
+    "stem": "75. Identify the correct statements :\n−1\nA. The molality of a 2.5 g of ethanoic acid (Molar mass : 60 g mol         ) in 75 g of\nbenzene solution is 0.556 m .\nB. The molarity of a solution containing 5 g of NaOH (molar mass : 40 g mol−1 ) in\n450 mL of solution is 0.278 M at 298 K.\nC. Aquatic species are more comfortable in cold water.\nD. The solubility of gas increases with decrease in pressure.\n\nE. For a binary mixture of A and B, the number of moles of A and B are nA and nB\n​          ​\n\n\n\n\nrespectively, the mole fraction of B will be xB = nAn+n\n​\nA\n​\n\nB\n.\n​\n\n\n\n\n​\n​\n\n\n\n\nChoose the correct answer from the options given below :",
+    "options": {
+      "a": "A and B only",
+      "b": "A, D and E only",
+      "c": "A, B and C only",
+      "d": "A and C only"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 42
+  },
+  {
+    "id": 76,
+    "subject": "chemistry",
+    "stem": "76. Identify the incorrect statement from the following :",
+    "options": {
+      "a": "ECl3 (E = B and Al) is a monomer when E = B and a dimer when E = Al. ​",
+      "b": "The order of catenation property of Group 14 elements is C ≫ Si > Ge ≈ Sn .",
+      "c": "Oxygen exhibits only - 2 oxidation state.",
+      "d": "Carbon has the ability to form p π -p π multiple bond with itself."
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 43
+  },
+  {
+    "id": 77,
+    "subject": "chemistry",
+    "stem": "77. The correct formal charges on oxygen atoms numbered 2, 1 and 3 respectively\nin ozone are :",
+    "options": {
+      "a": "-1, 0, +1",
+      "b": "0, 0, 0",
+      "c": "0, +1, -1",
+      "d": "+1, 0, -1"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 43
+  },
+  {
+    "id": 78,
+    "subject": "chemistry",
+    "stem": "78. At a certain temperature T (K), during a process, 500 J is absorbed by the\nsystem and work of 200 J is done by the system. Then change in internal energy\nof the system is :",
+    "options": {
+      "a": "500 J",
+      "b": "400 J",
+      "c": "300 J",
+      "d": "700 J"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 44
+  },
+  {
+    "id": 79,
+    "subject": "chemistry",
+    "stem": "79. Consider the following reaction :\n2A(g) + B(g) → 2D(g)\nΔU ⊖ = −10 kJ mol−1 and ΔS ⊖ = −44 J K−1 at 298 K.\nIdentify the correct option with ΔG⊖ for the reaction and spontaneity of the\nreaction at 298 K. (Given : R = 8.31 J mol−1 K−1 )",
+    "options": {
+      "a": "−0.63568 kJ mol−1 , spontaneous",
+      "b": "+0.63568 kJ mol−1 , non-spontaneous",
+      "c": "−1.635 kJ mol−1 , spontaneous",
+      "d": "+1.635 kJ mol−1 , non-spontaneous"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 44
+  },
+  {
+    "id": 80,
+    "subject": "chemistry",
+    "stem": "80. Select the reagents that reduce nitriles to primary amines :\nA. (i) LiAlH4 ; (ii) H2 O\n​           ​\n\n\n\n\nB. Sn + HCl\nC. H2 /N i\n​\n\n\n\n\nD. N a(Hg)/C2 H5 OH\n​   ​\n\n\n\n\nE. Br2 /aq. N aOH\n​\n\n\n\n\nChoose the correct answer from the options given below :",
+    "options": {
+      "a": "A, B and C only",
+      "b": "A, C and D only",
+      "c": "B, D and E only",
+      "d": "A, D and E only"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 44
+  },
+  {
+    "id": 81,
+    "subject": "chemistry",
+    "stem": "81. Which one of the following is an ambidentate ligand ?",
+    "options": {
+      "a": "Oxalate",
+      "b": "Ethylenediaminetetraacetate ion",
+      "c": "Thiocyanate",
+      "d": "Ethane-1,2-diamine"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 45
+  },
+  {
+    "id": 82,
+    "subject": "chemistry",
+    "stem": "82. A bulb is rated at 150 watt, converting 8% energy into light. If energy of one\nphoton is 4.42 × 10   −19\nJ , how many photons are emitted by the bulb per second ?",
+    "options": {
+      "a": "1.35 × 1019",
+      "b": "2.71 × 1019",
+      "c": "27.2 × 1019",
+      "d": "4.06 × 1019"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 45
+  },
+  {
+    "id": 83,
+    "subject": "chemistry",
+    "stem": "83. Identify the incorrect statement from the following :",
+    "options": {
+      "a": "Nitrogen can form p π -p π multiple bonds with itself.",
+      "b": "P (C2 H5 )3 and As(C6 H5 )3 form d π -d π bond with transition metals. ​   ​   ​            ​   ​   ​",
+      "c": "Nitrogen can form d π -p π bond with oxygen.",
+      "d": "Phosphorus, arsenic and antimony show catenation property."
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 45
+  },
+  {
+    "id": 84,
+    "subject": "chemistry",
+    "stem": "84. The correct order of increasing metallic character of Na, Be, P, Mg and Si is :",
+    "options": {
+      "a": "P < Si < Be < Mg < Na",
+      "b": "Be < Si < P < Mg < Na",
+      "c": "P < Si < Na < Mg < Be",
+      "d": "P < Mg < Be < Si < Na"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 46
+  },
+  {
+    "id": 85,
+    "subject": "chemistry",
+    "stem": "85. In a qualitative analysis, Bi3+ is detected by appearance of precipitate of\nBiO(OH)(s) . Calculate pH when the following equilibrium exists at 298 K :\n\nBiO(OH)(s) ⇌ BiO+ (aq) + OH − (aq)\n\n\n\nK = 4 × 10−10\n(Given : log 2 = 0.3010 )",
+    "options": {
+      "a": "4.699",
+      "b": "9.301",
+      "c": "5.286",
+      "d": "8.714"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 46
+  },
+  {
+    "id": 86,
+    "subject": "chemistry",
+    "stem": "86. Match List I with List II :\n\n\nList I                           List II\n\nA. C2 H4 I. 3 σ bonds, 2 π bond\n​               ​\n\n\n\n\nB. C2 H2 ​               ​       II. 3 σ bonds, one lone pair\n\nC. CH4           ​               III. 4 σ bonds\n\nD. N H3              ​           IV. 5 σ bonds, 1 π bonds\n\nChoose the correct answer from the options given below :",
+    "options": {
+      "a": "A-I, B-II, C-IV, D-III",
+      "b": "A-II, B-III, C-I, D-IV",
+      "c": "A-III, B-IV, C-II, D-I",
+      "d": "A-IV, B-I, C-III, D-II"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 46
+  },
+  {
+    "id": 87,
+    "subject": "chemistry",
+    "stem": "87. Given below are certain reactions. Identify the reaction for which Kp =\n Kc .\n​    ​",
+    "options": {
+      "a": "N2 (g) + O2 (g) ⇌ 2NO(g) ​           ​",
+      "b": "H2 O(g) + CO(g) ⇌ H2 (g) + CO2 (g) ​               ​       ​",
+      "c": "H2 (g) + I2 (g) ⇌ 2HI(g) ​           ​",
+      "d": "N2 (g) + 3H2 (g) ⇌ 2N H3 (g) ​               ​       ​"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 47
+  },
+  {
+    "id": 88,
+    "subject": "chemistry",
+    "stem": "88. In the following reaction sequence, X and Z respectively are :",
+    "options": {
+      "a": "",
+      "b": "",
+      "c": "X = H3 P O3 ; Z = CH3 C H2 C H2 − Br ​               ​                   ​           ​   ​",
+      "d": "X = POCl3 ; Z = CH3 C H2 − Br      ​                   ​           ​"
+    },
+    "needs_diagram_asset": true,
+    "pdf_page": 47
+  },
+  {
+    "id": 89,
+    "subject": "chemistry",
+    "stem": "89. The major product Z formed in the following sequence of reactions is :\n\nCl2 ,UV light                                           N H3               (i)N aN O2 ,HCl,(ii)H2 O\nC 2 H6                                       X (monochlorinated product)                        Y                                  Z\n​                                                      ​                     ​           ​\n\n\n\n\n​       ​                       ​                                                  ​                                  ​",
+    "options": {
+      "a": "C2 H5 N O2 ​        ​               ​",
+      "b": "C2 H5 − N = N − OH ​        ​",
+      "c": "C2 H5 N H2 ​        ​                   ​",
+      "d": "C2 H5 OH ​        ​ 3"
+    },
+    "needs_diagram_asset": true,
+    "pdf_page": 48
+  },
+  {
+    "id": 90,
+    "subject": "chemistry",
+    "stem": "90. When 1 dm of CO2 gas is passed over hot coke, the volume of gaseous mixture\n​\n\n3\nafter complete reaction at STP becomes 1.4 dm . The composition of the\ngaseous mixture at STP is :\n\n3                                       3",
+    "options": {
+      "a": "0.6 dm of CO, 0.8 dm of CO2                                                        ​ 3                                       3",
+      "b": "0.6 dm of CO, 0.4 dm of CO2                                                        ​ 3                                       3",
+      "c": "0.8 dm of CO, 0.8 dm of CO2                                                    ​",
+      "d": "0.8 dm3 of CO, 0.6 dm3 of CO2                                                      ​ Biology"
+    },
+    "needs_diagram_asset": false,
+    "pdf_page": 48
+  }
+]

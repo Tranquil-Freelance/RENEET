@@ -1,21 +1,40 @@
-import type { ClientQuestion, Question, Subject } from "@/types";
+import type {
+  ClientQuestion,
+  Difficulty,
+  Option,
+  Question,
+  QuestionOptions,
+  Subject,
+} from "@/types";
 import { ANSWER_KEY } from "./answer-key";
+import neetBank from "@/neet_data/all_questions.json";
 
 /**
- * 180-question scaffold for NEET-UG 2026 reconstruction.
- *
- * The exam structure follows the standard NEET pattern:
- *   - Physics:    Q1   - Q45   (45 questions)
- *   - Chemistry:  Q46  - Q90   (45 questions)
- *   - Biology:    Q91  - Q180  (90 questions, Botany + Zoology combined)
- *
- * `correct_option` is seeded as 'A' placeholder. Run
- *   `npx ts-node scripts/load-answer-key.ts answer-key.csv`
- * to overwrite from the official NTA key.
- *
- * `image_url` points to /public/questions/q{n}.jpg. Drop the cropped question
- * images there with no code change required.
+ * NEET UG 2026 question text and options come from `neet_data/all_questions.json`.
+ * Chapter / subtopic labels keep the NCERT-style scaffold for SWOT scoring.
+ * Official keys: `npx tsx scripts/load-answer-key.ts answer-key.csv` → `lib/answer-key.json`.
+ * Diagram pages (when flagged in the bank) are served from `/neet-diagrams/q{n}.png`.
  */
+
+interface NeetBankRow {
+  id: number;
+  subject: string;
+  stem: string;
+  options?: { a?: string; b?: string; c?: string; d?: string };
+  needs_diagram_asset?: boolean;
+}
+
+interface QuestionMeta {
+  q_no: number;
+  subject: Subject;
+  chapter: string;
+  subtopic: string;
+  correct_option: Option;
+  ncert_class: 11 | 12;
+  difficulty: Difficulty;
+}
+
+const OPTIONS: Array<"A" | "B" | "C" | "D"> = ["A", "B", "C", "D"];
 
 interface ChapterSpec {
   chapter: string;
@@ -321,22 +340,20 @@ const BIOLOGY_CHAPTERS: ChapterSpec[] = [
   },
 ];
 
-const OPTIONS: Array<"A" | "B" | "C" | "D"> = ["A", "B", "C", "D"];
-
 function buildSubjectQuestions(
   subject: Subject,
   startQ: number,
   chapters: ChapterSpec[],
-): Question[] {
+): QuestionMeta[] {
   const expected = chapters.reduce((sum, c) => sum + c.count, 0);
-  const questions: Question[] = [];
+  const questions: QuestionMeta[] = [];
   let q = startQ;
   let i = 0;
 
   for (const chap of chapters) {
     for (let j = 0; j < chap.count; j++) {
       const subtopic = chap.subtopics[j % chap.subtopics.length];
-      const difficulty =
+      const difficulty: Difficulty =
         i % 5 === 0 ? "hard" : i % 3 === 0 ? "easy" : "medium";
       questions.push({
         q_no: q,
@@ -346,7 +363,6 @@ function buildSubjectQuestions(
         correct_option: ANSWER_KEY[String(q)] ?? OPTIONS[i % 4],
         ncert_class: chap.ncert_class,
         difficulty,
-        image_url: `/questions/q${q}.jpg`,
       });
       q++;
       i++;
@@ -361,11 +377,50 @@ function buildSubjectQuestions(
   return questions;
 }
 
-export const QUESTIONS: Question[] = [
+function mapNeetOptions(raw: NeetBankRow["options"]): QuestionOptions {
+  const o = raw ?? {};
+  return {
+    A: (o.a ?? "").trim(),
+    B: (o.b ?? "").trim(),
+    C: (o.c ?? "").trim(),
+    D: (o.d ?? "").trim(),
+  };
+}
+
+const LEGACY_META: QuestionMeta[] = [
   ...buildSubjectQuestions("physics", 1, PHYSICS_CHAPTERS),
   ...buildSubjectQuestions("chemistry", 46, CHEMISTRY_CHAPTERS),
   ...buildSubjectQuestions("biology", 91, BIOLOGY_CHAPTERS),
 ];
+
+const LEGACY_BY_NO: Record<number, QuestionMeta> = Object.fromEntries(
+  LEGACY_META.map((m) => [m.q_no, m]),
+);
+
+export const QUESTIONS: Question[] = [...(neetBank as NeetBankRow[])]
+  .sort((a, b) => a.id - b.id)
+  .map((row) => {
+  const L = LEGACY_BY_NO[row.id];
+  if (!L) {
+    throw new Error(`NEET bank has Q${row.id} but legacy scaffold does not`);
+  }
+  const subject = row.subject as Subject;
+  if (subject !== L.subject) {
+    throw new Error(`Subject mismatch for Q${row.id}: bank ${subject} vs scaffold ${L.subject}`);
+  }
+  return {
+    q_no: row.id,
+    subject,
+    chapter: L.chapter,
+    subtopic: L.subtopic,
+    correct_option: (ANSWER_KEY[String(row.id)] ?? L.correct_option) as Option,
+    ncert_class: L.ncert_class,
+    difficulty: L.difficulty,
+    stem: row.stem,
+    options: mapNeetOptions(row.options),
+    image_url: `/questions/q${row.id}.png?v=3`,
+  };
+});
 
 if (QUESTIONS.length !== 180) {
   throw new Error(`Expected 180 questions, got ${QUESTIONS.length}`);

@@ -1,0 +1,28 @@
+{
+  "source_pdf": "69f6ce9dc187bc3be1ddf35b_9f93adde1778142937838.pdf",
+  "text_extract": "neet_extracted.txt",
+  "counts": {
+    "physics": 45,
+    "chemistry": 45,
+    "biology": 90
+  },
+  "diagram_question_ids": [
+    1,
+    9,
+    14,
+    21,
+    22,
+    27,
+    31,
+    34,
+    37,
+    38,
+    43,
+    50,
+    65,
+    66,
+    88,
+    89
+  ],
+  "diagram_count": 16
+}

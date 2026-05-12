@@ -4,6 +4,13 @@ export type Difficulty = "easy" | "medium" | "hard";
 export type AnswerStatus = "correct" | "wrong" | "blank" | "guessed_right";
 export type SwotCategory = "weakness" | "opportunity" | "threat" | "strength";
 
+export interface QuestionOptions {
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+}
+
 export interface Question {
   q_no: number;
   subject: Subject;
@@ -12,7 +19,10 @@ export interface Question {
   correct_option: Option;
   ncert_class: 11 | 12;
   difficulty: Difficulty;
+  /** Diagram from NEET paper (empty when the item is text-only). */
   image_url: string;
+  stem: string;
+  options: QuestionOptions;
 }
 
 export type ClientQuestion = Omit<Question, "correct_option">;
