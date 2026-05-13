@@ -32,7 +32,7 @@ export async function POST(req: Request) {
   }
 
   let userId: string | null = null;
-  let customerId = `guest_${Date.now().toString(36)}`;
+  let customerId = "";
   let customerEmail: string | undefined;
   let customerPhone = "9999999999";
 
@@ -42,27 +42,32 @@ export async function POST(req: Request) {
       const {
         data: { user },
       } = await supa.auth.getUser();
-      if (user) {
-        userId = await getOrCreateAppUserId();
-        customerEmail = user.email ?? undefined;
-        if (userId) {
-          customerId = `u_${userId.replace(/-/g, "").slice(0, 32)}`;
-          const service = getServiceClient();
-          const { data } = await service
-            .from("users")
-            .select("phone, email")
-            .eq("id", userId)
-            .maybeSingle();
-          if (data?.phone) {
-            const digits = String(data.phone).replace(/\D/g, "");
-            if (digits.length >= 10) customerPhone = digits.slice(-10);
-          }
-          if (!customerEmail && data?.email) customerEmail = data.email;
-        }
+      if (!user) {
+        return NextResponse.json({ error: "Please sign in before payment." }, { status: 401 });
       }
+      userId = await getOrCreateAppUserId();
+      customerEmail = user.email ?? undefined;
+      if (!userId) {
+        return NextResponse.json({ error: "Could not resolve user profile." }, { status: 500 });
+      }
+      customerId = `u_${userId.replace(/-/g, "").slice(0, 32)}`;
+      const service = getServiceClient();
+      const { data } = await service
+        .from("users")
+        .select("phone, email")
+        .eq("id", userId)
+        .maybeSingle();
+      if (data?.phone) {
+        const digits = String(data.phone).replace(/\D/g, "");
+        if (digits.length >= 10) customerPhone = digits.slice(-10);
+      }
+      if (!customerEmail && data?.email) customerEmail = data.email;
     } catch (err) {
       console.warn("[payment/order] supabase lookup failed", err);
     }
+  }
+  if (!userId) {
+    return NextResponse.json({ error: "Please sign in before payment." }, { status: 401 });
   }
 
   const origin = req.headers.get("origin") ?? getPublicSiteUrl();
@@ -75,6 +80,25 @@ export async function POST(req: Request) {
       customerPhone,
       returnUrl: `${origin}/swot`,
     });
+
+    if (isSupabaseConfigured()) {
+      const service = getServiceClient();
+      const { error: paymentInsertErr } = await service.from("payments").upsert(
+        {
+          user_id: userId,
+          provider: "cashfree",
+          order_id: order.order_id,
+          status: "created",
+          amount_paise: PAYMENT_AMOUNT_RS * 100,
+          currency: "INR",
+          raw_order: order,
+        },
+        { onConflict: "order_id" },
+      );
+      if (paymentInsertErr) {
+        console.warn("[payment/order] ledger insert failed", paymentInsertErr.message);
+      }
+    }
 
     return NextResponse.json({
       order_id: order.order_id,

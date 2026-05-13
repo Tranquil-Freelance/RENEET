@@ -62,8 +62,28 @@ export default function LoginForm() {
           type: "email",
         });
         if (error) throw error;
+        const bootRes = await fetch("/api/users/bootstrap", { method: "POST" });
+        const bootBody = await bootRes.json().catch(() => ({}));
+        if (bootRes.status === 401) {
+          toast.error("Session not ready. Please try again.");
+          return;
+        }
+        if (!bootRes.ok) {
+          throw new Error(bootBody.error ?? "Could not initialize profile");
+        }
+        try {
+          const meRes = await fetch("/api/users/me", { cache: "no-store" });
+          if (meRes.ok) {
+            const meBody = await meRes.json();
+            if (meBody?.profile?.name) {
+              localStorage.setItem("prepinsights:userName", meBody.profile.name);
+            }
+          }
+        } catch {
+          /* ignore profile prefetch failures on login */
+        }
         toast.success("Signed in");
-        router.replace(next);
+        router.replace(bootBody.onboardingRequired ? "/onboarding" : next);
         router.refresh();
       } catch (err) {
         const msg = err instanceof Error ? err.message : "OTP verification failed";

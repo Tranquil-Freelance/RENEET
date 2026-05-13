@@ -238,9 +238,14 @@ export function DashboardView() {
       )}
 
       <div className="my-10 text-center">
-        <Link href="/plan" className="text-sm text-slate-500 hover:text-slate-800 underline">
-          See full 30-day plan
-        </Link>
+        <div className="inline-flex items-center gap-4 text-sm">
+          <Link href="/plan" className="text-slate-500 hover:text-slate-800 underline">
+            See full 30-day plan
+          </Link>
+          <Link href="/profile" className="text-slate-500 hover:text-slate-800 underline">
+            Edit profile
+          </Link>
+        </div>
       </div>
     </div>
   );

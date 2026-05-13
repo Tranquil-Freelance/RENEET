@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
 type Step = 1 | 2;
 
 interface FormState {
+  name: string;
+  phone: string;
   state: string;
   attempt_no: string;
   target: string;
@@ -21,6 +23,8 @@ interface FormState {
 }
 
 const INITIAL: FormState = {
+  name: "",
+  phone: "",
   state: "",
   attempt_no: "1",
   target: "Any AIIMS",
@@ -65,7 +69,7 @@ export function OnboardingFlow() {
   const set = <K extends keyof FormState>(k: K, v: FormState[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
 
-  const canAdvance1 = form.state.length > 0;
+  const canAdvance1 = form.name.trim().length > 1 && form.state.length > 0;
 
   async function submit() {
     setSubmitting(true);
@@ -74,6 +78,8 @@ export function OnboardingFlow() {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
+          name: form.name.trim(),
+          phone: form.phone.trim(),
           state: form.state,
           attempt_no: Number(form.attempt_no.replace("+", "")),
           target: form.target,
@@ -84,6 +90,11 @@ export function OnboardingFlow() {
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         throw new Error(body.error ?? "Could not save your profile");
+      }
+      try {
+        localStorage.setItem("prepinsights:userName", form.name.trim());
+      } catch {
+        /* ignore local storage failures */
       }
       router.push("/exam");
     } catch (err) {
@@ -139,9 +150,26 @@ export function OnboardingFlow() {
               </p>
 
               <div className="mt-6 space-y-4">
+                <Field label="Your name">
+                  <input
+                    autoFocus
+                    value={form.name}
+                    onChange={(e) => set("name", e.target.value)}
+                    className={inputCls}
+                    placeholder="e.g. Aakash Sharma"
+                  />
+                </Field>
+                <Field label="Phone (optional)">
+                  <input
+                    value={form.phone}
+                    onChange={(e) => set("phone", e.target.value)}
+                    className={inputCls}
+                    placeholder="10-digit mobile number"
+                    inputMode="numeric"
+                  />
+                </Field>
                 <Field label="State">
                   <select
-                    autoFocus
                     value={form.state}
                     onChange={(e) => set("state", e.target.value)}
                     className={inputCls}

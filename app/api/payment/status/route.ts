@@ -20,20 +20,36 @@ export async function GET() {
 
   const service = getServiceClient();
   const { data, error } = await service
-    .from("plans")
-    .select("paid, txn_ref, updated_at, created_at")
+    .from("payments")
+    .select("status, txn_ref, order_id, created_at")
     .eq("user_id", userId)
+    .eq("status", "paid")
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Backward compatibility: older DBs may not have the payments ledger yet.
+    const { data: planData, error: planErr } = await service
+      .from("plans")
+      .select("paid, txn_ref, created_at")
+      .eq("user_id", userId)
+      .eq("paid", true)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (planErr) {
+      return NextResponse.json({ error: planErr.message }, { status: 500 });
+    }
+    return NextResponse.json({
+      paid: Boolean(planData?.paid),
+      txn_ref: planData?.txn_ref ?? null,
+    });
   }
 
   return NextResponse.json({
-    paid: Boolean(data?.paid),
-    txn_ref: data?.txn_ref ?? null,
+    paid: Boolean(data),
+    txn_ref: data?.txn_ref ?? data?.order_id ?? null,
   });
 }
 

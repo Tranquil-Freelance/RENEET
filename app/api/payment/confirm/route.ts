@@ -103,6 +103,23 @@ export async function POST(req: Request) {
     payment_method: PAYMENT_PROVIDER,
   };
 
+  const { error: ledgerErr } = await service.from("payments").upsert(
+    {
+      user_id: userId,
+      provider: PAYMENT_PROVIDER,
+      order_id: orderId,
+      status: "paid",
+      txn_ref: orderId,
+      amount_paise: amountPaise || PAYMENT_AMOUNT_PAISE,
+      currency: "INR",
+      raw_order: { order_status: orderStatus },
+    },
+    { onConflict: "order_id" },
+  );
+  if (ledgerErr) {
+    return NextResponse.json({ error: ledgerErr.message }, { status: 500 });
+  }
+
   if (existing?.id) {
     const { error } = await service
       .from("plans")

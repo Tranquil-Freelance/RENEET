@@ -10,6 +10,8 @@ import {
 export const runtime = "nodejs";
 
 const Body = z.object({
+  name: z.string().min(1).max(120).optional(),
+  phone: z.string().max(32).optional(),
   state: z.string().min(1).max(60),
   attempt_no: z.number().int().min(1).max(10).default(1),
   target: z.string().max(80).optional(),
@@ -52,6 +54,8 @@ export async function POST(req: Request) {
   const { error } = await service
     .from("users")
     .update({
+      name: parsed.name ?? "Student",
+      phone: parsed.phone ? parsed.phone.replace(/\D/g, "").slice(-10) || null : null,
       state: parsed.state,
       attempt_no: parsed.attempt_no,
       target: parsed.target,
