@@ -4,11 +4,11 @@ import { getServerSupabase } from "@/lib/supabase-server";
 import { getAuthCallbackRedirectOrigin, sanitizeAuthNextPath } from "@/lib/site-url";
 
 /**
- * Email OTP magic-link callback.
+ * Legacy auth callback (OAuth, old email links). Sign-in is OTP in the app;
+ * users do not need to open links from email to sign in.
  *
- * Supabase appends `?code=...` (PKCE) when the user clicks the link.
- * We exchange that for a session cookie, then bootstrap a `public.users`
- * row (if missing) and redirect to `?next` or `/onboarding`.
+ * When `?code=` is present (PKCE), we exchange for a session cookie, then
+ * bootstrap a `public.users` row (if missing) and redirect to `?next` or `/onboarding`.
  *
  * Default `next` is `/exam` (not `/onboarding`): Supabase often returns only
  * `?code=` on the callback URL, dropping our original `next` query — returning

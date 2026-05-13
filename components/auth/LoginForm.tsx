@@ -28,10 +28,10 @@ export default function LoginForm() {
     errorToastShown.current = true;
     if (err === "exchange_failed") {
       toast.error(
-        "That sign-in link expired, was already used, or opened on the wrong site. Request a new code on PrepInsights.",
+        "That sign-in attempt expired or was already used. Request a new code from the sign-in page.",
       );
     } else if (err === "missing_code") {
-      toast.error("Missing sign-in parameters. Open the link from the latest email or use OTP.");
+      toast.error("Sign-in could not complete. Go back to the sign-in page and request a new code.");
     }
   }, [search]);
 
@@ -44,27 +44,10 @@ export default function LoginForm() {
     startTransition(async () => {
       try {
         const supabase = getBrowserSupabase();
-        let siteUrl = "";
-        try {
-          const cfgRes = await fetch("/api/public-site", { cache: "no-store" });
-          if (cfgRes.ok) {
-            const cfg = (await cfgRes.json()) as { siteUrl?: string };
-            if (cfg.siteUrl?.trim()) siteUrl = cfg.siteUrl.trim().replace(/\/+$/, "");
-          }
-        } catch {
-          /* ignore */
-        }
-        if (!siteUrl && typeof window !== "undefined") {
-          siteUrl = window.location.origin;
-        }
-        const cb = new URL(`${siteUrl}/auth/callback`);
-        cb.searchParams.set("next", next);
-
         const { error } = await supabase.auth.signInWithOtp({
           email: email.trim(),
           options: {
             shouldCreateUser: true,
-            emailRedirectTo: cb.toString(),
           },
         });
         if (error) throw error;

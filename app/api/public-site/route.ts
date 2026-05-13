@@ -4,9 +4,8 @@ import { getPublicSiteUrl } from "@/lib/site-url";
 export const runtime = "nodejs";
 
 /**
- * Public canonical site URL (no secrets). Used by the login OTP client so
- * `emailRedirectTo` matches production even when the user opened the app on
- * *.onrender.com — avoids confirmation links pointing at Render.
+ * Public canonical site URL (no secrets). Useful for client-side features
+ * that must match production hostname.
  */
 export async function GET() {
   return NextResponse.json({ siteUrl: getPublicSiteUrl() });

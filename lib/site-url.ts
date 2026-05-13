@@ -1,7 +1,7 @@
 /**
- * Canonical public URL for the app (magic links, OG metadata, payment return_url,
+ * Canonical public URL for the app (OG metadata, payment return_url,
  * OpenRouter Referer header). Prefer NEXT_PUBLIC_APP_URL on Render / prod so
- * emails and redirects never point at localhost by accident.
+ * redirects never point at localhost by accident.
  */
 
 const PRODUCTION_FALLBACK = "https://prepinsight.in";
@@ -24,10 +24,7 @@ export function getPublicSiteUrl(): string {
   return PRODUCTION_FALLBACK;
 }
 
-/**
- * @deprecated Prefer `/api/public-site` + `getPublicSiteUrl()` for `emailRedirectTo`
- * so confirmation links use NEXT_PUBLIC_APP_URL even when browsing on *.onrender.com.
- */
+/** Browser origin for auth redirects when not using env (legacy / edge cases). */
 export function getBrowserAuthRedirectBase(): string {
   if (typeof window !== "undefined") {
     const host = window.location.hostname;
@@ -44,8 +41,7 @@ export function getBrowserAuthRedirectBase(): string {
 
 /**
  * `next` query on /auth/callback must stay a same-site path only — never an
- * absolute URL (open redirect + magic links accidentally carrying
- * https://localhost:10000/exam style junk from bookmarks or bad Supabase config).
+ * absolute URL (open redirect or bad config carrying external URLs).
  */
 export function sanitizeAuthNextPath(raw: string | null, fallback = "/exam"): string {
   if (!raw) return fallback;
@@ -62,8 +58,8 @@ export function sanitizeAuthNextPath(raw: string | null, fallback = "/exam"): st
 }
 
 /**
- * Base URL for Location headers after OAuth/magic-link exchange. Prefer
- * NEXT_PUBLIC_APP_URL when it is a non-localhost deploy so we never redirect
+ * Base URL for Location headers after legacy auth callback (e.g. OAuth).
+ * Prefer NEXT_PUBLIC_APP_URL when it is a non-localhost deploy so we never redirect
  * to a mistaken localhost host even if the incoming request URL were wrong.
  */
 export function getAuthCallbackRedirectOrigin(requestUrl: string): string {

@@ -2,11 +2,15 @@
 
 Branded HTML templates that match the PrepInsights landing page (serif headings, Inter body, brand `#6A4DE8` on paper `#FAF7F2`). Copy avoids wording that Supabase’s **built-in SMTP** scanner often rejects (`unlock`, `free`, currency symbols, etc.). Use neutral phrases like **“sign-in code”** instead of blocked terms.
 
-## Sign-in is email **code** (not magic links)
+## Sign-in is **email OTP only** (no magic links)
 
-The app uses **`signInWithOtp` + `verifyOtp`** in the browser. Supabase still labels the dashboard slot **“Magic Link”**, but the email body **must** show the **`{{ .Token }}`** placeholder so users receive a **numeric sign-in code** (often **6** or **8** digits, depending on your project). If your template still uses **`{{ .ConfirmationURL }}`**, Supabase will keep sending **tap-to-sign-in links** — that matches what you saw after switching the UI to OTP.
+The app uses **`signInWithOtp`** and **`verifyOtp`** in the browser. It does **not** set `emailRedirectTo`, so users should **never** rely on tapping a link in email to sign in — only the numeric code from **`{{ .Token }}`**.
 
-**Fix:** paste `magic-link.html` into **Authentication → Emails → Magic Link** and paste **`confirm-signup.html`** into **Authentication → Emails → Confirm signup**. If **Confirm signup** still uses only **`{{ .ConfirmationURL }}`**, new accounts get a **tap-to-confirm** email instead of a numeric code — that is separate from the Magic Link template.
+In the Supabase dashboard, the template slot is still labeled **“Magic Link”**; paste **`magic-link.html`** there anyway so the email shows the **code**, not `{{ .ConfirmationURL }}` as the main CTA.
+
+For **Confirm signup** (if your project still sends that template when “Confirm email” is on), paste **`confirm-signup.html`**. That file intentionally **does not** include a confirmation link — only the code — so it matches OTP-only sign-in.
+
+**Recommended (simplest for new users):** Authentication → Providers → **Email** → turn **off** “Confirm email” if you want a single OTP email and no separate confirmation step. If you leave it on, keep both templates code-first as above.
 
 ## Where to paste
 
@@ -24,29 +28,14 @@ For each one:
 3. Set the **Subject** as above (or close).
 4. Click **Save**.
 
-## Redirect URLs (required for `emailRedirectTo`)
-
-The app sends **`emailRedirectTo`** like `https://prepinsight.in/auth/callback?next=%2Fonboarding` so confirmation links land on your **real domain**, not `*.onrender.com`.
-
-In Supabase: **Authentication → URL Configuration → Redirect URLs**, add:
-
-- `https://prepinsight.in/auth/callback**`  
-  (wildcard covers query strings such as `?next=/onboarding&code=…`)
-
-Also set **Site URL** to `https://prepinsight.in` (no trailing slash).
-
-On **Render**, set **`NEXT_PUBLIC_APP_URL=https://prepinsight.in`** so `/api/public-site` and server code agree; otherwise links may keep using the Render hostname.
-
-## Required Site URL (production)
+## Site URL (production)
 
 Templates use `{{ .SiteURL }}` in the footer. Set **Authentication → URL Configuration**:
 
-For **`https://prepinsight.in`**:
-
 - **Site URL:** `https://prepinsight.in` (no trailing slash)
-- **Redirect URLs:** include at least  
-  `https://prepinsight.in/**`  
-  so browser auth and any legacy callback URLs keep working.
+- **Redirect URLs:** include at least `https://prepinsight.in/**` for OAuth or any legacy callback URLs.
+
+On **Render**, set **`NEXT_PUBLIC_APP_URL=https://prepinsight.in`** so server-side URLs match production.
 
 If Site URL is still `http://localhost:3000`, production emails will show localhost in the footer.
 
@@ -60,10 +49,9 @@ Go template tokens — keep them verbatim unless you know what you are changing:
 | ---------------------- | -------------------- | -------------------------------------------- |
 | `{{ .Email }}`         | Both                 | Recipient address                          |
 | `{{ .Token }}`         | **`magic-link.html`**, **`confirm-signup.html`** | **Numeric code** (6–8 digits; required for OTP in the app) |
-| `{{ .ConfirmationURL }}` | Optional fallback in confirm-signup | One-tap verify URL (keep below the code, not as the only CTA) |
 | `{{ .SiteURL }}`       | Both                 | Site URL from dashboard                    |
 
-Do **not** leave `{{ .ConfirmationURL }}` as the **only** CTA in **Magic Link** or **Confirm signup** if you want users to sign in with the numeric code in the app.
+Do **not** use `{{ .ConfirmationURL }}` as the primary sign-in path in these templates if you want OTP-only behaviour.
 
 ## Editing tips
 
@@ -73,4 +61,4 @@ Do **not** leave `{{ .ConfirmationURL }}` as the **only** CTA in **Magic Link** 
 
 ## Test send
 
-After pasting, use **Send test email** on the template page. Check that the message shows the **numeric code** from `{{ .Token }}`, not only a button/link.
+After pasting, use **Send test email** on the template page. Check that the message shows the **numeric code** from `{{ .Token }}`, not a “click to sign in” link as the only option.
