@@ -7,6 +7,10 @@ import toast from "react-hot-toast";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
 import { sanitizeAuthNextPath } from "@/lib/site-url";
 
+/** Supabase may send 6- or 8-digit numeric email tokens depending on project settings. */
+const OTP_LEN_MIN = 6;
+const OTP_LEN_MAX = 8;
+
 export default function LoginForm() {
   const router = useRouter();
   const search = useSearchParams();
@@ -45,8 +49,8 @@ export default function LoginForm() {
   async function verifyOtp(e: React.FormEvent) {
     e.preventDefault();
     const token = otp.trim();
-    if (!/^\d{6}$/.test(token)) {
-      toast.error("Enter the 6-digit OTP");
+    if (!/^\d{6,8}$/.test(token)) {
+      toast.error("Enter the full sign-in code from your email (6–8 digits)");
       return;
     }
     startTransition(async () => {
@@ -74,7 +78,8 @@ export default function LoginForm() {
         <div className="text-5xl mb-4">🔐</div>
         <h1 className="text-2xl font-serif font-semibold text-ink">Enter OTP</h1>
         <p className="text-ink-muted mt-3">
-          We sent a 6-digit sign-in code to <span className="font-medium text-ink">{email}</span>.
+          We sent a sign-in code to <span className="font-medium text-ink">{email}</span>. Use the
+          full number from the email ({OTP_LEN_MIN}–{OTP_LEN_MAX} digits).
         </p>
         <form onSubmit={verifyOtp} className="mt-6 space-y-4 text-left">
           <div>
@@ -85,10 +90,13 @@ export default function LoginForm() {
               id="otp"
               inputMode="numeric"
               autoComplete="one-time-code"
-              placeholder="123456"
+              placeholder="00000000"
+              maxLength={OTP_LEN_MAX}
               value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              className="w-full rounded-2xl border border-line bg-paper px-4 py-3 text-ink tracking-[0.2em] text-center placeholder:text-ink-muted/60 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 transition"
+              onChange={(e) =>
+                setOtp(e.target.value.replace(/\D/g, "").slice(0, OTP_LEN_MAX))
+              }
+              className="w-full rounded-2xl border border-line bg-paper px-4 py-3 text-ink tracking-[0.12em] text-center placeholder:text-ink-muted/60 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 transition"
               required
             />
           </div>

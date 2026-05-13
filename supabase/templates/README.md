@@ -4,7 +4,7 @@ Branded HTML templates that match the PrepInsights landing page (serif headings,
 
 ## Sign-in is email **code** (not magic links)
 
-The app uses **`signInWithOtp` + `verifyOtp`** in the browser. Supabase still labels the dashboard slot **“Magic Link”**, but the email body **must** show the **`{{ .Token }}`** placeholder so users receive a **6-digit code**. If your template still uses **`{{ .ConfirmationURL }}`**, Supabase will keep sending **tap-to-sign-in links** — that matches what you saw after switching the UI to OTP.
+The app uses **`signInWithOtp` + `verifyOtp`** in the browser. Supabase still labels the dashboard slot **“Magic Link”**, but the email body **must** show the **`{{ .Token }}`** placeholder so users receive a **numeric sign-in code** (often **6** or **8** digits, depending on your project). If your template still uses **`{{ .ConfirmationURL }}`**, Supabase will keep sending **tap-to-sign-in links** — that matches what you saw after switching the UI to OTP.
 
 **Fix:** paste `magic-link.html` into **Authentication → Emails → Magic Link** and save.
 
@@ -46,7 +46,7 @@ Go template tokens — keep them verbatim unless you know what you are changing:
 | Variable               | Used in              | Meaning                                      |
 | ---------------------- | -------------------- | -------------------------------------------- |
 | `{{ .Email }}`         | Both                 | Recipient address                          |
-| `{{ .Token }}`         | **`magic-link.html`** | **6-digit sign-in code** (required for OTP) |
+| `{{ .Token }}`         | **`magic-link.html`** | **Numeric sign-in code** (6–8 digits; required for OTP) |
 | `{{ .ConfirmationURL }}` | Confirm signup     | Confirm / verify URL                       |
 | `{{ .SiteURL }}`       | Both                 | Site URL from dashboard                    |
 
@@ -60,4 +60,4 @@ Do **not** leave `{{ .ConfirmationURL }}` as the main sign-in method in **Magic 
 
 ## Test send
 
-After pasting, use **Send test email** on the template page. Check that the message contains **six digits** from `{{ .Token }}`, not only a button/link.
+After pasting, use **Send test email** on the template page. Check that the message shows the **numeric code** from `{{ .Token }}`, not only a button/link.
