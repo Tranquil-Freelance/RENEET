@@ -132,9 +132,9 @@ SCORING RULES (NEET-UG):
 
 GROUNDING RULES (strict — failures here make the analysis worthless):
 1. The "concept" field is the canonical phrasing of each question. Every
-   "likely_gap", "insight", and "warning" you write MUST quote or lightly
-   compress the relevant concept text from the input rows. Do not paraphrase
-   loosely; do not introduce ideas absent from the concept text.
+   "likely_gap", "insight", and "warning" MUST quote or lightly compress the
+   relevant concept text from the input rows. Do not paraphrase loosely; do not
+   introduce ideas absent from the concept text.
 2. Each weakness / opportunity / threat MUST reference at least one specific
    concept from the "concept" field of the questions it covers. If 2+ questions
    share a subtopic, fuse them into one item and name both concepts in
@@ -157,6 +157,28 @@ GROUNDING RULES (strict — failures here make the analysis worthless):
 8. EVERY item must be backed by row(s) from PER-SUBTOPIC ROLLUPS — do not
    invent topics that aren't in the rollups.
 
+QUALITY RULES (these make the analysis actually useful):
+9. "likely_gap" must be a DIAGNOSTIC sentence — explain WHY the student likely
+   got it wrong, not just what the concept is. e.g. "Likely confused threshold
+   wavelength with stopping potential — these are separate photoelectric
+   concepts: λ₀ = hc/ϕ vs. eV₀ = hν − ϕ. Needs formula derivation drills."
+10. "insight" for strengths must be AFFIRMING and SPECIFIC: name the exact
+    concept(s) they got right and how many marks that contributes, e.g.
+    "Correctly solved all 3 questions on mitotic phase sequence (metaphase
+    plate, centriole movement) — 12 marks from a single well-understood topic."
+11. "insight" for opportunities must name WHAT TO STUDY and WHY IT'S QUICK:
+    "All 3 Mendelian genetics questions were left blank. This is 1 NCERT chapter
+    (Ch 5 Class 12) with 2-3 standard patterns — high ROI for ~3h of revision."
+12. "warning" for threats must state the EXACT RISK for the re-exam: "Got both
+    refraction questions right but both were guessed. The concept (Snell's law
+    applied to prism minimum deviation) is tested every year in multiple forms —
+    one wrong guess on re-exam costs −1 instead of the expected +4."
+13. "headline_insight" must be 3-4 sentences, brutally honest, and include:
+    (a) the single biggest mark leak with exact subtopic name,
+    (b) the highest-ROI blank to convert,
+    (c) a specific week-1 action ("Start with NCERT Class 11 Ch X, Section Y").
+    Address ${args.user.name} by name.
+
 OUTPUT JSON SCHEMA (note: estimated_score / percentile / rank / subject_scores
 are server-set and will be OVERWRITTEN even if you fill them — but still
 include them for shape stability):
@@ -168,25 +190,25 @@ include them for shape stability):
   "strengths": [
     { "topic": "<docx ch>", "subtopic": "<docx st>", "subject": "biology|chemistry|physics",
       "score_pct": 100, "marks": 8,
-      "insight": "One sentence quoting the concept(s) they nailed" }
+      "insight": "2 sentences: name the exact concept(s) they nailed and the mark value. Affirm the skill." }
   ],
   "weaknesses": [
     { "topic": "<docx ch>", "subtopic": "<docx st>", "subject": "biology|chemistry|physics",
       "marks_lost": 12, "questions_wrong": 3,
-      "likely_gap": "One sentence quoting the specific concept text the student got wrong",
+      "likely_gap": "2-3 sentences: diagnose WHY they got it wrong (misconception, formula confusion, concept gap), name the exact concept text, and state what to practise.",
       "fix_priority": "high|medium|low", "fix_time_hours": 4 }
   ],
   "opportunities": [
     { "topic": "<docx ch>", "subtopic": "<docx st>", "subject": "biology|chemistry|physics",
       "questions_blank": 3, "marks_recoverable": 12, "effort_hours": 2,
-      "insight": "Why this blank is low-effort high-reward, quoting the concept text" }
+      "insight": "2 sentences: name the exact concept(s) blanked, which NCERT chapter covers it, and why it's quick to learn." }
   ],
   "threats": [
     { "topic": "<docx ch>", "subtopic": "<docx st>", "subject": "biology|chemistry|physics",
       "questions_guessed_right": 2, "marks_at_risk": 8,
-      "warning": "What could go wrong if they rely on luck — quote the concept text" }
+      "warning": "2 sentences: state the exact concept guessed, why it's risky on re-exam (it has multiple forms or common traps), and what practice would lock it in." }
   ],
-  "headline_insight": "2-3 sentences directed at ${args.user.name} personally — name their biggest leakage subtopic and their highest-leverage blank, and tell them what to do in week 1."
+  "headline_insight": "3-4 sentences directed at ${args.user.name} by name: (a) name their single biggest mark leak with exact subtopic, (b) name their highest-ROI blank with exact NCERT reference, (c) prescribe a specific week-1 action."
 }
 
 Respond with ONLY the JSON object — no preamble, no markdown fence.`;
