@@ -71,6 +71,15 @@ export function sanitizeAuthNextPath(raw: string | null, fallback = "/exam"): st
  * to a mistaken localhost host even if the incoming request URL were wrong.
  */
 export function getAuthCallbackRedirectOrigin(requestUrl: string): string {
+  const requestOrigin = new URL(requestUrl).origin;
+  const requestHost = new URL(requestUrl).hostname;
+  if (requestHost !== "localhost" && requestHost !== "127.0.0.1") {
+    // Keep callback redirects on the same host that received the magic link.
+    // If we hop to a different origin from env, the freshly-set auth cookie is
+    // host-scoped to the callback host and the user appears logged out.
+    return requestOrigin;
+  }
+
   const cfg = process.env.NEXT_PUBLIC_APP_URL?.trim();
   if (cfg) {
     const n = normalizeBase(cfg);
@@ -81,5 +90,5 @@ export function getAuthCallbackRedirectOrigin(requestUrl: string): string {
       /* fall through */
     }
   }
-  return new URL(requestUrl).origin;
+  return requestOrigin;
 }
