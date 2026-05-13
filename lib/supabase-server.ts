@@ -88,6 +88,14 @@ export function getMiddlewareSupabase(request: NextRequest, response: NextRespon
 /**
  * Returns the internal `public.users.id` for the currently signed-in auth user,
  * creating the row if needed. Returns `null` if no session.
+ *
+ * IMPORTANT: always uses the service-role client (when available) for DB reads
+ * and uses an explicit `.eq("auth_id", user.id)` filter. This prevents two
+ * failure modes that caused returning paid users to lose their payment status:
+ *  1. RLS silently returning no rows → a NEW users row was created → old
+ *     plans/payments (keyed on the old ID) were never found → paid = false.
+ *  2. A session-bound client that couldn't see the row due to a missing
+ *     EXECUTE grant on current_user_id().
  */
 export async function getOrCreateAppUserId(): Promise<string | null> {
   const supa = await getServerSupabase();
@@ -96,10 +104,18 @@ export async function getOrCreateAppUserId(): Promise<string | null> {
   } = await supa.auth.getUser();
   if (!user) return null;
 
-  const { data: existing } = await supa.from("users").select("id").maybeSingle();
+  // Prefer service-role client for the DB lookup so we bypass RLS entirely.
+  // We have already confirmed the identity via getUser() above.
+  const db = isSupabaseConfigured() ? getServiceClient() : supa;
+
+  const { data: existing } = await db
+    .from("users")
+    .select("id")
+    .eq("auth_id", user.id)
+    .maybeSingle();
   if (existing?.id) return existing.id as string;
 
-  const { data: created, error } = await supa
+  const { data: created, error } = await db
     .from("users")
     .insert({
       auth_id: user.id,

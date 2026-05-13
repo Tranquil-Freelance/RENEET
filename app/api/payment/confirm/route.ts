@@ -115,7 +115,21 @@ export async function POST(req: Request) {
     payment_method: PAYMENT_PROVIDER,
   };
 
-  // Write to plans FIRST — this is the canonical unlock flag checked by status.
+  // ── 1. Stamp users.paid = true (PRIMARY unlock flag) ──────────────────────
+  // This is the most reliable flag: a single row keyed on auth_id. Even if
+  // plans/payments are lost, a user who paid will always get their access back.
+  const { error: userPaidErr } = await db
+    .from("users")
+    .update({ paid: true, paid_at: new Date().toISOString() })
+    .eq("id", userId);
+  if (userPaidErr) {
+    // Non-fatal — we still write plans/payments below. Log so we can diagnose.
+    console.error("[payment/confirm] users.paid update failed:", userPaidErr.message);
+  }
+
+  // ── 2. Stamp plans.paid = true (SECONDARY unlock flag / plan scaffold) ────
+  // Plans row also stores the generated plan_json later. Keeping paid here
+  // means older status checks (before migration 0006) still return true.
   if (existing?.id) {
     const { error } = await db.from("plans").update(paymentPayload).eq("id", existing.id);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -124,7 +138,7 @@ export async function POST(req: Request) {
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  // Write payment ledger entry (non-fatal if it fails — status falls back to plans).
+  // ── 3. Write payment ledger entry (TERTIARY — non-fatal) ──────────────────
   const { error: ledgerErr } = await db.from("payments").upsert(
     {
       user_id: userId,

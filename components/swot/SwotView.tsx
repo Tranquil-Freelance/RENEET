@@ -112,16 +112,28 @@ export function SwotView({ initialSwot }: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    (async () => {
+
+    async function checkPaidStatus(attempt = 1): Promise<void> {
       try {
         const res = await fetch("/api/payment/status", { cache: "no-store", credentials: "include" });
+
+        // On 401/server error: retry once after 2 seconds. The session cookie
+        // may not yet be propagated on first mount (e.g. right after sign-in).
         if (!res.ok) {
+          if (res.status === 401 && attempt === 1) {
+            setTimeout(() => {
+              if (!cancelled) void checkPaidStatus(2);
+            }, 2000);
+            return;
+          }
           if (res.status !== 401) {
             const body = await res.json().catch(() => ({}));
             console.warn("[swot] payment status lookup failed", body);
           }
+          if (!cancelled) setCheckingPaid(false);
           return;
         }
+
         const body = await res.json();
         const serverPaid = Boolean(body.paid);
         if (!cancelled) {
@@ -135,13 +147,15 @@ export function SwotView({ initialSwot }: Props) {
           } catch {
             /* ignore */
           }
+          setCheckingPaid(false);
         }
       } catch (err) {
         console.warn("[swot] payment status request error", err);
-      } finally {
         if (!cancelled) setCheckingPaid(false);
       }
-    })();
+    }
+
+    void checkPaidStatus();
     return () => {
       cancelled = true;
     };
