@@ -1,9 +1,6 @@
-import { DashboardView } from "@/components/dashboard/DashboardView";
+import { redirect } from "next/navigation";
 
+/** Dashboard entry now opens the SWOT gap-analysis hub directly. */
 export default function DashboardPage() {
-  return (
-    <main className="min-h-screen bg-slate-50">
-      <DashboardView />
-    </main>
-  );
+  redirect("/swot");
 }

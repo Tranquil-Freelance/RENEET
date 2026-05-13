@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, ShieldCheck, Sparkles, Clock } from "lucide-react";
+import { ArrowRight, LayoutDashboard, ShieldCheck, Sparkles, Clock } from "lucide-react";
 
 export function LandingHero({ signupCount }: { signupCount: number }) {
   return (
@@ -45,7 +45,7 @@ export function LandingHero({ signupCount }: { signupCount: number }) {
             then map the gaps to the exact NCERT subtopics that hurt you. Free.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+          <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center justify-center gap-3">
             <Link
               href="/login?next=/exam"
               className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-base font-semibold text-white shadow-soft-lg transition hover:bg-brand-dark"
@@ -59,6 +59,13 @@ export function LandingHero({ signupCount }: { signupCount: number }) {
             >
               How it works
             </a>
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-line bg-white px-6 py-3.5 text-base font-semibold text-ink hover:border-brand hover:text-brand transition"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </Link>
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-ink-muted">

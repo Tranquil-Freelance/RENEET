@@ -37,6 +37,9 @@ export default async function LandingPage() {
               <Link href="/login?next=/exam" className="hover:text-[var(--color-brand)]">
                 Start free
               </Link>
+              <Link href="/dashboard" className="hover:text-[var(--color-brand)]">
+                Dashboard
+              </Link>
               <Link href="/pricing" className="hover:text-[var(--color-brand)]">
                 Pricing (INR)
               </Link>
