@@ -19,6 +19,8 @@ export async function GET(request: NextRequest) {
   const { searchParams } = url;
   const origin = getAuthCallbackRedirectOrigin(request.url);
   const code = searchParams.get("code");
+  const tokenHash = searchParams.get("token_hash");
+  const otpType = searchParams.get("type");
 
   const cookieStore = await cookies();
   const cookieRaw = cookieStore.get("prepinsights_intended_next")?.value;
@@ -32,14 +34,31 @@ export async function GET(request: NextRequest) {
   }
   const next = sanitizeAuthNextPath(searchParams.get("next") ?? fromCookie, "/exam");
 
-  if (!code) {
+  const allowedOtpTypes = new Set([
+    "signup",
+    "invite",
+    "magiclink",
+    "recovery",
+    "email_change",
+    "email",
+  ]);
+  const canVerifyOtp =
+    Boolean(tokenHash) && Boolean(otpType) && allowedOtpTypes.has(otpType as string);
+
+  if (!code && !canVerifyOtp) {
     const res = NextResponse.redirect(`${origin}/login?error=missing_code`);
     res.cookies.delete("prepinsights_intended_next");
     return res;
   }
 
   const supabase = await getServerSupabase();
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+  const authResult = code
+    ? await supabase.auth.exchangeCodeForSession(code)
+    : await supabase.auth.verifyOtp({
+        token_hash: tokenHash as string,
+        type: otpType as "signup" | "invite" | "magiclink" | "recovery" | "email_change" | "email",
+      });
+  const { data, error } = authResult;
   if (error || !data.user) {
     console.error("[auth/callback] exchange error:", error?.message);
     const res = NextResponse.redirect(`${origin}/login?error=exchange_failed`);
