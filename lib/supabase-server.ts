@@ -5,7 +5,11 @@ import type { NextRequest, NextResponse } from "next/server";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY ?? "";
+
+/** Supabase dashboard often labels this `service_role`; support both names. */
+export function getSupabaseServiceKey(): string {
+  return process.env.SUPABASE_SERVICE_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+}
 
 /**
  * Server-side Supabase client bound to the current request's cookies.
@@ -40,18 +44,25 @@ export async function getServerSupabase() {
  * via `getServerSupabase()` and write rows on their behalf).
  */
 export function getServiceClient(): SupabaseClient {
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+  const serviceKey = getSupabaseServiceKey();
+  if (!SUPABASE_URL || !serviceKey) {
     throw new Error(
-      "Supabase service env vars missing. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_KEY.",
+      "Supabase service env vars missing. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_KEY (or SUPABASE_SERVICE_ROLE_KEY).",
     );
   }
-  return createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+  return createClient(SUPABASE_URL, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }
 
+/** URL + anon key: enough for auth session and RLS-scoped `public.users` access. */
+export function isSupabaseAuthConfigured() {
+  return Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+}
+
+/** URL + service role: required for server-side writes that bypass RLS (analyze, payments aggregate, etc.). */
 export function isSupabaseConfigured() {
-  return Boolean(SUPABASE_URL && SUPABASE_SERVICE_KEY);
+  return Boolean(SUPABASE_URL && getSupabaseServiceKey());
 }
 
 /**
@@ -85,15 +96,10 @@ export async function getOrCreateAppUserId(): Promise<string | null> {
   } = await supa.auth.getUser();
   if (!user) return null;
 
-  const service = getServiceClient();
-  const { data: existing } = await service
-    .from("users")
-    .select("id")
-    .eq("auth_id", user.id)
-    .maybeSingle();
+  const { data: existing } = await supa.from("users").select("id").maybeSingle();
   if (existing?.id) return existing.id as string;
 
-  const { data: created, error } = await service
+  const { data: created, error } = await supa
     .from("users")
     .insert({
       auth_id: user.id,

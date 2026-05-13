@@ -3,8 +3,7 @@ import { z } from "zod";
 import {
   getOrCreateAppUserId,
   getServerSupabase,
-  getServiceClient,
-  isSupabaseConfigured,
+  isSupabaseAuthConfigured,
 } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
@@ -20,7 +19,7 @@ const UpdateBody = z.object({
 });
 
 export async function GET() {
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseAuthConfigured()) {
     return NextResponse.json({ error: "Supabase not configured" }, { status: 503 });
   }
   const supa = await getServerSupabase();
@@ -36,8 +35,7 @@ export async function GET() {
     return NextResponse.json({ error: "Could not resolve user profile" }, { status: 500 });
   }
 
-  const service = getServiceClient();
-  const { data, error } = await service
+  const { data, error } = await supa
     .from("users")
     .select("id, name, phone, email, state, attempt_no, target, study_hours, exam_feel, created_at")
     .eq("id", userId)
@@ -53,7 +51,7 @@ export async function GET() {
 }
 
 export async function PATCH(req: Request) {
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseAuthConfigured()) {
     return NextResponse.json({ error: "Supabase not configured" }, { status: 503 });
   }
   let parsed: z.infer<typeof UpdateBody>;
@@ -88,8 +86,7 @@ export async function PATCH(req: Request) {
         : parsed.phone.replace(/\D/g, "").slice(-10) || null,
   };
 
-  const service = getServiceClient();
-  const { data, error } = await service
+  const { data, error } = await supa
     .from("users")
     .update(patch)
     .eq("id", userId)

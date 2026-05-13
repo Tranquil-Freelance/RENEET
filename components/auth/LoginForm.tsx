@@ -1,24 +1,37 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
 import { sanitizeAuthNextPath } from "@/lib/site-url";
+import { cn } from "@/lib/utils";
 
 /** Supabase may send 6- or 8-digit numeric email tokens depending on project settings. */
 const OTP_LEN_MIN = 6;
 const OTP_LEN_MAX = 8;
 
+type AuthMode = "login" | "signup";
+
 export default function LoginForm() {
   const router = useRouter();
   const search = useSearchParams();
   const next = sanitizeAuthNextPath(search.get("next"), "/exam");
+  const modeParam = search.get("mode");
+  const [authMode, setAuthMode] = useState<AuthMode>(
+    modeParam === "login" ? "login" : "signup",
+  );
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [sent, setSent] = useState(false);
   const [pending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (modeParam === "login" || modeParam === "signup") {
+      setAuthMode(modeParam);
+    }
+  }, [modeParam]);
 
   async function sendOtp(e: React.FormEvent) {
     e.preventDefault();
@@ -29,19 +42,24 @@ export default function LoginForm() {
     startTransition(async () => {
       try {
         const supabase = getBrowserSupabase();
-        // Email content comes from Supabase "Magic Link" template — it must show
-        // {{ .Token }} (see supabase/templates/magic-link.html). If the template
-        // still uses {{ .ConfirmationURL }}, users get a tap-to-sign-in link instead.
         const { error } = await supabase.auth.signInWithOtp({
           email: email.trim(),
-          options: { shouldCreateUser: true },
+          options: {
+            shouldCreateUser: authMode === "signup",
+          },
         });
         if (error) throw error;
         setSent(true);
         toast.success("OTP sent — check your inbox");
       } catch (err) {
-        const msg = err instanceof Error ? err.message : "Could not send OTP";
-        toast.error(msg);
+        const raw = err instanceof Error ? err.message : "Could not send OTP";
+        if (authMode === "login" && /user not found|not found|signups not allowed/i.test(raw)) {
+          toast.error("No account for this email. Switch to Sign up or check the address.");
+        } else if (authMode === "signup" && /already registered|already exists/i.test(raw)) {
+          toast.error("This email already has an account. Use Log in instead.");
+        } else {
+          toast.error(raw);
+        }
       }
     });
   }
@@ -82,7 +100,7 @@ export default function LoginForm() {
         } catch {
           /* ignore profile prefetch failures on login */
         }
-        toast.success("Signed in");
+        toast.success(authMode === "signup" ? "Welcome!" : "Signed in");
         router.replace(bootBody.onboardingRequired ? "/onboarding" : next);
         router.refresh();
       } catch (err) {
@@ -98,8 +116,8 @@ export default function LoginForm() {
         <div className="text-5xl mb-4">🔐</div>
         <h1 className="text-2xl font-serif font-semibold text-ink">Enter OTP</h1>
         <p className="text-ink-muted mt-3">
-          We sent a sign-in code to <span className="font-medium text-ink">{email}</span>. Use the
-          full number from the email ({OTP_LEN_MIN}–{OTP_LEN_MAX} digits).
+          We sent a code to <span className="font-medium text-ink">{email}</span>. Enter the full
+          number from the email ({OTP_LEN_MIN}–{OTP_LEN_MAX} digits).
         </p>
         <form onSubmit={verifyOtp} className="mt-6 space-y-4 text-left">
           <div>
@@ -132,7 +150,6 @@ export default function LoginForm() {
           onClick={() => {
             setSent(false);
             setOtp("");
-            setEmail("");
           }}
           className="mt-6 text-sm text-brand hover:underline"
         >
@@ -151,10 +168,52 @@ export default function LoginForm() {
         ← Back home
       </Link>
       <h1 className="mt-6 text-3xl font-serif font-semibold text-ink">
-        Sign in
+        Log in or sign up
       </h1>
       <p className="mt-2 text-ink-muted">
-        No passwords, no nonsense. We&apos;ll email you a one-time OTP.
+        No passwords. We&apos;ll email you a one-time code — same flow for new and returning
+        students.
+      </p>
+
+      <div
+        className="mt-6 grid grid-cols-2 gap-2 rounded-2xl border border-line bg-paper p-1"
+        role="tablist"
+        aria-label="Account action"
+      >
+        <button
+          type="button"
+          role="tab"
+          aria-selected={authMode === "signup"}
+          onClick={() => setAuthMode("signup")}
+          className={cn(
+            "rounded-xl px-3 py-2 text-sm font-semibold transition",
+            authMode === "signup"
+              ? "bg-white text-ink shadow-soft"
+              : "text-ink-muted hover:text-ink",
+          )}
+        >
+          Sign up
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={authMode === "login"}
+          onClick={() => setAuthMode("login")}
+          className={cn(
+            "rounded-xl px-3 py-2 text-sm font-semibold transition",
+            authMode === "login"
+              ? "bg-white text-ink shadow-soft"
+              : "text-ink-muted hover:text-ink",
+          )}
+        >
+          Log in
+        </button>
+      </div>
+
+      <p className="mt-3 text-xs text-ink-muted">
+        {authMode === "signup"
+          ? "Creates your PrepInsights account if this email is new."
+          : "Only sends a code if you already have an account."}
       </p>
 
       <form onSubmit={sendOtp} className="mt-6 space-y-4">

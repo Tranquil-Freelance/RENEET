@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import {
   getOrCreateAppUserId,
   getServerSupabase,
-  getServiceClient,
-  isSupabaseConfigured,
+  isSupabaseAuthConfigured,
 } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
@@ -14,12 +13,12 @@ export const maxDuration = 20;
  * Returns whether onboarding is still required (missing `state`).
  */
 export async function POST() {
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseAuthConfigured()) {
     return NextResponse.json({
       userId: "dev-anon",
       isNew: false,
       onboardingRequired: true,
-      warning: "Supabase service key not configured — bootstrap not persisted",
+      warning: "Supabase URL or anon key missing — bootstrap not persisted",
     });
   }
 
@@ -36,8 +35,7 @@ export async function POST() {
     return NextResponse.json({ error: "Could not resolve user" }, { status: 500 });
   }
 
-  const service = getServiceClient();
-  const { data, error } = await service
+  const { data, error } = await supa
     .from("users")
     .select("id, state, created_at")
     .eq("id", userId)

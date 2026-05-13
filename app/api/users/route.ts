@@ -3,8 +3,7 @@ import { z } from "zod";
 import {
   getOrCreateAppUserId,
   getServerSupabase,
-  getServiceClient,
-  isSupabaseConfigured,
+  isSupabaseAuthConfigured,
 } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
@@ -30,10 +29,10 @@ export async function POST(req: Request) {
     );
   }
 
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseAuthConfigured()) {
     return NextResponse.json({
       userId: "dev-anon",
-      warning: "Supabase service key not configured — onboarding not persisted",
+      warning: "Supabase URL or anon key missing — onboarding not persisted",
     });
   }
 
@@ -50,8 +49,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Could not resolve user" }, { status: 500 });
   }
 
-  const service = getServiceClient();
-  const { error } = await service
+  const { error } = await supa
     .from("users")
     .update({
       name: parsed.name ?? "Student",

@@ -34,18 +34,43 @@ export function UserNav() {
         return;
       }
       try {
+        const {
+          data: { user },
+        } = await supa.auth.getUser();
+        const metaName =
+          typeof user?.user_metadata?.full_name === "string"
+            ? user.user_metadata.full_name.trim()
+            : null;
+        const sessionEmail = user?.email ?? null;
+
         const res = await fetch("/api/users/me", { cache: "no-store" });
         if (res.ok) {
           const body = await res.json();
           const p = body.profile as Profile | undefined;
-          if (p?.name) {
+          const dbName = p?.name?.trim();
+          const resolvedName =
+            dbName && dbName !== "Student" ? dbName : metaName ?? dbName ?? null;
+          const merged: Profile = {
+            name: resolvedName,
+            email: p?.email ?? sessionEmail,
+            state: p?.state ?? null,
+          };
+          if (merged.name && merged.name !== "Student") {
             try {
-              localStorage.setItem("prepinsights:userName", p.name);
+              localStorage.setItem("prepinsights:userName", merged.name);
             } catch {
               /* ignore */
             }
           }
-          if (!cancelled) setProfile(p ?? null);
+          if (!cancelled) setProfile(merged);
+        } else {
+          if (!cancelled) {
+            setProfile({
+              name: metaName,
+              email: sessionEmail,
+              state: null,
+            });
+          }
         }
       } catch {
         if (!cancelled) setProfile(null);
@@ -107,7 +132,11 @@ export function UserNav() {
 
   if (!sessionReady || !signedIn) return null;
 
-  const displayName = profile?.name?.trim() || profile?.email?.split("@")[0] || "Account";
+  const rawName = profile?.name?.trim();
+  const displayName =
+    rawName && rawName !== "Student"
+      ? rawName
+      : profile?.email?.split("@")[0] ?? "Signed in";
   const initial = displayName.slice(0, 1).toUpperCase();
   const needsSetup = !profile?.state;
 

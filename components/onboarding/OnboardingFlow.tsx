@@ -52,6 +52,7 @@ export function OnboardingFlow() {
   const [step, setStep] = useState<Step>(1);
   const [form, setForm] = useState<FormState>(INITIAL);
   const [submitting, setSubmitting] = useState(false);
+  const [finished, setFinished] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
@@ -96,12 +97,42 @@ export function OnboardingFlow() {
       } catch {
         /* ignore local storage failures */
       }
-      router.push("/exam");
+      setFinished(true);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setSubmitting(false);
     }
+  }
+
+  if (finished) {
+    return (
+      <div className="mx-auto max-w-xl">
+        <div className="rounded-3xl border border-line bg-white p-8 md:p-10 shadow-soft text-center">
+          <div className="mb-4 text-5xl" aria-hidden>
+            ✅
+          </div>
+          <h2 className="text-2xl font-serif font-semibold text-ink">You&apos;re set</h2>
+          <p className="mt-2 text-sm text-ink-muted">
+            Next, mark the answers you chose on the NEET OMR-style sheet. That powers your gap
+            analysis and SWOT.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+            <PrimaryButton onClick={() => router.push("/exam")} className="justify-center">
+              Mark my paper
+              <ArrowRight className="h-4 w-4" />
+            </PrimaryButton>
+            <button
+              type="button"
+              onClick={() => router.push("/dashboard")}
+              className="rounded-2xl border border-line bg-paper px-5 py-3 text-sm font-semibold text-ink hover:border-ink-muted transition"
+            >
+              Go to dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -258,7 +289,7 @@ export function OnboardingFlow() {
                     </>
                   ) : (
                     <>
-                      Start the analysis
+                      Save profile
                       <ArrowRight className="h-4 w-4" />
                     </>
                   )}

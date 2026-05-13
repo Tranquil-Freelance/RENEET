@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { cookies } from "next/headers";
-import { getServerSupabase, getServiceClient } from "@/lib/supabase-server";
+import { getServerSupabase } from "@/lib/supabase-server";
 import { getAuthCallbackRedirectOrigin, sanitizeAuthNextPath } from "@/lib/site-url";
 
 /**
@@ -66,18 +66,16 @@ export async function GET(request: NextRequest) {
     return res;
   }
 
-  // Ensure a `public.users` row exists for this auth user.
+  // Ensure a `public.users` row exists for this auth user (RLS — same session client).
   try {
-    const service = getServiceClient();
-    const { data: existing } = await service
+    const { data: existing } = await supabase
       .from("users")
       .select("id, state, attempt_no")
-      .eq("auth_id", data.user.id)
       .maybeSingle();
 
     let redirectTo = next;
     if (!existing) {
-      await service.from("users").insert({
+      await supabase.from("users").insert({
         auth_id: data.user.id,
         email: data.user.email ?? null,
         name: "Student",

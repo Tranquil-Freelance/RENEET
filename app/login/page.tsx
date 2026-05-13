@@ -1,8 +1,8 @@
 import LoginForm from "@/components/auth/LoginForm";
 
 export const metadata = {
-  title: "Sign in · PrepInsights",
-  description: "Sign in with your email to start the gap analysis.",
+  title: "Log in or sign up · PrepInsights",
+  description: "Create an account or log in with email OTP — no password.",
 };
 
 export default function LoginPage() {
