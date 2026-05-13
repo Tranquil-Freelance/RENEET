@@ -105,6 +105,16 @@ export async function POST(req: Request) {
     payment_method: PAYMENT_PROVIDER,
   };
 
+  // Unlock in `plans` first so a paid user is never blocked by ledger issues
+  // (e.g. missing `payments` table, transient PostgREST errors).
+  if (existing?.id) {
+    const { error } = await supa.from("plans").update(paymentPayload).eq("id", existing.id);
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  } else {
+    const { error } = await supa.from("plans").insert({ user_id: userId, ...paymentPayload });
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
   const { error: ledgerErr } = await supa.from("payments").upsert(
     {
       user_id: userId,
@@ -119,15 +129,7 @@ export async function POST(req: Request) {
     { onConflict: "order_id" },
   );
   if (ledgerErr) {
-    return NextResponse.json({ error: ledgerErr.message }, { status: 500 });
-  }
-
-  if (existing?.id) {
-    const { error } = await supa.from("plans").update(paymentPayload).eq("id", existing.id);
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  } else {
-    const { error } = await supa.from("plans").insert({ user_id: userId, ...paymentPayload });
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("[payment/confirm] payments ledger upsert failed:", ledgerErr.message);
   }
 
   return NextResponse.json({ ok: true, paid: true, order_id: orderId });
