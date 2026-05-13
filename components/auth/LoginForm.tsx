@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
 import { sanitizeAuthNextPath } from "@/lib/site-url";
 import { cn } from "@/lib/utils";
+
+const OTP_FLOW_KEY = "prepinsights:otpAuthMode";
 
 /** Supabase may send 6- or 8-digit numeric email tokens depending on project settings. */
 const OTP_LEN_MIN = 6;
@@ -26,12 +28,27 @@ export default function LoginForm() {
   const [otp, setOtp] = useState("");
   const [sent, setSent] = useState(false);
   const [pending, startTransition] = useTransition();
+  const errorToastShown = useRef(false);
 
   useEffect(() => {
     if (modeParam === "login" || modeParam === "signup") {
       setAuthMode(modeParam);
     }
   }, [modeParam]);
+
+  useEffect(() => {
+    if (errorToastShown.current) return;
+    const err = search.get("error");
+    if (!err) return;
+    errorToastShown.current = true;
+    if (err === "exchange_failed") {
+      toast.error(
+        "That sign-in link expired, was already used, or opened on the wrong site. Request a new code on PrepInsights.",
+      );
+    } else if (err === "missing_code") {
+      toast.error("Missing sign-in parameters. Open the link from the latest email or use OTP.");
+    }
+  }, [search]);
 
   async function sendOtp(e: React.FormEvent) {
     e.preventDefault();
@@ -42,10 +59,34 @@ export default function LoginForm() {
     startTransition(async () => {
       try {
         const supabase = getBrowserSupabase();
+        let siteUrl = "";
+        try {
+          const cfgRes = await fetch("/api/public-site", { cache: "no-store" });
+          if (cfgRes.ok) {
+            const cfg = (await cfgRes.json()) as { siteUrl?: string };
+            if (cfg.siteUrl?.trim()) siteUrl = cfg.siteUrl.trim().replace(/\/+$/, "");
+          }
+        } catch {
+          /* ignore */
+        }
+        if (!siteUrl && typeof window !== "undefined") {
+          siteUrl = window.location.origin;
+        }
+        const nextForEmail = authMode === "signup" ? "/onboarding" : next;
+        const cb = new URL(`${siteUrl}/auth/callback`);
+        cb.searchParams.set("next", nextForEmail);
+
+        try {
+          sessionStorage.setItem(OTP_FLOW_KEY, authMode);
+        } catch {
+          /* ignore */
+        }
+
         const { error } = await supabase.auth.signInWithOtp({
           email: email.trim(),
           options: {
             shouldCreateUser: authMode === "signup",
+            emailRedirectTo: cb.toString(),
           },
         });
         if (error) throw error;
@@ -74,12 +115,33 @@ export default function LoginForm() {
     startTransition(async () => {
       try {
         const supabase = getBrowserSupabase();
-        const { error } = await supabase.auth.verifyOtp({
+        let flow: AuthMode = "login";
+        try {
+          const s = sessionStorage.getItem(OTP_FLOW_KEY);
+          if (s === "signup" || s === "login") flow = s;
+        } catch {
+          /* ignore */
+        }
+        const otpType = flow === "signup" ? "signup" : "email";
+        let { error } = await supabase.auth.verifyOtp({
           email: email.trim(),
           token,
-          type: "email",
+          type: otpType,
         });
+        if (error && otpType === "signup") {
+          const r2 = await supabase.auth.verifyOtp({
+            email: email.trim(),
+            token,
+            type: "email",
+          });
+          error = r2.error;
+        }
         if (error) throw error;
+        try {
+          sessionStorage.removeItem(OTP_FLOW_KEY);
+        } catch {
+          /* ignore */
+        }
         const bootRes = await fetch("/api/users/bootstrap", { method: "POST" });
         const bootBody = await bootRes.json().catch(() => ({}));
         if (bootRes.status === 401) {
@@ -150,6 +212,11 @@ export default function LoginForm() {
           onClick={() => {
             setSent(false);
             setOtp("");
+            try {
+              sessionStorage.removeItem(OTP_FLOW_KEY);
+            } catch {
+              /* ignore */
+            }
           }}
           className="mt-6 text-sm text-brand hover:underline"
         >

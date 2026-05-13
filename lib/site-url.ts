@@ -25,12 +25,8 @@ export function getPublicSiteUrl(): string {
 }
 
 /**
- * Client-only: magic-link redirect target for Supabase `emailRedirectTo`.
- *
- * - On a real deployed host (not localhost), always use `window.location.origin`
- *   so links match the site the user is on — even if a bad localhost value was
- *   accidentally baked into `NEXT_PUBLIC_APP_URL` at build time.
- * - On localhost, prefer `NEXT_PUBLIC_APP_URL` when set, else current origin.
+ * @deprecated Prefer `/api/public-site` + `getPublicSiteUrl()` for `emailRedirectTo`
+ * so confirmation links use NEXT_PUBLIC_APP_URL even when browsing on *.onrender.com.
  */
 export function getBrowserAuthRedirectBase(): string {
   if (typeof window !== "undefined") {

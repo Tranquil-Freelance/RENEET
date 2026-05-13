@@ -24,6 +24,19 @@ For each one:
 3. Set the **Subject** as above (or close).
 4. Click **Save**.
 
+## Redirect URLs (required for `emailRedirectTo`)
+
+The app sends **`emailRedirectTo`** like `https://prepinsight.in/auth/callback?next=%2Fonboarding` so confirmation links land on your **real domain**, not `*.onrender.com`.
+
+In Supabase: **Authentication → URL Configuration → Redirect URLs**, add:
+
+- `https://prepinsight.in/auth/callback**`  
+  (wildcard covers query strings such as `?next=/onboarding&code=…`)
+
+Also set **Site URL** to `https://prepinsight.in` (no trailing slash).
+
+On **Render**, set **`NEXT_PUBLIC_APP_URL=https://prepinsight.in`** so `/api/public-site` and server code agree; otherwise links may keep using the Render hostname.
+
 ## Required Site URL (production)
 
 Templates use `{{ .SiteURL }}` in the footer. Set **Authentication → URL Configuration**:
