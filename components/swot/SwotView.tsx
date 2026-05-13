@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { ArrowRight, Loader2, Lock, Share2, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, ArrowRightCircle, Loader2, Lock, Share2, Sparkles, Zap } from "lucide-react";
 import type { SWOT, Subject } from "@/types";
 import { SwotCards } from "./SwotCards";
 import { ScoreBanner } from "./ScoreBanner";
@@ -238,7 +238,7 @@ export function SwotView({ initialSwot }: Props) {
   });
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-6 pb-32">
+    <div className={cn("mx-auto max-w-4xl px-4 py-6", isLocked && "pb-32")}>
       {/* Header */}
       <div className="flex items-center justify-between gap-3">
         <div>
@@ -481,8 +481,8 @@ export function SwotView({ initialSwot }: Props) {
         </button>
       </div>
 
-      {/* Payment CTA — fixed bottom bar */}
-      {isLocked ? (
+      {/* Fixed bottom CTA — only shown when locked */}
+      {isLocked && (
         <PaymentCTA
           totalMarksLost={totalMarksLost}
           ctaLabel="Unlock full SWOT + 30-day plan"
@@ -493,13 +493,31 @@ export function SwotView({ initialSwot }: Props) {
             toast.success("Unlocked! Full SWOT is now visible.");
           }}
         />
-      ) : (
-        <PaymentCTA
-          totalMarksLost={totalMarksLost}
-          ctaLabel="Build my 30-day plan"
-          helperText="You've unlocked the full SWOT — generate your personalised study plan"
-          redirectToPlan
-        />
+      )}
+
+      {/* Inline plan CTA — shown only when unlocked (no persistent banner) */}
+      {!isLocked && (
+        <section className="mt-8 rounded-2xl bg-gradient-to-br from-[var(--color-brand)] to-[var(--color-brand-700)] p-6 text-white">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider opacity-80 mb-1">
+                You&apos;re unlocked
+              </div>
+              <div className="text-lg font-bold">Ready to build your 30-day plan?</div>
+              <div className="text-sm opacity-80 mt-0.5">
+                Personalised day-by-day tasks, NCERT references, and daily quizzes — all based on your SWOT.
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => router.push("/plan")}
+              className="inline-flex items-center gap-2 rounded-2xl bg-white text-[var(--color-brand)] font-semibold px-5 py-2.5 text-sm shadow hover:brightness-95 transition shrink-0"
+            >
+              <ArrowRightCircle className="h-4 w-4" />
+              Build my plan
+            </button>
+          </div>
+        </section>
       )}
 
       {showShare && (
