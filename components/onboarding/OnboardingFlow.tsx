@@ -9,6 +9,7 @@ import { ArrowRight, Loader2, ArrowLeft } from "lucide-react";
 import { INDIAN_STATES } from "@/lib/states";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
 import { cn } from "@/lib/utils";
+import { dispatchProfileUpdated } from "@/lib/profile-events";
 
 type Step = 1 | 2;
 
@@ -97,6 +98,7 @@ export function OnboardingFlow() {
       } catch {
         /* ignore local storage failures */
       }
+      dispatchProfileUpdated({ name: form.name.trim(), state: form.state });
       setFinished(true);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");

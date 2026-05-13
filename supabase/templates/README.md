@@ -6,7 +6,7 @@ Branded HTML templates that match the PrepInsights landing page (serif headings,
 
 The app uses **`signInWithOtp` + `verifyOtp`** in the browser. Supabase still labels the dashboard slot **“Magic Link”**, but the email body **must** show the **`{{ .Token }}`** placeholder so users receive a **numeric sign-in code** (often **6** or **8** digits, depending on your project). If your template still uses **`{{ .ConfirmationURL }}`**, Supabase will keep sending **tap-to-sign-in links** — that matches what you saw after switching the UI to OTP.
 
-**Fix:** paste `magic-link.html` into **Authentication → Emails → Magic Link** and save.
+**Fix:** paste `magic-link.html` into **Authentication → Emails → Magic Link** and paste **`confirm-signup.html`** into **Authentication → Emails → Confirm signup**. If **Confirm signup** still uses only **`{{ .ConfirmationURL }}`**, new accounts get a **tap-to-confirm** email instead of a numeric code — that is separate from the Magic Link template.
 
 ## Where to paste
 
@@ -46,11 +46,11 @@ Go template tokens — keep them verbatim unless you know what you are changing:
 | Variable               | Used in              | Meaning                                      |
 | ---------------------- | -------------------- | -------------------------------------------- |
 | `{{ .Email }}`         | Both                 | Recipient address                          |
-| `{{ .Token }}`         | **`magic-link.html`** | **Numeric sign-in code** (6–8 digits; required for OTP) |
-| `{{ .ConfirmationURL }}` | Confirm signup     | Confirm / verify URL                       |
+| `{{ .Token }}`         | **`magic-link.html`**, **`confirm-signup.html`** | **Numeric code** (6–8 digits; required for OTP in the app) |
+| `{{ .ConfirmationURL }}` | Optional fallback in confirm-signup | One-tap verify URL (keep below the code, not as the only CTA) |
 | `{{ .SiteURL }}`       | Both                 | Site URL from dashboard                    |
 
-Do **not** leave `{{ .ConfirmationURL }}` as the main sign-in method in **Magic Link** if you want code-only login.
+Do **not** leave `{{ .ConfirmationURL }}` as the **only** CTA in **Magic Link** or **Confirm signup** if you want users to sign in with the numeric code in the app.
 
 ## Editing tips
 

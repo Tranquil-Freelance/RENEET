@@ -2,22 +2,49 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown, LogOut, Settings, LayoutDashboard } from "lucide-react";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
+import { PROFILE_UPDATED_EVENT } from "@/lib/profile-events";
 import { cn } from "@/lib/utils";
 
-type Profile = {
-  name: string | null;
+/** Raw fields for computing the label in the header. */
+type NavProfile = {
+  apiName: string | null;
+  metaName: string | null;
   email: string | null;
   state: string | null;
 };
 
+function readStoredDisplayName(): string | null {
+  try {
+    const s = localStorage.getItem("prepinsights:userName")?.trim();
+    return s && s.length > 0 ? s : null;
+  } catch {
+    return null;
+  }
+}
+
+function resolveNavDisplayName(p: NavProfile | null): string {
+  if (!p) return "Signed in";
+  const db = p.apiName?.trim() ?? "";
+  if (db && db !== "Student") return db;
+  const stored = readStoredDisplayName();
+  if (stored && stored !== "Student") return stored;
+  const meta = p.metaName?.trim() ?? "";
+  if (meta) return meta;
+  if (db) return db;
+  const local = p.email?.split("@")[0]?.trim();
+  if (local) return local;
+  return "Signed in";
+}
+
 export function UserNav() {
   const router = useRouter();
+  const pathname = usePathname();
   const [sessionReady, setSessionReady] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profile, setProfile] = useState<NavProfile | null>(null);
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -25,7 +52,7 @@ export function UserNav() {
     const supa = getBrowserSupabase();
     let cancelled = false;
 
-    async function applySession(session: Awaited<ReturnType<typeof supa.auth.getSession>>["data"]["session"]) {
+    async function loadFromSession(session: Awaited<ReturnType<typeof supa.auth.getSession>>["data"]["session"]) {
       if (cancelled) return;
       setSignedIn(Boolean(session));
       if (!session) {
@@ -46,31 +73,30 @@ export function UserNav() {
         const res = await fetch("/api/users/me", { cache: "no-store" });
         if (res.ok) {
           const body = await res.json();
-          const p = body.profile as Profile | undefined;
-          const dbName = p?.name?.trim();
-          const resolvedName =
-            dbName && dbName !== "Student" ? dbName : metaName ?? dbName ?? null;
-          const merged: Profile = {
-            name: resolvedName,
-            email: p?.email ?? sessionEmail,
-            state: p?.state ?? null,
-          };
-          if (merged.name && merged.name !== "Student") {
-            try {
-              localStorage.setItem("prepinsights:userName", merged.name);
-            } catch {
-              /* ignore */
-            }
-          }
-          if (!cancelled) setProfile(merged);
-        } else {
+          const row = body.profile as { name?: string | null; email?: string | null; state?: string | null } | undefined;
           if (!cancelled) {
             setProfile({
-              name: metaName,
-              email: sessionEmail,
-              state: null,
+              apiName: row?.name ?? null,
+              metaName,
+              email: row?.email ?? sessionEmail,
+              state: row?.state ?? null,
             });
+            const n = row?.name?.trim();
+            if (n && n !== "Student") {
+              try {
+                localStorage.setItem("prepinsights:userName", n);
+              } catch {
+                /* ignore */
+              }
+            }
           }
+        } else if (!cancelled) {
+          setProfile({
+            apiName: null,
+            metaName,
+            email: sessionEmail,
+            state: null,
+          });
         }
       } catch {
         if (!cancelled) setProfile(null);
@@ -84,7 +110,7 @@ export function UserNav() {
         const {
           data: { session },
         } = await supa.auth.getSession();
-        await applySession(session);
+        await loadFromSession(session);
       } catch {
         if (!cancelled) {
           setSignedIn(false);
@@ -94,14 +120,20 @@ export function UserNav() {
     })();
 
     const { data: sub } = supa.auth.onAuthStateChange((_event, session) => {
-      void applySession(session);
+      void loadFromSession(session);
     });
+
+    function onProfileUpdated() {
+      void supa.auth.getSession().then(({ data: { session } }) => loadFromSession(session));
+    }
+    window.addEventListener(PROFILE_UPDATED_EVENT, onProfileUpdated);
 
     return () => {
       cancelled = true;
       sub.subscription.unsubscribe();
+      window.removeEventListener(PROFILE_UPDATED_EVENT, onProfileUpdated);
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
@@ -132,12 +164,9 @@ export function UserNav() {
 
   if (!sessionReady || !signedIn) return null;
 
-  const rawName = profile?.name?.trim();
-  const displayName =
-    rawName && rawName !== "Student"
-      ? rawName
-      : profile?.email?.split("@")[0] ?? "Signed in";
-  const initial = displayName.slice(0, 1).toUpperCase();
+  const displayName = resolveNavDisplayName(profile);
+  const initialSource = displayName === "Signed in" ? profile?.email?.split("@")[0] ?? "?" : displayName;
+  const initial = initialSource.slice(0, 1).toUpperCase();
   const needsSetup = !profile?.state;
 
   return (

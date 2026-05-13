@@ -5,6 +5,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
 import { INDIAN_STATES } from "@/lib/states";
+import { dispatchProfileUpdated } from "@/lib/profile-events";
 
 interface Profile {
   id: string;
@@ -114,7 +115,9 @@ export function ProfileForm() {
       if (!res.ok) throw new Error(body.error ?? "Could not save profile");
       const p = body.profile as Profile;
       setProfile(p);
-      localStorage.setItem("prepinsights:userName", p?.name ?? name.trim());
+      const savedName = (p?.name ?? name.trim()).trim();
+      localStorage.setItem("prepinsights:userName", savedName);
+      dispatchProfileUpdated({ name: savedName, state: p?.state ?? state });
       toast.success("Profile saved");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not save profile");
