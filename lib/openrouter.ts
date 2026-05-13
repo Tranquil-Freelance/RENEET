@@ -12,7 +12,7 @@ import { getPublicSiteUrl } from "@/lib/site-url";
 const API_KEY = process.env.OPENROUTER_API_KEY ?? "";
 const MODEL = process.env.OPENROUTER_MODEL ?? "openai/gpt-4o-mini";
 const APP_URL = getPublicSiteUrl();
-const SITE_NAME = "PrepInsights";
+const SITE_NAME = "PrepInsight";
 
 const ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
 

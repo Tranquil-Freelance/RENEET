@@ -3,9 +3,9 @@ import { LegalShell } from "@/components/legal/LegalShell";
 import { PAYMENT_AMOUNT_RS, PAYMENT_CURRENCY } from "@/lib/payment";
 
 export const metadata: Metadata = {
-  title: "Refunds & Cancellations · PrepInsights",
+  title: "Refunds & Cancellations · PrepInsight",
   description:
-    "Refund and cancellation policy for PrepInsights paid plans — processed in INR via Cashfree.",
+    "Refund and cancellation policy for PrepInsight paid plans — processed in INR via Cashfree.",
 };
 
 const LAST = "13 May 2026";
@@ -15,7 +15,7 @@ export default function RefundsPage() {
     <LegalShell title="Refunds & cancellations" lastUpdated={LAST}>
       <p>
         This policy describes how refunds and cancellations work for <strong>paid</strong>{" "}
-        features on PrepInsights. All amounts are in <strong>{PAYMENT_CURRENCY}</strong>{" "}
+        features on PrepInsight. All amounts are in <strong>{PAYMENT_CURRENCY}</strong>{" "}
         (Indian Rupees). Current paid offering: <strong>₹{PAYMENT_AMOUNT_RS}</strong> for the
         30-day personalised study plan unlock (see <a href="/pricing">Pricing</a>).
       </p>
@@ -59,7 +59,7 @@ export default function RefundsPage() {
       <h2>4. How to request a refund</h2>
       <p>
         Email <a href="mailto:hello@tranquilai.in">hello@tranquilai.in</a> with subject
-        &quot;Refund request — PrepInsights&quot; and include: your account email, approximate date
+        &quot;Refund request — PrepInsight&quot; and include: your account email, approximate date
         of payment, and Cashfree order ID if available. We will respond within{" "}
         <strong>5 business days</strong> with a decision or a request for more information.
       </p>

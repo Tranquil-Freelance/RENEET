@@ -72,7 +72,7 @@ export function ShareCard({ swot, userName, onClose }: Props) {
             <div className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-[var(--color-brand)] font-bold text-white">
               P
             </div>
-            <div className="text-sm font-semibold">PrepInsights</div>
+            <div className="text-sm font-semibold">PrepInsight</div>
             <div className="text-xs opacity-60">· Re-NEET 2026</div>
           </div>
 
@@ -112,7 +112,7 @@ export function ShareCard({ swot, userName, onClose }: Props) {
           )}
 
           <div className="mt-5 text-[11px] opacity-60">
-            Your own SWOT · PrepInsights
+            Your own SWOT · PrepInsight
           </div>
         </div>
 

@@ -30,7 +30,7 @@ export default async function LandingPage() {
               <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-[var(--color-brand)] text-white font-bold">
                 P
               </span>
-              <span className="font-semibold text-slate-700">PrepInsights</span>
+              <span className="font-semibold text-slate-700">PrepInsight</span>
               <span className="text-slate-400">— Built for Re-NEET 2026 aspirants</span>
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-2">

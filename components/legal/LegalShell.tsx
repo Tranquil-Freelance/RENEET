@@ -27,7 +27,7 @@ export function LegalShell({
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-brand)] text-white font-bold text-xs">
               P
             </span>
-            PrepInsights
+            PrepInsight
           </Link>
           <nav className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-muted">
             {LEGAL_LINKS.map((l) => (
@@ -52,7 +52,7 @@ export function LegalShell({
       </main>
 
       <footer className="border-t border-line py-8 px-4 text-center text-xs text-ink-muted">
-        <p>© {new Date().getFullYear()} PrepInsights · Re-NEET 2026</p>
+        <p>© {new Date().getFullYear()} PrepInsight · Re-NEET 2026</p>
         <div className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1">
           {LEGAL_LINKS.map((l) => (
             <Link key={l.href} href={l.href} className="hover:text-[var(--color-brand)]">

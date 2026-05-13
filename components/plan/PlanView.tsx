@@ -139,7 +139,7 @@ export function PlanView() {
 
       doc.setFont("helvetica", "bold");
       doc.setFontSize(20);
-      doc.text("PrepInsights — 30-Day Plan", 40, y);
+      doc.text("PrepInsight — 30-Day Plan", 40, y);
       y += 20;
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
@@ -201,9 +201,9 @@ export function PlanView() {
   function shareToWhatsApp() {
     if (!plan) return;
     const appUrl =
-      typeof window !== "undefined" ? window.location.origin : "PrepInsights";
+      typeof window !== "undefined" ? window.location.origin : "PrepInsight";
     const text = encodeURIComponent(
-      `I just got my Re-NEET 2026 study plan from PrepInsights.\n\n${plan.plan_summary}\n\nGet yours: ${appUrl}`,
+      `I just got my Re-NEET 2026 study plan from PrepInsight.\n\n${plan.plan_summary}\n\nGet yours: ${appUrl}`,
     );
     window.open(`https://wa.me/?text=${text}`, "_blank");
   }

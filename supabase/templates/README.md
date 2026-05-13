@@ -1,6 +1,6 @@
-# PrepInsights — Supabase email templates
+# PrepInsight — Supabase email templates
 
-Branded HTML templates that match the PrepInsights landing page (serif headings, Inter body, brand `#6A4DE8` on paper `#FAF7F2`). Copy avoids wording that Supabase’s **built-in SMTP** scanner often rejects (`unlock`, `free`, currency symbols, etc.). Use neutral phrases like **“sign-in code”** instead of blocked terms.
+Branded HTML templates that match the PrepInsight landing page (serif headings, Inter body, brand `#6A4DE8` on paper `#FAF7F2`). Copy avoids wording that Supabase’s **built-in SMTP** scanner often rejects (`unlock`, `free`, currency symbols, etc.). Use neutral phrases like **“sign-in code”** instead of blocked terms.
 
 ## Sign-in is **email OTP only** (no magic links)
 
@@ -12,7 +12,7 @@ For **Confirm signup** (if your project still sends that template when “Confir
 
 ### You must turn off “Confirm email” for OTP-only (fixes “Confirm Your Signup” link)
 
-If users still get an email titled **“Confirm Your Signup”** with a purple **Confirm my email** button and a URL like `…supabase.co/auth/v1/verify?…&type=signup…`, that message is **not** from the PrepInsights login page code. Supabase Auth sends it **when “Confirm email” is enabled** for new sign-ups, *in addition to* the OTP email.
+If users still get an email titled **“Confirm Your Signup”** with a purple **Confirm my email** button and a URL like `…supabase.co/auth/v1/verify?…&type=signup…`, that message is **not** from the PrepInsight login page code. Supabase Auth sends it **when “Confirm email” is enabled** for new sign-ups, *in addition to* the OTP email.
 
 **Fix (production):**
 
@@ -36,8 +36,8 @@ Supabase dashboard → **Authentication → Emails → Email Templates** for you
 
 | Supabase template (dashboard label) | File in this folder           | Suggested subject              |
 | ----------------------------------- | ----------------------------- | ------------------------------ |
-| Magic Link                          | `magic-link.html`             | `Your PrepInsights sign-in code` |
-| Confirm signup                      | `confirm-signup.html`         | `Confirm your email — PrepInsights` |
+| Magic Link                          | `magic-link.html`             | `Your PrepInsight sign-in code` |
+| Confirm signup                      | `confirm-signup.html`         | `Confirm your email — PrepInsight` |
 
 For each one:
 

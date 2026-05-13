@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LegalShell } from "@/components/legal/LegalShell";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions · PrepInsights",
+  title: "Terms & Conditions · PrepInsight",
   description:
-    "Terms and conditions for using PrepInsights — NEET SWOT analysis and 30-day study plan.",
+    "Terms and conditions for using PrepInsight — NEET SWOT analysis and 30-day study plan.",
 };
 
 const LAST = "13 May 2026";
@@ -13,7 +13,7 @@ export default function TermsPage() {
   return (
     <LegalShell title="Terms & conditions" lastUpdated={LAST}>
       <p>
-        These Terms &amp; Conditions (&quot;Terms&quot;) govern your use of the PrepInsights
+        These Terms &amp; Conditions (&quot;Terms&quot;) govern your use of the PrepInsight
         website and services (&quot;Service&quot;), operated in connection with Tranquil AI
         (&quot;we&quot;, &quot;us&quot;). By accessing or using the Service, you agree to these
         Terms. If you do not agree, do not use the Service.
@@ -21,7 +21,7 @@ export default function TermsPage() {
 
       <h2>1. The service</h2>
       <p>
-        PrepInsights provides educational tools for NEET-UG aspirants, including (where
+        PrepInsight provides educational tools for NEET-UG aspirants, including (where
         available) answer marking against an official-style key, performance summaries,
         AI-assisted SWOT-style analysis, and optional paid features such as a personalised
         study plan. Outputs are <strong>informational and educational</strong> only — not

@@ -22,7 +22,7 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
-  title: "PrepInsights — Your Personal Re-NEET 2026 Gap Analyzer",
+  title: "PrepInsight — Your Personal Re-NEET 2026 Gap Analyzer",
   description:
     "NEET 2026 cancelled? Mark your exam answers and get an AI-powered SWOT analysis + 30-day study plan. Free for all aspirants.",
   keywords: [
@@ -32,20 +32,20 @@ export const metadata: Metadata = {
     "NEET gap analysis",
     "NEET study plan",
     "NEET AI tutor",
-    "PrepInsights",
+    "PrepInsight",
   ],
   openGraph: {
-    title: "PrepInsights — You gave the exam. We'll tell you what to fix.",
+    title: "PrepInsight — You gave the exam. We'll tell you what to fix.",
     description:
       "Mark what you actually wrote. Get your personal SWOT in 10 minutes. Free.",
     url: APP_URL,
-    siteName: "PrepInsights",
+    siteName: "PrepInsight",
     locale: "en_IN",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PrepInsights — Re-NEET 2026 Gap Analyzer",
+    title: "PrepInsight — Re-NEET 2026 Gap Analyzer",
     description: "AI-powered SWOT + 30-day plan for Re-NEET 2026 aspirants.",
   },
   icons: {

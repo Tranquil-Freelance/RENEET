@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronDown, LogOut, Settings, LayoutDashboard } from "lucide-react";
+import { ChevronDown, LogOut, Settings, LayoutDashboard, UserRound } from "lucide-react";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
 import { PROFILE_UPDATED_EVENT } from "@/lib/profile-events";
 import { cn } from "@/lib/utils";
+
+const BRAND_FALLBACK = "PrepInsight";
 
 /** Raw fields for computing the label in the header. */
 type NavProfile = {
@@ -26,7 +28,7 @@ function readStoredDisplayName(): string | null {
 }
 
 function resolveNavDisplayName(p: NavProfile | null): string {
-  if (!p) return "Signed in";
+  if (!p) return BRAND_FALLBACK;
   const db = p.apiName?.trim() ?? "";
   if (db && db !== "Student") return db;
   const stored = readStoredDisplayName();
@@ -36,7 +38,7 @@ function resolveNavDisplayName(p: NavProfile | null): string {
   if (db) return db;
   const local = p.email?.split("@")[0]?.trim();
   if (local) return local;
-  return "Signed in";
+  return BRAND_FALLBACK;
 }
 
 export function UserNav() {
@@ -165,20 +167,18 @@ export function UserNav() {
   if (!sessionReady || !signedIn) return null;
 
   const displayName = resolveNavDisplayName(profile);
-  const initialSource = displayName === "Signed in" ? profile?.email?.split("@")[0] ?? "?" : displayName;
-  const initial = initialSource.slice(0, 1).toUpperCase();
-  const needsSetup = !profile?.state;
+  const emailLocal = profile?.email?.split("@")[0]?.trim() ?? "";
+
+  let initialLetter = "";
+  if (displayName !== BRAND_FALLBACK) {
+    initialLetter = displayName.slice(0, 1).toUpperCase();
+  } else if (emailLocal) {
+    initialLetter = emailLocal.slice(0, 1).toUpperCase();
+  }
+  const useUserIcon = initialLetter.length === 0;
 
   return (
     <div ref={panelRef} className="relative flex items-center gap-2">
-      {needsSetup && (
-        <Link
-          href="/onboarding"
-          className="hidden sm:inline text-xs font-medium text-brand hover:underline"
-        >
-          Finish setup
-        </Link>
-      )}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -193,7 +193,11 @@ export function UserNav() {
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-brand text-sm font-bold text-white"
           aria-hidden
         >
-          {initial}
+          {useUserIcon ? (
+            <UserRound className="h-4 w-4 text-white" strokeWidth={2.25} />
+          ) : (
+            initialLetter
+          )}
         </span>
         <span className="min-w-0 flex-1">
           <span className="block truncate text-sm font-semibold text-ink">{displayName}</span>

@@ -1,4 +1,4 @@
-# PrepInsights
+# PrepInsight
 
 AI-powered Re-NEET 2026 gap analysis. Built for 22.79 lakh aspirants with a second chance.
 
@@ -118,7 +118,7 @@ Root files involved: **`index.html`** (landing), **`.nojekyll`**.
 - Swap localStorage `userId` for Supabase Auth OTP
 - WhatsApp reminders via Twilio/WATI
 - AI Tutor chat (5 free queries/day)
-- Cohort comparison ("top 22% of PrepInsights users")
+- Cohort comparison ("top 22% of PrepInsight users")
 - Referral codes
 - B2B white-label for coaching institutes
 

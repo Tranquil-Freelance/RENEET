@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LegalShell } from "@/components/legal/LegalShell";
 
 export const metadata: Metadata = {
-  title: "Contact Us · PrepInsights",
+  title: "Contact Us · PrepInsight",
   description:
-    "Contact PrepInsights for support, billing, or partnership questions related to NEET SWOT and study plans.",
+    "Contact PrepInsight for support, billing, or partnership questions related to NEET SWOT and study plans.",
 };
 
 const LAST = "13 May 2026";
@@ -13,7 +13,7 @@ export default function ContactPage() {
   return (
     <LegalShell title="Contact us" lastUpdated={LAST}>
       <p>
-        <strong>PrepInsights</strong> is an online preparation tool for NEET-UG aspirants
+        <strong>PrepInsight</strong> is an online preparation tool for NEET-UG aspirants
         (including Re-NEET 2026). For questions about your account, payments, or the
         product, use the channels below.
       </p>
@@ -40,10 +40,10 @@ export default function ContactPage() {
 
       <h2>Postal / legal notices</h2>
       <p>
-        PrepInsights is operated in connection with <strong>Tranquil AI</strong> (tranquilai.in).
+        PrepInsight is operated in connection with <strong>Tranquil AI</strong> (tranquilai.in).
         For formal legal notices only, email{" "}
         <a href="mailto:hello@tranquilai.in">hello@tranquilai.in</a> with subject line
-        &quot;Legal notice — PrepInsights&quot;.
+        &quot;Legal notice — PrepInsight&quot;.
       </p>
 
       <h2>Payments</h2>

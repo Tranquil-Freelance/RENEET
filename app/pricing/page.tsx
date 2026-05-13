@@ -4,9 +4,9 @@ import { LegalShell } from "@/components/legal/LegalShell";
 import { PAYMENT_AMOUNT_RS, PAYMENT_CURRENCY } from "@/lib/payment";
 
 export const metadata: Metadata = {
-  title: "Pricing (INR) · PrepInsights",
+  title: "Pricing (INR) · PrepInsight",
   description:
-    "PrepInsights products and services with prices in Indian Rupees (INR) — free SWOT and paid 30-day plan.",
+    "PrepInsight products and services with prices in Indian Rupees (INR) — free SWOT and paid 30-day plan.",
 };
 
 const LAST = "13 May 2026";

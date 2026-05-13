@@ -1,5 +1,5 @@
 /**
- * Payment configuration for PrepInsights — Cashfree Payment Gateway.
+ * Payment configuration for PrepInsight — Cashfree Payment Gateway.
  *
  * Flow:
  *   1. Server creates a Cashfree order via POST /pg/orders → returns
@@ -141,7 +141,7 @@ export async function createCashfreeOrder(
         args.returnUrl && /^https:\/\//i.test(args.returnUrl)
           ? { return_url: `${args.returnUrl}?order_id={order_id}` }
           : undefined,
-      order_note: args.orderNote ?? "PrepInsights 30-day study plan",
+      order_note: args.orderNote ?? "PrepInsight 30-day study plan",
     },
   });
 }

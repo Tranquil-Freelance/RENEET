@@ -27,7 +27,7 @@ export function HowItWorks() {
       <div className="mx-auto max-w-5xl">
         <div className="text-center">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            How PrepInsights works
+            How PrepInsight works
           </h2>
           <p className="mt-3 text-slate-600 max-w-2xl mx-auto">
             Not another crash course. A precision tool that tells you exactly

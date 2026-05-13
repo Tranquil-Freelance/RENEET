@@ -29,7 +29,7 @@ export function ComparisonTable() {
       <div className="mx-auto max-w-5xl">
         <div className="text-center">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Why PrepInsights is different
+            Why PrepInsight is different
           </h2>
           <p className="mt-3 text-slate-600">
             You don&apos;t need another crash course. You need a mirror.
@@ -40,7 +40,7 @@ export function ComparisonTable() {
           <div className="grid grid-cols-2 border-b border-slate-200 bg-slate-100 text-sm font-semibold">
             <div className="p-4 text-slate-600">Coaching crash course</div>
             <div className="p-4 text-[var(--color-brand)] border-l border-slate-200">
-              PrepInsights
+              PrepInsight
             </div>
           </div>
           {ROWS.map((row) => (

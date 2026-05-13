@@ -1,7 +1,7 @@
 import LoginForm from "@/components/auth/LoginForm";
 
 export const metadata = {
-  title: "Log in or sign up · PrepInsights",
+  title: "Log in or sign up · PrepInsight",
   description: "Create an account or log in with email OTP — no password.",
 };
 
