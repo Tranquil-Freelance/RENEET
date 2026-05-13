@@ -270,7 +270,7 @@ function PreSubmitSummary({
   onCancel: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-30 bg-ink/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] bg-ink/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-soft-lg p-6 sm:p-7">
         <div className="text-xs font-semibold uppercase tracking-wider text-brand">Ready?</div>
         <h2 className="mt-1 text-2xl font-serif font-semibold text-ink">

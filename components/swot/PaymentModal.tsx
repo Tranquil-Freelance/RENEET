@@ -172,7 +172,7 @@ export function PaymentModal({ onClose, redirectToPlan = true, onPaid }: Props) 
   const busy = phase !== "idle";
 
   return (
-    <div className="fixed inset-0 z-40 bg-ink/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] bg-ink/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-soft-lg p-6 sm:p-7 relative">
         <button
           type="button"
