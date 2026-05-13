@@ -5,7 +5,19 @@ import { Sparkles } from "lucide-react";
 import { PAYMENT_AMOUNT_RS } from "@/lib/payment";
 import { PaymentModal } from "./PaymentModal";
 
-export function PaymentCTA({ totalMarksLost }: { totalMarksLost: number }) {
+export function PaymentCTA({
+  totalMarksLost,
+  ctaLabel = "Unlock full SWOT + 30-day plan",
+  helperText = "See the complete SWOT breakdown and get your day-by-day plan",
+  redirectToPlan = true,
+  onPaid,
+}: {
+  totalMarksLost: number;
+  ctaLabel?: string;
+  helperText?: string;
+  redirectToPlan?: boolean;
+  onPaid?: () => void;
+}) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -17,7 +29,7 @@ export function PaymentCTA({ totalMarksLost }: { totalMarksLost: number }) {
               You can recover ~{Math.round(totalMarksLost)} marks in fixable topics
             </div>
             <div className="text-xs text-ink-muted">
-              Get a 30-day plan that fixes them, day by day
+              {helperText}
             </div>
           </div>
           <button
@@ -26,14 +38,20 @@ export function PaymentCTA({ totalMarksLost }: { totalMarksLost: number }) {
             className="inline-flex items-center gap-2 rounded-2xl bg-warn text-ink-dark px-5 py-2.5 text-sm font-semibold shadow-soft hover:brightness-95 transition"
           >
             <Sparkles className="h-4 w-4" />
-            Unlock 30-day plan ·{" "}
+            {ctaLabel} ·{" "}
             <span className="line-through opacity-60">₹999</span>{" "}
             <span>₹{PAYMENT_AMOUNT_RS}</span>
           </button>
         </div>
       </div>
 
-      {showModal && <PaymentModal onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <PaymentModal
+          onClose={() => setShowModal(false)}
+          redirectToPlan={redirectToPlan}
+          onPaid={onPaid}
+        />
+      )}
     </>
   );
 }

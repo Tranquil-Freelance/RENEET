@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Loader2, Share2, Sparkles } from "lucide-react";
+import { Loader2, Lock, Share2, Sparkles } from "lucide-react";
 import type { SWOT } from "@/types";
 import { SwotCards } from "./SwotCards";
 import { ScoreBanner } from "./ScoreBanner";
@@ -19,6 +19,8 @@ export function SwotView({ initialSwot }: Props) {
   const router = useRouter();
   const [swot, setSwot] = useState<SWOT | null>(initialSwot);
   const [loading, setLoading] = useState(initialSwot === null);
+  const [paidUnlocked, setPaidUnlocked] = useState(false);
+  const [checkingPaid, setCheckingPaid] = useState(true);
   const [showShare, setShowShare] = useState(false);
   const [userName, setUserName] = useState("there");
 
@@ -83,6 +85,31 @@ export function SwotView({ initialSwot }: Props) {
     };
   }, [router, swot]);
 
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/payment/status", { cache: "no-store" });
+        if (!res.ok) {
+          if (res.status !== 401) {
+            const body = await res.json().catch(() => ({}));
+            console.warn("[swot] payment status lookup failed", body);
+          }
+          return;
+        }
+        const body = await res.json();
+        if (!cancelled) setPaidUnlocked(Boolean(body.paid));
+      } catch (err) {
+        console.warn("[swot] payment status request error", err);
+      } finally {
+        if (!cancelled) setCheckingPaid(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   if (loading || !swot) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-slate-600">
@@ -96,6 +123,14 @@ export function SwotView({ initialSwot }: Props) {
   const totalMarksLost =
     swot.weaknesses.reduce((s, w) => s + w.marks_lost, 0) +
     swot.opportunities.reduce((s, o) => s + o.marks_recoverable, 0);
+  const isLocked = !paidUnlocked;
+  const previewSwot: SWOT = {
+    ...swot,
+    strengths: swot.strengths.slice(0, 1),
+    weaknesses: swot.weaknesses.slice(0, 1),
+    opportunities: swot.opportunities.slice(0, 1),
+    threats: swot.threats.slice(0, 1),
+  };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
@@ -123,24 +158,50 @@ export function SwotView({ initialSwot }: Props) {
       </div>
 
       <section className="mt-8">
-        <h2 className="text-lg font-bold">Your SWOT at a glance</h2>
+        <h2 className="text-lg font-bold">
+          {isLocked ? "Your SWOT preview" : "Your SWOT at a glance"}
+        </h2>
         <p className="text-sm text-slate-600">
-          Each card is ranked by mark impact. Tap a topic to see the AI&apos;s insight.
+          {isLocked
+            ? "Here is a quick preview. Unlock payment to view your full AI SWOT across all high-impact topics."
+            : "Each card is ranked by mark impact. Tap a topic to see the AI's insight."}
         </p>
         <div className="mt-4">
-          <SwotCards swot={swot} />
+          <SwotCards swot={isLocked ? previewSwot : swot} />
         </div>
       </section>
 
-      <section className="mt-10">
-        <h2 className="text-lg font-bold">Topic score breakdown</h2>
-        <p className="text-sm text-slate-600">
-          Subject → chapter → subtopic, color-coded by performance.
-        </p>
-        <div className="mt-4">
-          <TopicScoreCard swot={swot} />
-        </div>
-      </section>
+      {isLocked ? (
+        <section className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5">
+          <div className="flex items-start gap-3">
+            <Lock className="mt-0.5 h-5 w-5 text-amber-700" />
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-amber-700">
+                Full SWOT locked
+              </div>
+              <p className="mt-1 text-slate-800 leading-relaxed">
+                Unlock to see the complete chapter-level breakdown, all weaknesses/opportunities,
+                and your personalized 30-day action plan.
+              </p>
+              {checkingPaid ? (
+                <div className="mt-2 inline-flex items-center gap-2 text-xs text-slate-600">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" /> Checking payment status…
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section className="mt-10">
+          <h2 className="text-lg font-bold">Topic score breakdown</h2>
+          <p className="text-sm text-slate-600">
+            Subject → chapter → subtopic, color-coded by performance.
+          </p>
+          <div className="mt-4">
+            <TopicScoreCard swot={swot} />
+          </div>
+        </section>
+      )}
 
       <section className="mt-10 rounded-2xl border border-[var(--color-brand-100)] bg-[var(--color-brand-50)] p-5">
         <div className="flex items-start gap-3">
@@ -166,7 +227,25 @@ export function SwotView({ initialSwot }: Props) {
         </button>
       </div>
 
-      <PaymentCTA totalMarksLost={totalMarksLost} />
+      {isLocked ? (
+        <PaymentCTA
+          totalMarksLost={totalMarksLost}
+          ctaLabel="Unlock full SWOT + 30-day plan"
+          helperText="Payment unlocks the complete AI SWOT report and your day-by-day study plan"
+          redirectToPlan={false}
+          onPaid={() => {
+            setPaidUnlocked(true);
+            toast.success("Unlocked! Full SWOT is now visible.");
+          }}
+        />
+      ) : (
+        <PaymentCTA
+          totalMarksLost={totalMarksLost}
+          ctaLabel="Build my 30-day plan"
+          helperText="You already unlocked SWOT — proceed to generate your detailed plan"
+          redirectToPlan
+        />
+      )}
 
       {showShare && (
         <ShareCard

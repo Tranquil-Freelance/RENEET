@@ -8,6 +8,8 @@ import { PAYMENT_AMOUNT_RS } from "@/lib/payment";
 
 interface Props {
   onClose: () => void;
+  redirectToPlan?: boolean;
+  onPaid?: () => void;
 }
 
 interface CashfreeCheckoutResult {
@@ -66,7 +68,7 @@ function loadCashfreeSdk(): Promise<CashfreeFactory> {
   });
 }
 
-export function PaymentModal({ onClose }: Props) {
+export function PaymentModal({ onClose, redirectToPlan = true, onPaid }: Props) {
   const router = useRouter();
   const [phase, setPhase] = useState<
     "idle" | "creating" | "checkout" | "verifying" | "planning"
@@ -154,7 +156,12 @@ export function PaymentModal({ onClose }: Props) {
       setPhase("planning");
       await buildPlanFromCache();
       closingRef.current = true;
-      router.push("/plan");
+      if (redirectToPlan) {
+        router.push("/plan");
+      } else {
+        onPaid?.();
+        onClose();
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Payment failed";
       toast.error(msg);
