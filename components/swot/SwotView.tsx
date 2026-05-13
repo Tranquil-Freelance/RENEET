@@ -89,7 +89,7 @@ export function SwotView({ initialSwot }: Props) {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch("/api/payment/status", { cache: "no-store" });
+        const res = await fetch("/api/payment/status", { cache: "no-store", credentials: "include" });
         if (!res.ok) {
           if (res.status !== 401) {
             const body = await res.json().catch(() => ({}));

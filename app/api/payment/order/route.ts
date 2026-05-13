@@ -8,8 +8,7 @@ import {
 import {
   getOrCreateAppUserId,
   getServerSupabase,
-  getServiceClient,
-  isSupabaseConfigured,
+  isSupabaseAuthConfigured,
 } from "@/lib/supabase-server";
 import { getPublicSiteUrl } from "@/lib/site-url";
 
@@ -19,9 +18,7 @@ export const maxDuration = 30;
 /**
  * Create a Cashfree order for the ₹99 plan unlock.
  *
- * Pulls customer details (email + phone, when available) from the Supabase
- * user row; falls back to neutral placeholders so guests in dev can still
- * trigger the modal without a session.
+ * Uses the user's session (anon + cookies + RLS) — no service role required.
  */
 export async function POST(req: Request) {
   if (!isCashfreeConfigured()) {
@@ -31,41 +28,51 @@ export async function POST(req: Request) {
     );
   }
 
+  if (!isSupabaseAuthConfigured()) {
+    return NextResponse.json(
+      { error: "Supabase auth is not configured (URL / anon key)." },
+      { status: 503 },
+    );
+  }
+
   let userId: string | null = null;
   let customerId = "";
   let customerEmail: string | undefined;
   let customerPhone = "9999999999";
 
-  if (isSupabaseConfigured()) {
-    try {
-      const supa = await getServerSupabase();
-      const {
-        data: { user },
-      } = await supa.auth.getUser();
-      if (!user) {
-        return NextResponse.json({ error: "Please sign in before payment." }, { status: 401 });
-      }
-      userId = await getOrCreateAppUserId();
-      customerEmail = user.email ?? undefined;
-      if (!userId) {
-        return NextResponse.json({ error: "Could not resolve user profile." }, { status: 500 });
-      }
-      customerId = `u_${userId.replace(/-/g, "").slice(0, 32)}`;
-      const service = getServiceClient();
-      const { data } = await service
-        .from("users")
-        .select("phone, email")
-        .eq("id", userId)
-        .maybeSingle();
-      if (data?.phone) {
-        const digits = String(data.phone).replace(/\D/g, "");
-        if (digits.length >= 10) customerPhone = digits.slice(-10);
-      }
-      if (!customerEmail && data?.email) customerEmail = data.email;
-    } catch (err) {
-      console.warn("[payment/order] supabase lookup failed", err);
+  try {
+    const supa = await getServerSupabase();
+    const {
+      data: { user },
+    } = await supa.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: "Please sign in before payment." }, { status: 401 });
     }
+    userId = await getOrCreateAppUserId();
+    customerEmail = user.email ?? undefined;
+    if (!userId) {
+      return NextResponse.json({ error: "Could not resolve user profile." }, { status: 500 });
+    }
+    customerId = `u_${userId.replace(/-/g, "").slice(0, 32)}`;
+
+    const { data } = await supa
+      .from("users")
+      .select("phone, email")
+      .eq("id", userId)
+      .maybeSingle();
+    if (data?.phone) {
+      const digits = String(data.phone).replace(/\D/g, "");
+      if (digits.length >= 10) customerPhone = digits.slice(-10);
+    }
+    if (!customerEmail && data?.email) customerEmail = data.email;
+  } catch (err) {
+    console.warn("[payment/order] supabase lookup failed", err);
+    return NextResponse.json(
+      { error: "Could not start payment — try refreshing the page or signing in again." },
+      { status: 500 },
+    );
   }
+
   if (!userId) {
     return NextResponse.json({ error: "Please sign in before payment." }, { status: 401 });
   }
@@ -81,23 +88,21 @@ export async function POST(req: Request) {
       returnUrl: `${origin}/swot`,
     });
 
-    if (isSupabaseConfigured()) {
-      const service = getServiceClient();
-      const { error: paymentInsertErr } = await service.from("payments").upsert(
-        {
-          user_id: userId,
-          provider: "cashfree",
-          order_id: order.order_id,
-          status: "created",
-          amount_paise: PAYMENT_AMOUNT_RS * 100,
-          currency: "INR",
-          raw_order: order,
-        },
-        { onConflict: "order_id" },
-      );
-      if (paymentInsertErr) {
-        console.warn("[payment/order] ledger insert failed", paymentInsertErr.message);
-      }
+    const supa = await getServerSupabase();
+    const { error: paymentInsertErr } = await supa.from("payments").upsert(
+      {
+        user_id: userId,
+        provider: "cashfree",
+        order_id: order.order_id,
+        status: "created",
+        amount_paise: PAYMENT_AMOUNT_RS * 100,
+        currency: "INR",
+        raw_order: order,
+      },
+      { onConflict: "order_id" },
+    );
+    if (paymentInsertErr) {
+      console.warn("[payment/order] ledger insert failed", paymentInsertErr.message);
     }
 
     return NextResponse.json({

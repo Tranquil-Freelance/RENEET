@@ -1,16 +1,20 @@
 import { NextResponse } from "next/server";
-import {
-  getOrCreateAppUserId,
-  getServiceClient,
-  isSupabaseConfigured,
-} from "@/lib/supabase-server";
+import { getOrCreateAppUserId, getServerSupabase, isSupabaseAuthConfigured } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
 export const maxDuration = 20;
 
 export async function GET() {
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseAuthConfigured()) {
     return NextResponse.json({ paid: false, reason: "supabase_not_configured" });
+  }
+
+  const supa = await getServerSupabase();
+  const {
+    data: { user },
+  } = await supa.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ paid: false, reason: "not_signed_in" }, { status: 401 });
   }
 
   const userId = await getOrCreateAppUserId();
@@ -18,8 +22,7 @@ export async function GET() {
     return NextResponse.json({ paid: false, reason: "not_signed_in" }, { status: 401 });
   }
 
-  const service = getServiceClient();
-  const { data, error } = await service
+  const { data, error } = await supa
     .from("payments")
     .select("status, txn_ref, order_id, created_at")
     .eq("user_id", userId)
@@ -29,8 +32,7 @@ export async function GET() {
     .maybeSingle();
 
   if (error) {
-    // Backward compatibility: older DBs may not have the payments ledger yet.
-    const { data: planData, error: planErr } = await service
+    const { data: planData, error: planErr } = await supa
       .from("plans")
       .select("paid, txn_ref, created_at")
       .eq("user_id", userId)
@@ -52,4 +54,3 @@ export async function GET() {
     txn_ref: data?.txn_ref ?? data?.order_id ?? null,
   });
 }
-

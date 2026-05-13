@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import {
-  getOrCreateAppUserId,
-  getServiceClient,
-  isSupabaseConfigured,
-} from "@/lib/supabase-server";
+import { getOrCreateAppUserId, getServerSupabase, isSupabaseAuthConfigured } from "@/lib/supabase-server";
 import {
   PAYMENT_AMOUNT_PAISE,
   PAYMENT_PROVIDER,
@@ -71,14 +67,22 @@ export async function POST(req: Request) {
     );
   }
 
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseAuthConfigured()) {
     return NextResponse.json({
       ok: true,
       paid: true,
       dev: true,
       order_id: orderId,
-      warning: "Supabase not configured — payment verified but not persisted.",
+      warning: "Supabase auth not configured — payment verified but not persisted.",
     });
+  }
+
+  const supa = await getServerSupabase();
+  const {
+    data: { user },
+  } = await supa.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Not signed in" }, { status: 401 });
   }
 
   const userId = await getOrCreateAppUserId();
@@ -86,9 +90,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
   }
 
-  const service = getServiceClient();
-
-  const { data: existing } = await service
+  const { data: existing } = await supa
     .from("plans")
     .select("id, paid")
     .eq("user_id", userId)
@@ -103,7 +105,7 @@ export async function POST(req: Request) {
     payment_method: PAYMENT_PROVIDER,
   };
 
-  const { error: ledgerErr } = await service.from("payments").upsert(
+  const { error: ledgerErr } = await supa.from("payments").upsert(
     {
       user_id: userId,
       provider: PAYMENT_PROVIDER,
@@ -121,15 +123,10 @@ export async function POST(req: Request) {
   }
 
   if (existing?.id) {
-    const { error } = await service
-      .from("plans")
-      .update(paymentPayload)
-      .eq("id", existing.id);
+    const { error } = await supa.from("plans").update(paymentPayload).eq("id", existing.id);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   } else {
-    const { error } = await service
-      .from("plans")
-      .insert({ user_id: userId, ...paymentPayload });
+    const { error } = await supa.from("plans").insert({ user_id: userId, ...paymentPayload });
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   }
 

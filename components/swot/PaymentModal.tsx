@@ -99,6 +99,7 @@ export function PaymentModal({ onClose, redirectToPlan = true, onPaid }: Props) 
     }
     const planRes = await fetch("/api/plan", {
       method: "POST",
+      credentials: "include",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ swot: cachedSwot ?? undefined }),
     });
@@ -116,7 +117,10 @@ export function PaymentModal({ onClose, redirectToPlan = true, onPaid }: Props) 
     if (phase !== "idle") return;
     try {
       setPhase("creating");
-      const orderRes = await fetch("/api/payment/order", { method: "POST" });
+      const orderRes = await fetch("/api/payment/order", {
+        method: "POST",
+        credentials: "include",
+      });
       const orderBody = await orderRes.json().catch(() => ({}));
       if (!orderRes.ok || !orderBody.payment_session_id) {
         throw new Error(orderBody.error ?? "Could not create order");
@@ -137,6 +141,7 @@ export function PaymentModal({ onClose, redirectToPlan = true, onPaid }: Props) 
       setPhase("verifying");
       const confirmRes = await fetch("/api/payment/confirm", {
         method: "POST",
+        credentials: "include",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ order_id: orderBody.order_id }),
       });
