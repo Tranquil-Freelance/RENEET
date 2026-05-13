@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Your PrepInsights sign-in link</title>
+    <title>Your PrepInsights sign-in code</title>
   </head>
   <body style="margin:0;padding:0;background:#FAF7F2;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#1F1B2E;-webkit-font-smoothing:antialiased;">
     <div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#FAF7F2;opacity:0;">
-      Your PrepInsights sign-in link. Valid for 60 minutes.
+      Your PrepInsights sign-in code. Valid for 60 minutes.
     </div>
 
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#FAF7F2;padding:32px 16px;">
@@ -29,39 +29,31 @@
                   </tr>
                 </table>
                 <div style="font-size:11px;letter-spacing:0.08em;font-weight:600;text-transform:uppercase;color:#6A4DE8;margin-top:28px;">
-                  Your sign-in link
+                  Your sign-in code
                 </div>
                 <h1 style="margin:6px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:28px;line-height:1.25;font-weight:600;color:#1F1B2E;">
-                  One tap and you are in.
+                  Enter this on the website
                 </h1>
               </td>
             </tr>
 
             <tr>
               <td style="padding:18px 32px 0 32px;font-size:15px;line-height:1.55;color:#3C354A;">
-                Hi <strong style="color:#1F1B2E;">{{ .Email }}</strong>, use the button below to securely sign in to your PrepInsights account. This link is valid for the next 60 minutes — no password needed.
+                Hi <strong style="color:#1F1B2E;">{{ .Email }}</strong>, use the numbers below to finish signing in on PrepInsights. This code is valid for about 60 minutes.
               </td>
             </tr>
 
             <tr>
-              <td style="padding:24px 32px 0 32px;">
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                  <tr>
-                    <td align="center">
-                      <a href="{{ .ConfirmationURL }}"
-                         style="display:inline-block;background:#6A4DE8;color:#FFFFFF;text-decoration:none;font-family:Inter,Arial,sans-serif;font-weight:600;font-size:15px;padding:14px 28px;border-radius:14px;box-shadow:0 6px 20px rgba(106,77,232,0.28);">
-                        Sign in to PrepInsights →
-                      </a>
-                    </td>
-                  </tr>
-                </table>
+              <td style="padding:28px 32px 0 32px;" align="center">
+                <div style="display:inline-block;background:#FAF7F2;border:2px solid #E8E2D6;border-radius:16px;padding:18px 36px;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:32px;font-weight:700;letter-spacing:0.35em;color:#1F1B2E;">
+                  {{ .Token }}
+                </div>
               </td>
             </tr>
 
             <tr>
-              <td style="padding:18px 32px 0 32px;font-size:13px;line-height:1.55;color:#6A5F7A;">
-                Button not working? Copy and paste this link into your browser:<br />
-                <span style="word-break:break-all;color:#3C354A;">{{ .ConfirmationURL }}</span>
+              <td style="padding:22px 32px 0 32px;font-size:14px;line-height:1.55;color:#3C354A;">
+                Open PrepInsights on the device where you asked for the code, then type these digits on the sign-in screen.
               </td>
             </tr>
 
@@ -76,8 +68,8 @@
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                   <tr>
                     <td style="background:#FAF7F2;border:1px solid #E8E2D6;border-radius:14px;padding:14px 16px;font-size:13px;line-height:1.5;color:#3C354A;">
-                      <strong style="color:#1F1B2E;">Heads up:</strong> we will never ask for your password or payment details by email. If a link looks off, ignore this message and start over from
-                      <a href="{{ .SiteURL }}" style="color:#6A4DE8;text-decoration:none;">your PrepInsights dashboard</a>.
+                      <strong style="color:#1F1B2E;">Security:</strong> we will never ask for your password or payment details by email. If this message looks wrong, ignore it and sign in only from
+                      <a href="{{ .SiteURL }}" style="color:#6A4DE8;text-decoration:none;">your PrepInsights site</a>.
                     </td>
                   </tr>
                 </table>
@@ -86,7 +78,7 @@
 
             <tr>
               <td style="padding:18px 32px 32px 32px;font-size:12px;line-height:1.55;color:#8A8197;">
-                Did not request this email? It is safe to ignore — someone may have typed your address by mistake. No account was created.
+                Did not request this email? It is safe to ignore — someone may have typed your address by mistake.
               </td>
             </tr>
           </table>

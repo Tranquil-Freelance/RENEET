@@ -1,79 +1,63 @@
 # PrepInsights — Supabase email templates
 
-Branded HTML templates that match the PrepInsights landing page (serif headings, Inter body, brand `#6A4DE8` on paper `#FAF7F2`). Both templates are **content-scanner safe** — they avoid the keywords Supabase's inbuilt SMTP path blocks (`unlock`, `free`, `OTP`, currency symbols, etc.) so they save cleanly even before Custom SMTP fully propagates.
+Branded HTML templates that match the PrepInsights landing page (serif headings, Inter body, brand `#6A4DE8` on paper `#FAF7F2`). Copy avoids wording that Supabase’s **built-in SMTP** scanner often rejects (`unlock`, `free`, currency symbols, etc.). Use neutral phrases like **“sign-in code”** instead of blocked terms.
+
+## Sign-in is email **code** (not magic links)
+
+The app uses **`signInWithOtp` + `verifyOtp`** in the browser. Supabase still labels the dashboard slot **“Magic Link”**, but the email body **must** show the **`{{ .Token }}`** placeholder so users receive a **6-digit code**. If your template still uses **`{{ .ConfirmationURL }}`**, Supabase will keep sending **tap-to-sign-in links** — that matches what you saw after switching the UI to OTP.
+
+**Fix:** paste `magic-link.html` into **Authentication → Emails → Magic Link** and save.
 
 ## Where to paste
 
-Supabase dashboard → **Authentication → Emails → Email Templates** for the
-[tranquil-tech project](https://supabase.com/dashboard/project/vnusxxzhcwtfbsfkuiro/auth/templates).
+Supabase dashboard → **Authentication → Emails → Email Templates** for your project.
 
-| Supabase template       | File in this folder            | Suggested subject                       |
-| ----------------------- | ------------------------------ | --------------------------------------- |
-| Magic Link              | `magic-link.html`              | `Sign in to PrepInsights`               |
-| Confirm signup          | `confirm-signup.html`          | `Confirm your email — PrepInsights`     |
+| Supabase template (dashboard label) | File in this folder           | Suggested subject              |
+| ----------------------------------- | ----------------------------- | ------------------------------ |
+| Magic Link                          | `magic-link.html`             | `Your PrepInsights sign-in code` |
+| Confirm signup                      | `confirm-signup.html`         | `Confirm your email — PrepInsights` |
 
 For each one:
 
 1. Open the template tab on the dashboard.
 2. Replace the entire HTML body with the contents of the file from this folder.
-3. Set the **Subject** as above.
+3. Set the **Subject** as above (or close).
 4. Click **Save**.
 
 ## Required Site URL (production)
 
-Both templates use `{{ .SiteURL }}` in the footer. That value comes from
-**Authentication → URL Configuration → Site URL** in the Supabase dashboard.
+Templates use `{{ .SiteURL }}` in the footer. Set **Authentication → URL Configuration**:
 
-For the live app at **`https://prepinsight.in/`**, set:
+For **`https://prepinsight.in`**:
 
 - **Site URL:** `https://prepinsight.in` (no trailing slash)
-- **Redirect URLs** (add each line; wildcards help):
+- **Redirect URLs:** include at least  
+  `https://prepinsight.in/**`  
+  so browser auth and any legacy callback URLs keep working.
 
-  `https://prepinsight.in/**`
+If Site URL is still `http://localhost:3000`, production emails will show localhost in the footer.
 
-  Or explicitly:
+For **local Next.js** development, you can temporarily use `http://localhost:3000` and `http://localhost:3000/**`, or use a separate Supabase project for dev.
 
-  - `https://prepinsight.in/auth/callback` — **required** for email magic links (PKCE).
-  - `https://prepinsight.in/exam`, `https://prepinsight.in/swot`, `https://prepinsight.in/plan`, `https://prepinsight.in/onboarding`, `https://prepinsight.in/dashboard` — optional if not using `/**`.
+## Template variables
 
-  **Never remove** `auth/callback` — without it, sign-in returns you to `/login` with an error.
+Go template tokens — keep them verbatim unless you know what you are changing:
 
-**If verify links show `redirect_to=https://prepinsight.in` only (no `/auth/callback`):**
-Supabase can reject `emailRedirectTo` when it includes a **query string**. The app
-sends `https://prepinsight.in/auth/callback` only and stores the intended path in
-a short-lived cookie before sending the OTP. The app also forwards stray `?code=`
-URLs on the homepage to `/auth/callback`.
+| Variable               | Used in              | Meaning                                      |
+| ---------------------- | -------------------- | -------------------------------------------- |
+| `{{ .Email }}`         | Both                 | Recipient address                          |
+| `{{ .Token }}`         | **`magic-link.html`** | **6-digit sign-in code** (required for OTP) |
+| `{{ .ConfirmationURL }}` | Confirm signup     | Confirm / verify URL                       |
+| `{{ .SiteURL }}`       | Both                 | Site URL from dashboard                    |
 
-If Site URL is still `http://localhost:3000`, emails will show localhost in the
-footer and default redirects can break for real users.
-
-**Do not** set Site URL to `https://localhost:10000` or any `localhost` port —
-Render’s internal port (sometimes shown as 10000 in logs) is **not** your public
-site. Your public URL is **`https://prepinsight.in`** only.
-
-For **local Next.js** development only, you can temporarily set Site URL to
-`http://localhost:3000` and include `http://localhost:3000/**` in redirect URLs
-— or use a separate Supabase branch project for dev.
-
-The Site URL also acts as the default redirect for magic links when the client
-does not pass an explicit `emailRedirectTo`.
-
-## Supabase template variables we rely on
-
-Go template tokens — keep them verbatim if you edit the HTML:
-
-- `{{ .Email }}` — recipient address
-- `{{ .ConfirmationURL }}` — magic-link / confirm URL (includes the token)
-- `{{ .SiteURL }}` — site URL configured above
+Do **not** leave `{{ .ConfirmationURL }}` as the main sign-in method in **Magic Link** if you want code-only login.
 
 ## Editing tips
 
-- Inline styles only — most email clients strip `<style>` blocks and refuse to load web fonts.
-- Use system serif fallback (`Georgia, 'Times New Roman', serif`) for headers — Fraunces will not load in Gmail or Outlook.
-- Width capped at 560 px. Mobile clients render this cleanly.
-- The button uses `box-shadow` (Gmail mobile + Apple Mail honour it; iOS Mail collapses it gracefully).
-- Keep wording neutral — Supabase blocks transactional templates that look promotional. Words to avoid in inbuilt SMTP mode: `unlock`, `free`, `OTP`, currency symbols, exclamation marks, "click here", "verify now".
+- Inline styles only — most email clients strip `<style>` blocks and refuse web fonts.
+- Use system serif fallback (`Georgia, 'Times New Roman', serif`) for headers.
+- Width capped at 560 px for mobile clients.
 
 ## Test send
 
-After pasting, click **Send test email** (top-right on each template page). The "From" should read `PrepInsights <noreply@tranquilai.in>` (or whatever sender you set in Auth → SMTP Settings).
+After pasting, use **Send test email** on the template page. Check that the message contains **six digits** from `{{ .Token }}`, not only a button/link.

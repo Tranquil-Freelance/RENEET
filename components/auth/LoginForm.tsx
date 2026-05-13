@@ -25,6 +25,9 @@ export default function LoginForm() {
     startTransition(async () => {
       try {
         const supabase = getBrowserSupabase();
+        // Email content comes from Supabase "Magic Link" template — it must show
+        // {{ .Token }} (see supabase/templates/magic-link.html). If the template
+        // still uses {{ .ConfirmationURL }}, users get a tap-to-sign-in link instead.
         const { error } = await supabase.auth.signInWithOtp({
           email: email.trim(),
           options: { shouldCreateUser: true },
