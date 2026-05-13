@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getOrCreateAppUserId, getServerSupabase, isSupabaseAuthConfigured } from "@/lib/supabase-server";
+import {
+  getOrCreateAppUserId,
+  getServerSupabase,
+  getServiceClient,
+  isSupabaseAuthConfigured,
+  isSupabaseConfigured,
+} from "@/lib/supabase-server";
 import {
   PAYMENT_AMOUNT_PAISE,
   PAYMENT_PROVIDER,
@@ -90,7 +96,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
   }
 
-  const { data: existing } = await supa
+  // Use service-role client for writes so RLS / EXECUTE grants never block
+  // a payment being recorded. Identity is already verified via getUser() above.
+  const db = isSupabaseConfigured() ? getServiceClient() : supa;
+
+  const { data: existing } = await db
     .from("plans")
     .select("id, paid")
     .eq("user_id", userId)
@@ -105,17 +115,17 @@ export async function POST(req: Request) {
     payment_method: PAYMENT_PROVIDER,
   };
 
-  // Unlock in `plans` first so a paid user is never blocked by ledger issues
-  // (e.g. missing `payments` table, transient PostgREST errors).
+  // Write to plans FIRST — this is the canonical unlock flag checked by status.
   if (existing?.id) {
-    const { error } = await supa.from("plans").update(paymentPayload).eq("id", existing.id);
+    const { error } = await db.from("plans").update(paymentPayload).eq("id", existing.id);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   } else {
-    const { error } = await supa.from("plans").insert({ user_id: userId, ...paymentPayload });
+    const { error } = await db.from("plans").insert({ user_id: userId, ...paymentPayload });
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  const { error: ledgerErr } = await supa.from("payments").upsert(
+  // Write payment ledger entry (non-fatal if it fails — status falls back to plans).
+  const { error: ledgerErr } = await db.from("payments").upsert(
     {
       user_id: userId,
       provider: PAYMENT_PROVIDER,

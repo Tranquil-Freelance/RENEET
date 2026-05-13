@@ -158,6 +158,11 @@ export function PaymentModal({ onClose, redirectToPlan = true, onPaid }: Props) 
       }
 
       toast.success("Payment verified — building your plan…");
+      try {
+        localStorage.setItem("prepinsights:paid", "true");
+      } catch {
+        /* ignore */
+      }
       setPhase("planning");
       await buildPlanFromCache();
       closingRef.current = true;

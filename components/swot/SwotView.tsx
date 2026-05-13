@@ -15,6 +15,14 @@ interface Props {
   initialSwot: SWOT | null;
 }
 
+function readLocalPaid(): boolean {
+  try {
+    return localStorage.getItem("prepinsights:paid") === "true";
+  } catch {
+    return false;
+  }
+}
+
 export function SwotView({ initialSwot }: Props) {
   const router = useRouter();
   const [swot, setSwot] = useState<SWOT | null>(initialSwot);
@@ -26,6 +34,12 @@ export function SwotView({ initialSwot }: Props) {
 
   useEffect(() => {
     setUserName(localStorage.getItem("prepinsights:userName") ?? "there");
+    // Immediately show paid state from local cache so returning users never see
+    // the paywall. The API effect below confirms and keeps the flag in sync.
+    if (readLocalPaid()) {
+      setPaidUnlocked(true);
+      setCheckingPaid(false);
+    }
     if (swot) return;
 
     // Prefer the cached SWOT written by OMRSheet on submit success.
@@ -98,7 +112,20 @@ export function SwotView({ initialSwot }: Props) {
           return;
         }
         const body = await res.json();
-        if (!cancelled) setPaidUnlocked(Boolean(body.paid));
+        const serverPaid = Boolean(body.paid);
+        if (!cancelled) {
+          setPaidUnlocked(serverPaid);
+          // Keep local cache in sync with server truth.
+          try {
+            if (serverPaid) {
+              localStorage.setItem("prepinsights:paid", "true");
+            } else {
+              localStorage.removeItem("prepinsights:paid");
+            }
+          } catch {
+            /* ignore */
+          }
+        }
       } catch (err) {
         console.warn("[swot] payment status request error", err);
       } finally {

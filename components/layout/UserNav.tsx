@@ -154,6 +154,7 @@ export function UserNav() {
     }
     try {
       localStorage.removeItem("prepinsights:userName");
+      localStorage.removeItem("prepinsights:paid");
     } catch {
       /* ignore */
     }
