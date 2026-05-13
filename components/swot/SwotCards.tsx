@@ -1,5 +1,6 @@
 import type { SWOT } from "@/types";
 import { Flame, Lightbulb, Shield, Trophy } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const CONFIG = {
   strengths: {
@@ -32,6 +33,8 @@ const CONFIG = {
   },
 } as const;
 
+const FIX_HOURS_BAR_MAX = 24;
+
 export function SwotCards({ swot }: { swot: SWOT }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -41,31 +44,35 @@ export function SwotCards({ swot }: { swot: SWOT }) {
           title: `${s.topic} · ${s.subtopic}`,
           sub: `${s.score_pct}% · ${s.marks} marks`,
           note: s.insight,
+          scorePct: s.score_pct,
         }))}
       />
       <Card
         cfg={CONFIG.weaknesses}
         items={swot.weaknesses.map((s) => ({
           title: `${s.topic} · ${s.subtopic}`,
-          sub: `-${s.marks_lost} marks · ${s.questions_wrong} wrong · ~${s.fix_time_hours}h to fix`,
+          sub: `-${s.marks_lost} marks · ${s.questions_wrong} wrong`,
           note: s.likely_gap,
           badge: s.fix_priority,
+          fixHours: s.fix_time_hours,
         }))}
       />
       <Card
         cfg={CONFIG.opportunities}
         items={swot.opportunities.map((s) => ({
           title: `${s.topic} · ${s.subtopic}`,
-          sub: `+${s.marks_recoverable} marks possible · ${s.questions_blank} blanks · ~${s.effort_hours}h`,
+          sub: `${s.questions_blank} blanks · ~${s.effort_hours}h effort`,
           note: s.insight,
+          recoverableChip: `+${s.marks_recoverable} marks`,
         }))}
       />
       <Card
         cfg={CONFIG.threats}
         items={swot.threats.map((s) => ({
           title: `${s.topic} · ${s.subtopic}`,
-          sub: `${s.questions_guessed_right} lucky · ${s.marks_at_risk} marks at risk`,
+          sub: `${s.questions_guessed_right} guessed right`,
           note: s.warning,
+          marksAtRisk: s.marks_at_risk,
         }))}
       />
     </div>
@@ -77,13 +84,21 @@ interface CardItem {
   sub: string;
   note: string;
   badge?: string;
+  /** Strength: 0–100 for progress bar */
+  scorePct?: number;
+  /** Weakness: hours to fix (bar scale) */
+  fixHours?: number;
+  /** Opportunity: highlight chip text */
+  recoverableChip?: string;
+  /** Threat: marks at risk (amber emphasis) */
+  marksAtRisk?: number;
 }
 
 function Card({
   cfg,
   items,
 }: {
-  cfg: typeof CONFIG[keyof typeof CONFIG];
+  cfg: (typeof CONFIG)[keyof typeof CONFIG];
   items: CardItem[];
 }) {
   const Icon = cfg.icon;
@@ -113,21 +128,70 @@ function Card({
         )}
         {items.map((it, i) => (
           <li key={i} className="rounded-xl bg-white/70 p-3">
-            <div className="flex items-start justify-between gap-2">
-              <div className="font-semibold text-sm text-slate-800">
-                {it.title}
+            <div className="flex items-start justify-between gap-2 flex-wrap">
+              <div className="font-semibold text-sm text-slate-800 min-w-0 flex-1">{it.title}</div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                {it.recoverableChip && (
+                  <span
+                    className="text-[10px] font-bold uppercase rounded-full px-2 py-0.5 text-white"
+                    style={{ backgroundColor: "var(--color-brand)" }}
+                  >
+                    {it.recoverableChip}
+                  </span>
+                )}
+                {it.badge && (
+                  <span
+                    className="text-[10px] font-bold uppercase rounded-full px-2 py-0.5 text-white"
+                    style={{ backgroundColor: cfg.accent }}
+                  >
+                    {it.badge}
+                  </span>
+                )}
+                {typeof it.marksAtRisk === "number" && it.marksAtRisk > 0 && (
+                  <span className="text-[10px] font-bold uppercase rounded-full px-2 py-0.5 bg-amber-500 text-white ring-1 ring-amber-600/30">
+                    {it.marksAtRisk} marks at risk
+                  </span>
+                )}
               </div>
-              {it.badge && (
-                <span
-                  className="text-[10px] font-bold uppercase rounded-full px-2 py-0.5 text-white"
-                  style={{ backgroundColor: cfg.accent }}
-                >
-                  {it.badge}
-                </span>
-              )}
             </div>
             <div className="text-[11px] text-slate-500 mt-0.5">{it.sub}</div>
-            <div className="text-xs text-slate-600 mt-1.5">{it.note}</div>
+
+            {typeof it.scorePct === "number" && (
+              <div className="mt-2">
+                <div className="flex justify-between text-[10px] text-slate-500 mb-0.5">
+                  <span>Topic strength</span>
+                  <span className="font-semibold text-slate-700">{it.scorePct}%</span>
+                </div>
+                <div className="h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-[width]"
+                    style={{
+                      width: `${Math.min(100, Math.max(0, it.scorePct))}%`,
+                      backgroundColor: cfg.accent,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {typeof it.fixHours === "number" && it.fixHours > 0 && (
+              <div className="mt-2">
+                <div className="flex justify-between text-[10px] text-slate-500 mb-0.5">
+                  <span>Est. fix time</span>
+                  <span className="font-semibold text-slate-700">~{it.fixHours}h</span>
+                </div>
+                <div className="h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                  <div
+                    className={cn("h-full rounded-full", "bg-[color:var(--color-danger)]")}
+                    style={{
+                      width: `${Math.min(100, (it.fixHours / FIX_HOURS_BAR_MAX) * 100)}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="text-xs text-slate-600 mt-1.5 leading-relaxed">{it.note}</div>
           </li>
         ))}
       </ul>

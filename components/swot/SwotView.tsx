@@ -4,12 +4,19 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Loader2, Lock, Share2, Sparkles } from "lucide-react";
-import type { SWOT } from "@/types";
+import type { SWOT, Subject } from "@/types";
 import { SwotCards } from "./SwotCards";
 import { ScoreBanner } from "./ScoreBanner";
 import { TopicScoreCard } from "./TopicScoreCard";
 import { ShareCard } from "./ShareCard";
 import { PaymentCTA } from "./PaymentCTA";
+import { cn } from "@/lib/utils";
+
+const SUBJECT_TAB_LABEL: Record<Subject, string> = {
+  physics: "Physics",
+  chemistry: "Chemistry",
+  biology: "Biology",
+};
 
 interface Props {
   initialSwot: SWOT | null;
@@ -31,6 +38,7 @@ export function SwotView({ initialSwot }: Props) {
   const [checkingPaid, setCheckingPaid] = useState(true);
   const [showShare, setShowShare] = useState(false);
   const [userName, setUserName] = useState("there");
+  const [activeSection, setActiveSection] = useState<Subject>("physics");
 
   useEffect(() => {
     setUserName(localStorage.getItem("prepinsights:userName") ?? "there");
@@ -151,13 +159,24 @@ export function SwotView({ initialSwot }: Props) {
     swot.weaknesses.reduce((s, w) => s + w.marks_lost, 0) +
     swot.opportunities.reduce((s, o) => s + o.marks_recoverable, 0);
   const isLocked = !paidUnlocked;
-  const previewSwot: SWOT = {
+
+  const sectionSwot: SWOT = {
     ...swot,
-    strengths: swot.strengths.slice(0, 1),
-    weaknesses: swot.weaknesses.slice(0, 1),
-    opportunities: swot.opportunities.slice(0, 1),
-    threats: swot.threats.slice(0, 1),
+    strengths: swot.strengths.filter((i) => i.subject === activeSection),
+    weaknesses: swot.weaknesses.filter((i) => i.subject === activeSection),
+    opportunities: swot.opportunities.filter((i) => i.subject === activeSection),
+    threats: swot.threats.filter((i) => i.subject === activeSection),
   };
+
+  const previewSectionSwot: SWOT = {
+    ...sectionSwot,
+    strengths: sectionSwot.strengths.slice(0, 1),
+    weaknesses: sectionSwot.weaknesses.slice(0, 1),
+    opportunities: sectionSwot.opportunities.slice(0, 1),
+    threats: sectionSwot.threats.slice(0, 1),
+  };
+
+  const cardsSwot = isLocked ? previewSectionSwot : sectionSwot;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
@@ -180,8 +199,36 @@ export function SwotView({ initialSwot }: Props) {
         </button>
       </div>
 
+      <div
+        className="mt-5 flex flex-wrap gap-1.5 rounded-2xl border border-slate-200 bg-slate-50 p-1.5"
+        role="tablist"
+        aria-label="SWOT section"
+      >
+        {(["physics", "chemistry", "biology"] as const).map((s) => (
+          <button
+            key={s}
+            type="button"
+            role="tab"
+            aria-selected={activeSection === s}
+            onClick={() => setActiveSection(s)}
+            className={cn(
+              "flex-1 min-w-[5.5rem] rounded-xl px-3 py-2 text-sm font-semibold transition-colors",
+              activeSection === s
+                ? "bg-white text-[var(--color-brand)] shadow-sm ring-1 ring-slate-200"
+                : "text-slate-600 hover:bg-white/80",
+            )}
+          >
+            {SUBJECT_TAB_LABEL[s]}
+          </button>
+        ))}
+      </div>
+
       <div className="mt-6">
-        <ScoreBanner swot={swot} />
+        <ScoreBanner
+          swot={swot}
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+        />
       </div>
 
       <section className="mt-8">
@@ -190,11 +237,11 @@ export function SwotView({ initialSwot }: Props) {
         </h2>
         <p className="text-sm text-slate-600">
           {isLocked
-            ? "Here is a quick preview. Unlock payment to view your full AI SWOT across all high-impact topics."
-            : "Each card is ranked by mark impact. Tap a topic to see the AI's insight."}
+            ? `Preview for ${SUBJECT_TAB_LABEL[activeSection]} — one insight per quadrant. Use the tabs above to switch subjects. Unlock to see every topic for all sections.`
+            : `Showing ${SUBJECT_TAB_LABEL[activeSection]}. Switch tabs to read Physics, Chemistry, or Biology in depth.`}
         </p>
         <div className="mt-4">
-          <SwotCards swot={isLocked ? previewSwot : swot} />
+          <SwotCards swot={cardsSwot} />
         </div>
       </section>
 
@@ -225,7 +272,7 @@ export function SwotView({ initialSwot }: Props) {
             Subject → chapter → subtopic, color-coded by performance.
           </p>
           <div className="mt-4">
-            <TopicScoreCard swot={swot} />
+            <TopicScoreCard swot={swot} defaultOpen={activeSection} />
           </div>
         </section>
       )}

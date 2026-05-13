@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { SWOT, Subject } from "@/types";
 import { cn } from "@/lib/utils";
@@ -19,12 +19,19 @@ interface ChapterRow {
   rows: { subtopic: string; impact: number; tone: "good" | "bad" | "neutral"; note: string }[];
 }
 
-export function TopicScoreCard({ swot }: { swot: SWOT }) {
+export function TopicScoreCard({
+  swot,
+  defaultOpen,
+}: {
+  swot: SWOT;
+  /** Subject accordion that starts expanded; updates when this prop changes. */
+  defaultOpen?: Subject;
+}) {
   const byChapter = useMemo(() => buildByChapter(swot), [swot]);
   return (
     <div className="space-y-3">
       {(Object.keys(byChapter) as Subject[]).map((s) => (
-        <SubjectBlock key={s} subject={s} chapters={byChapter[s]} />
+        <SubjectBlock key={s} subject={s} chapters={byChapter[s]} defaultOpen={defaultOpen} />
       ))}
     </div>
   );
@@ -73,11 +80,17 @@ function buildByChapter(swot: SWOT): Record<Subject, ChapterRow[]> {
 function SubjectBlock({
   subject,
   chapters,
+  defaultOpen,
 }: {
   subject: Subject;
   chapters: ChapterRow[];
+  defaultOpen?: Subject;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(() => subject === defaultOpen);
+
+  useEffect(() => {
+    setOpen(subject === defaultOpen);
+  }, [defaultOpen, subject]);
   return (
     <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
       <button

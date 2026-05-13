@@ -1,4 +1,5 @@
 import type { SWOT, Subject } from "@/types";
+import { cn } from "@/lib/utils";
 
 const SUBJECT_LABEL: Record<Subject, string> = {
   physics: "Physics",
@@ -28,8 +29,17 @@ function formatPercentile(p: number): string {
   return p.toFixed(1);
 }
 
-export function ScoreBanner({ swot }: { swot: SWOT }) {
+export function ScoreBanner({
+  swot,
+  activeSection,
+  onSectionChange,
+}: {
+  swot: SWOT;
+  activeSection?: Subject;
+  onSectionChange?: (s: Subject) => void;
+}) {
   const score = swot.estimated_score;
+  const interactive = Boolean(onSectionChange && activeSection !== undefined);
 
   return (
     <div className="rounded-2xl bg-gradient-to-br from-[var(--color-brand)] via-[var(--color-brand-600)] to-[var(--color-brand-700)] p-6 text-white shadow-xl shadow-blue-500/20">
@@ -58,11 +68,9 @@ export function ScoreBanner({ swot }: { swot: SWOT }) {
       <div className="mt-5 grid grid-cols-3 gap-3">
         {(Object.keys(swot.subject_scores) as Subject[]).map((s) => {
           const sc = swot.subject_scores[s];
-          return (
-            <div
-              key={s}
-              className="rounded-xl bg-white/15 backdrop-blur p-3 text-center"
-            >
+          const isActive = interactive && activeSection === s;
+          const inner = (
+            <>
               <div className="text-[11px] uppercase tracking-wider opacity-80">
                 {SUBJECT_LABEL[s]}
               </div>
@@ -70,6 +78,27 @@ export function ScoreBanner({ swot }: { swot: SWOT }) {
               <div className="mt-1 text-[10px] opacity-90">
                 {sc.correct + sc.guessed_right}/{SUBJECT_TOTAL[s]} right · {sc.wrong} wrong · {sc.blank} blank
               </div>
+            </>
+          );
+          if (interactive) {
+            return (
+              <button
+                key={s}
+                type="button"
+                onClick={() => onSectionChange!(s)}
+                className={cn(
+                  "rounded-xl bg-white/15 backdrop-blur p-3 text-center transition ring-2 ring-transparent outline-none",
+                  "hover:bg-white/25 focus-visible:ring-white/80",
+                  isActive && "ring-white shadow-md bg-white/25",
+                )}
+              >
+                {inner}
+              </button>
+            );
+          }
+          return (
+            <div key={s} className="rounded-xl bg-white/15 backdrop-blur p-3 text-center">
+              {inner}
             </div>
           );
         })}
