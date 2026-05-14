@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import type { PlanDay, StudyPlan, SwotCategory } from "@/types";
 import { cn } from "@/lib/utils";
+import { trackViewPlan } from "@/lib/gtag-client";
 
 const CATEGORY_META: Record<
   SwotCategory,
@@ -56,6 +57,14 @@ export function PlanView() {
   const [doneDays, setDoneDays] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
+  const viewPlanSent = useRef(false);
+
+  useEffect(() => {
+    if (loading || !plan || viewPlanSent.current) return;
+    viewPlanSent.current = true;
+    const totalDays = plan.weeks.reduce((s, w) => s + w.days.length, 0);
+    trackViewPlan({ total_days: totalDays });
+  }, [loading, plan]);
 
   useEffect(() => {
     const saved = localStorage.getItem("prepinsights:planDone");

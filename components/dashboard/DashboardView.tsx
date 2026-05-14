@@ -16,6 +16,7 @@ import type { CheckInQuiz, PlanDay, StudyPlan } from "@/types";
 import { DailyQuiz } from "./DailyQuiz";
 import { StreakHeatmap } from "./StreakHeatmap";
 import { cn } from "@/lib/utils";
+import { trackDailyQuizSubmit } from "@/lib/gtag-client";
 
 export function DashboardView() {
   const [plan, setPlan] = useState<StudyPlan | null>(null);
@@ -105,7 +106,11 @@ export function DashboardView() {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ dayNumber: day, action: "submit", score }),
-    }).catch(() => {});
+    })
+      .then((res) => {
+        if (res.ok) trackDailyQuizSubmit({ day_number: day, score });
+      })
+      .catch(() => {});
     markDone(day);
   }
 

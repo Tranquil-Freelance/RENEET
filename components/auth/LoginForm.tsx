@@ -6,6 +6,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
 import { sanitizeAuthNextPath } from "@/lib/site-url";
+import { trackLogin } from "@/lib/gtag-client";
 
 /** Supabase may send 6- or 8-digit numeric email tokens depending on project settings. */
 const OTP_LEN_MIN = 6;
@@ -105,6 +106,7 @@ export default function LoginForm() {
         } catch {
           /* ignore profile prefetch failures on login */
         }
+        trackLogin();
         toast.success("Signed in");
         router.replace(bootBody.onboardingRequired ? "/onboarding" : next);
         router.refresh();

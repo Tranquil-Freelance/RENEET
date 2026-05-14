@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { SelectContentLink } from "@/components/analytics/SelectContentLink";
 import { ArrowRight } from "lucide-react";
 
 const SAMPLE = [
@@ -80,13 +80,15 @@ export function SampleSwot() {
         </div>
 
         <div className="mt-10 text-center">
-          <Link
+          <SelectContentLink
             href="/onboarding"
+            contentType="cta"
+            itemId="sample_swot_see_yours"
             className="inline-flex items-center gap-2 rounded-xl bg-[var(--color-ink)] px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
           >
             See your real SWOT
             <ArrowRight className="h-4 w-4" />
-          </Link>
+          </SelectContentLink>
         </div>
       </div>
     </section>

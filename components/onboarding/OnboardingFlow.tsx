@@ -10,6 +10,7 @@ import { INDIAN_STATES } from "@/lib/states";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
 import { cn } from "@/lib/utils";
 import { dispatchProfileUpdated } from "@/lib/profile-events";
+import { trackSignUp } from "@/lib/gtag-client";
 
 type Step = 1 | 2;
 
@@ -99,6 +100,7 @@ export function OnboardingFlow() {
         /* ignore local storage failures */
       }
       dispatchProfileUpdated({ name: form.name.trim(), state: form.state });
+      trackSignUp();
       setFinished(true);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { getPublicSiteUrl } from "@/lib/site-url";
 import "./globals.css";
@@ -67,6 +68,7 @@ export default function RootLayout({
         className="min-h-full flex flex-col bg-paper text-ink"
         style={{ fontFamily: "var(--font-inter), var(--font-sans)" }}
       >
+        <GoogleAnalytics />
         <AppHeader />
         <div className="flex-1">{children}</div>
         <Toaster

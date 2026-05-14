@@ -11,6 +11,7 @@ import {
 import toast from "react-hot-toast";
 import { Check, ChevronRight, Loader2, X } from "lucide-react";
 import type { AnswerMap, ClientQuestion, Option, Subject } from "@/types";
+import { trackExamAnalyzed } from "@/lib/gtag-client";
 import { cn } from "@/lib/utils";
 
 const LS_ANSWERS = "prepinsights:answers";
@@ -106,6 +107,11 @@ export function OMRSheet({ questions }: Props) {
       }
       const data = await res.json();
       const { analysisId, swot, overall } = data;
+      trackExamAnalyzed({
+        total_marked: totalMarked,
+        total_guessed: totalGuessed,
+        total_blank: totalBlank,
+      });
       if (analysisId) localStorage.setItem("prepinsights:analysisId", analysisId);
       try {
         if (swot) localStorage.setItem("prepinsights:swot", JSON.stringify(swot));

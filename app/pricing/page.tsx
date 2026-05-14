@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { LegalShell } from "@/components/legal/LegalShell";
+import { SelectContentLink } from "@/components/analytics/SelectContentLink";
 import { PAYMENT_AMOUNT_RS, PAYMENT_CURRENCY } from "@/lib/payment";
 
 export const metadata: Metadata = {
@@ -80,12 +80,14 @@ export default function PricingPage() {
       </p>
 
       <p className="not-prose mt-10">
-        <Link
+        <SelectContentLink
           href="/onboarding"
+          contentType="cta"
+          itemId="pricing_start_free_swot"
           className="inline-flex rounded-xl bg-[var(--color-brand)] px-5 py-3 text-sm font-semibold text-white hover:bg-[var(--color-brand-600)]"
         >
           Start free SWOT
-        </Link>
+        </SelectContentLink>
       </p>
     </LegalShell>
   );

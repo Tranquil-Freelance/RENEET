@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { ArrowRight, ArrowRightCircle, Loader2, Lock, Share2, Sparkles, Zap } from "lucide-react";
@@ -11,6 +11,7 @@ import { TopicScoreCard } from "./TopicScoreCard";
 import { ShareCard } from "./ShareCard";
 import { PaymentCTA } from "./PaymentCTA";
 import { cn } from "@/lib/utils";
+import { trackGenerateLead } from "@/lib/gtag-client";
 
 const SUBJECT_TAB_LABEL: Record<Subject, string> = {
   physics: "Physics",
@@ -45,6 +46,13 @@ export function SwotView({ initialSwot }: Props) {
   const [showShare, setShowShare] = useState(false);
   const [userName, setUserName] = useState("there");
   const [activeSection, setActiveSection] = useState<Subject>("physics");
+  const generateLeadSent = useRef(false);
+
+  useEffect(() => {
+    if (loading || !swot || generateLeadSent.current) return;
+    generateLeadSent.current = true;
+    trackGenerateLead();
+  }, [loading, swot]);
 
   useEffect(() => {
     setUserName(localStorage.getItem("prepinsights:userName") ?? "there");

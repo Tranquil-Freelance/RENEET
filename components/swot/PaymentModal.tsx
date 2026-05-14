@@ -4,6 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Loader2, ShieldCheck, X } from "lucide-react";
+import {
+  trackBeginCheckout,
+  trackPaymentFailed,
+  trackPurchase,
+} from "@/lib/gtag-client";
 import { PAYMENT_AMOUNT_RS } from "@/lib/payment";
 
 interface Props {
@@ -129,6 +134,7 @@ export function PaymentModal({ onClose, redirectToPlan = true, onPaid }: Props) 
       setPhase("checkout");
       const factory = await loadCashfreeSdk();
       const cashfree = factory({ mode: orderBody.cashfree_mode ?? "production" });
+      trackBeginCheckout();
       const result = await cashfree.checkout({
         paymentSessionId: orderBody.payment_session_id,
         redirectTarget: "_modal",
@@ -157,6 +163,7 @@ export function PaymentModal({ onClose, redirectToPlan = true, onPaid }: Props) 
         );
       }
 
+      trackPurchase(String(orderBody.order_id));
       toast.success("Payment verified — building your plan…");
       try {
         localStorage.setItem("prepinsights:paid", "true");
@@ -173,6 +180,7 @@ export function PaymentModal({ onClose, redirectToPlan = true, onPaid }: Props) 
         onClose();
       }
     } catch (err) {
+      trackPaymentFailed(err);
       const msg = err instanceof Error ? err.message : "Payment failed";
       toast.error(msg);
       setPhase("idle");

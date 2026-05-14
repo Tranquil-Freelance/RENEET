@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSignupCount } from "@/lib/stats";
+import { SelectContentLink } from "@/components/analytics/SelectContentLink";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { ComparisonTable } from "@/components/landing/ComparisonTable";
@@ -34,15 +35,30 @@ export default async function LandingPage() {
               <span className="text-slate-400">— Built for Re-NEET 2026 aspirants</span>
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
-              <Link href="/login?next=/exam" className="hover:text-[var(--color-brand)]">
+              <SelectContentLink
+                href="/login?next=/exam"
+                contentType="cta"
+                itemId="footer_start_free"
+                className="hover:text-[var(--color-brand)]"
+              >
                 Start free
-              </Link>
-              <Link href="/dashboard" className="hover:text-[var(--color-brand)]">
+              </SelectContentLink>
+              <SelectContentLink
+                href="/dashboard"
+                contentType="cta"
+                itemId="footer_dashboard"
+                className="hover:text-[var(--color-brand)]"
+              >
                 Dashboard
-              </Link>
-              <Link href="/pricing" className="hover:text-[var(--color-brand)]">
+              </SelectContentLink>
+              <SelectContentLink
+                href="/pricing"
+                contentType="cta"
+                itemId="footer_pricing"
+                className="hover:text-[var(--color-brand)]"
+              >
                 Pricing (INR)
-              </Link>
+              </SelectContentLink>
               <Link href="/contact" className="hover:text-[var(--color-brand)]">
                 Contact
               </Link>

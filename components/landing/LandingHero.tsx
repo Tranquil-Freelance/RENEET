@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, LayoutDashboard, ShieldCheck, Sparkles, Clock } from "lucide-react";
+import {
+  SelectContentAnchor,
+  SelectContentLink,
+} from "@/components/analytics/SelectContentLink";
 
 export function LandingHero({ signupCount }: { signupCount: number }) {
   return (
@@ -46,26 +50,32 @@ export function LandingHero({ signupCount }: { signupCount: number }) {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center justify-center gap-3">
-            <Link
+            <SelectContentLink
               href="/login?next=/exam"
+              contentType="cta"
+              itemId="hero_start_free_analysis"
               className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-base font-semibold text-white shadow-soft-lg transition hover:bg-brand-dark"
             >
               Start my free analysis
               <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-            </Link>
-            <a
+            </SelectContentLink>
+            <SelectContentAnchor
               href="#how-it-works"
+              contentType="cta"
+              itemId="hero_how_it_works"
               className="inline-flex items-center justify-center gap-2 rounded-2xl border border-line bg-white px-6 py-3.5 text-base font-semibold text-ink hover:border-ink-muted transition"
             >
               How it works
-            </a>
-            <Link
+            </SelectContentAnchor>
+            <SelectContentLink
               href="/dashboard"
+              contentType="cta"
+              itemId="hero_dashboard"
               className="inline-flex items-center justify-center gap-2 rounded-2xl border border-line bg-white px-6 py-3.5 text-base font-semibold text-ink hover:border-brand hover:text-brand transition"
             >
               <LayoutDashboard className="h-4 w-4" />
               Dashboard
-            </Link>
+            </SelectContentLink>
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-ink-muted">
