@@ -36,7 +36,7 @@ export default async function LandingPage() {
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
               <SelectContentLink
-                href="/login?next=/exam"
+                href="/exam"
                 contentType="cta"
                 itemId="footer_start_free"
                 className="hover:text-[var(--color-brand)]"

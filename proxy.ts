@@ -2,7 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getMiddlewareSupabase } from "@/lib/supabase-server";
 import { sanitizeAuthNextPath } from "@/lib/site-url";
 
-const PROTECTED_PREFIXES = ["/exam", "/swot", "/plan", "/dashboard", "/onboarding", "/profile"];
+// /exam is public: users mark answers first; sign-in is required at analysis (API + /swot).
+const PROTECTED_PREFIXES = ["/swot", "/plan", "/dashboard", "/onboarding", "/profile"];
 
 export async function proxy(request: NextRequest) {
   const response = NextResponse.next({ request });

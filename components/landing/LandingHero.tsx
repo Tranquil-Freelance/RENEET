@@ -51,7 +51,7 @@ export function LandingHero({ signupCount }: { signupCount: number }) {
 
           <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center justify-center gap-3">
             <SelectContentLink
-              href="/login?next=/exam"
+              href="/exam"
               contentType="cta"
               itemId="hero_start_free_analysis"
               className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand px-6 py-3.5 text-base font-semibold text-white shadow-soft-lg transition hover:bg-brand-dark"

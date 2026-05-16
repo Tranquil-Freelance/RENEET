@@ -97,8 +97,9 @@ export function OMRSheet({ questions }: Props) {
         body: JSON.stringify({ answers }),
       });
       if (res.status === 401) {
-        toast.error("Please sign in to analyze.");
-        router.push("/login?next=/exam");
+        setSubmitting(false);
+        toast.error("Sign in to run your SWOT analysis.");
+        router.push("/login?next=/swot");
         return;
       }
       if (!res.ok) {
